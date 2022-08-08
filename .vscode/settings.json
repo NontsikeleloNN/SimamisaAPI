@@ -1,0 +1,6 @@
+{
+    "appService.defaultWebAppToDeploy": "None"
+}/*{
+    "appService.defaultWebAppToDeploy": "/subscriptions/025ada67-2aeb-4e6e-bff8-69a648a5d2d5/microsoft.web/sites/subscriptions/025ada67-2aeb-4e6e-bff8-69a648a5d2d5/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/SimamisaAPIv1",
+    "appService.deploySubpath": "deployme"
+}*/

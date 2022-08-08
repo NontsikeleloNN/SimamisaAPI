@@ -1,0 +1,41 @@
+module.exports = (sequelize,DataTypes)  => {
+    const ChildNeed = sequelize.define("childNeed",{
+        
+        ID:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement:true
+
+        },
+        DueDate:{
+            type: DataTypes.DATE,
+
+        },
+        Title:{
+            type: DataTypes.STRING,
+            allowNull:false
+        },
+        Description:{
+            type: DataTypes.STRING,
+            allowNull:false
+        },
+        isFullfilled:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
+        AmountReceived:{
+            type: DataTypes.DOUBLE,
+        },
+        AmountNeeded:{
+            type: DataTypes.DOUBLE 
+        }
+    },
+    { //s freezeTableName: true,
+      timestamps:false
+  
+  });
+  
+  return ChildNeed
+  }
+  
