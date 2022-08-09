@@ -39,8 +39,8 @@ db.sequelize = sequelize
 
 
 //this is what creates the model after you have defined it 
-db.Orphanage = require('./OrphanageModel.js')(sequelize, DataTypes)
-db.Event = require('./EventModel.js')(sequelize, DataTypes)
+db.Orphanage = require('./orphanageModel.js')(sequelize, DataTypes)
+db.Event = require('./eventModel.js')(sequelize, DataTypes)
 db.Child = require('./childModel.js')(sequelize,DataTypes)
 db.Partnership = require('./partnershipModel.js')(sequelize,DataTypes)
 db.RegisteredUser = require('./registeredUserModel.js')(sequelize,DataTypes)
