@@ -5,6 +5,7 @@ module.exports = {
   USER: 'raisiql4_user',
 //PASSWORD: 'Simamisa123',
 PASSWORD: 'G3V}aeJWcH+6',
+
   // DB: 'Simamisadb', //simamisadbccl
    DB: 'raisiql4_simamisa',
     dialect: 'mysql',

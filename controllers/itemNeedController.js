@@ -73,17 +73,17 @@ const getAllActiveNeedsByName = async(req,res) => {
 const createItem = async(req,res) =>{
 let newItem = {
     DueDate : req.body.DueDate,
-    DateEstablished : req.body.DateEstablished,
+    DateEstablished : new Date(),
     Title : req.body.Title,
     Description : req.body.Description,
     isFulfilled : false,
     PriorityRating : req.body.PriorityRating,
     orphanageID : req.body.orphanageID,
     ItemImage : req.body.ItemImage,
-    NumberReceived : req.body.NumberReceived,
+    NumberReceived : 0,
     UnitCost : req.body.UnitCost,
     NumberNeeded : req.body.NumberNeeded,
-    AmountNeeded : UnitCost * NumberNeeded,
+    AmountNeeded : req.body.UnitCost * req.body.NumberNeeded,
     AmountReceived : 0
 }
 

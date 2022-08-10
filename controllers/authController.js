@@ -43,7 +43,14 @@ res.json({ID: user.ID, UserRole: user.UserRole, isFlagged: user.isFlagged,
     isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
 }
 
+const getUsers = async (req,res) => {
+    let user = regUser.findAll({})
+    res.json({ID: user.ID, FirstName : user.FirstName, UserRole: user.UserRole, isFlagged: user.isFlagged, 
+        isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
+}
+
 module.exports = {
 registerUser,
-login
+login,
+getUsers
 }

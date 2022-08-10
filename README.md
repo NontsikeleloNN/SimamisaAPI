@@ -36,7 +36,7 @@ OrphanageManager
 Donations
 - all functions defined but I forgot to define the routes. Will have to redeploy so if they are needed, please let me know and I'll redeploy
 Proposals
-- /simamisa/orphanages/needs/proposals 
+- */simamisa/orphanages/needs/proposals* 
 - router.get('/',itemProposalController.getAllProposals)
 - router.get('/:id',itemProposalController.getProposal)
 - router.get('/item/:id',itemProposalController.getItemProposals)
@@ -44,7 +44,7 @@ Proposals
 - router.get('/unfulfilled',itemProposalController.getUnfulfilled) : thiss wil retrieve all the proposals that are unfulfilled
 - router.put('/accept',OrphanageManagerController.acceptProposal) : accept a proposal an OM made
 Needs
-- /simamisa/orphanages/needs 
+- */simamisa/orphanages/needs*
 - router.get('/',itemNeedController.getAllNeeds)
 - router.get('/active/',itemNeedController.getAllActiveNeeds)
 - router.get('/orphanage/:id',itemNeedController.getOrphanageNeeds)
@@ -52,8 +52,16 @@ Needs
 - router.post('/',itemNeedController.createItem)
 - router.put('/',itemNeedController.updateItem)
 
+Children
+
+*/simamisa/orphanages/children*
+
+- router.get('/',childController.getAllChildren)
+- router.get('/mychildren',sponsorship.getMyChildren)
+- router.get('/child', childController.getChildbyID)
+- router.get('/orphanage/child', childController.getChildbyOrphanage)
 Events
-- /simamisa/orphanages/events
+- */simamisa/orphanages/events*
 - router.get('/', eventController.getAllEvents);
 - router.get('/orphanage/:id',eventController.getEventbyOrphanage);
 - router.get('/id/:id',eventController.getEvent);
@@ -63,13 +71,13 @@ Events
 - router.delete('/:id',eventController.deleteEvent);
 
 Authentication
-- /simamisa/orphanages/users
+- */simamisa/orphanages/users*
 - router.post('/register',authC.registerUser);
 - router.post('/login',authC.login)
 
 
 Sponsorship on Orphanage Manager side
-
+*/simamisa/orphanages/om*
 - router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor) :
 * here you make a person a sponsor, theyare added on to the list of sponsor. Everything concerning sponsorships will have to start here or the system will throw an exception. Takes in the id of the registered user you are trying to make a sponsor 
 .../?id=#
@@ -83,13 +91,13 @@ Sponsorship on Orphanage Manager side
 * here a sponsorship is created between a child and sponsor. Please refer to the list of tables I added at the bottom to see what fields are needed. 
 .../?childID=#&sponsorID=#&seed=#
 
-
+ */simamisa/orphanages/meetings*
 - router.post('/', meetingController.createMeeting)
 - router.get('/',meetingController.getAllActiveMeetings)
 
 
 Partnerships
-
+*/simamisa/orphanages/partnering*
 
 - router.post('/',partneringController.sendReq)// sending a partnering request (... /from?=x&to?=y)
 - router.get('/',partneringController.getPartners) //get my partners ( orphanages/partnering/id?=x)
@@ -101,7 +109,7 @@ Partnerships
 
 
 Main Route
-- simamisaapiv1.azurewebsites.net
+- https://simamisa.herokuapp.com/
 
 * Please not I will be updating our routes to use query strings as we progress with the project to make it easier to consume the api 
 
@@ -129,7 +137,7 @@ const options = {
     body: JSON.stringify(requestBody)
 }
 
-fetch('https://simamisaapiv3.azurewebsites.net/simamisa/orphanages/users/login', options)
+fetch('https://simamisa.herokuapp.com/simamisa/orphanages/users/login', options)
   .then(response => response.json())
   .then(json => console.log(json))
 

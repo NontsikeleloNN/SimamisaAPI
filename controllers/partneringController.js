@@ -62,7 +62,7 @@ const getRequests = async (req, res) => {
             ]
         }
     });
-
+    console.log(orphs)
 
     if (orphs == []) return res.status(400).send('No requests')
 
