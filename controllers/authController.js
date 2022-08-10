@@ -1,5 +1,6 @@
 const db = require('../models/');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const { OrphanageManager } = require('../models/');
 const regUser = db.RegisteredUser;
 
 
@@ -29,24 +30,48 @@ const registerUser = async (req,res) => {
 }
 
 const login = async (req,res )=>{
-const user = await regUser.findOne({where: {Email: req.body.Email}});
 
 
-if(!user) return res.status(400).send('email not found');
 
-const pValid = await bcrypt.compare(req.body.UserPassword,user.UserPassword)
-if(!pValid) return res.status(400).send('Incorrect Password entered')
 
-// function to define roles 
-//return name
-res.json({ID: user.ID, UserRole: user.UserRole, isFlagged: user.isFlagged, 
-    isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
+
+    try {
+        
+        const user = await regUser.findOne({where: {Email: req.body.Email}});
+
+
+        if(!user) return res.status(400).send('user not found');
+        
+        const pValid = await bcrypt.compare(req.body.UserPassword,user.UserPassword)
+        if(!pValid) return res.status(400).send('Incorrect password or email entered')
+        
+        if(user.UserRole == 'M') {
+            console.log('hey look at me')
+          let man =  await OrphanageManager.findOne({where : {registeredUserID : user.ID}})
+          console.log(man)
+         return res.status(200).json({FirstName: user.FirstName,UserRole: user.UserRole,orphanageID:man.orphanageID,ID : user.ID, managerID : man.ID})
+        }
+        
+        res.status(200).json({ID: user.ID, FirstName: user.FirstName,UserRole: user.UserRole, isFlagged: user.isFlagged, 
+            isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
+
+    } catch (error) {
+        console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+    }
 }
 
 const getUsers = async (req,res) => {
     let user = regUser.findAll({})
+
+    
     res.json({ID: user.ID, FirstName : user.FirstName, UserRole: user.UserRole, isFlagged: user.isFlagged, 
         isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
+
+
+      
 }
 
 module.exports = {
