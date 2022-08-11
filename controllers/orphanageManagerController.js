@@ -127,10 +127,36 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
     res.status(200).json(need)
 }
 
+const updateChildNeed = async (req,res) => {
+
+       
+    try {
+     
+     let id = req.body.id; // needID
+     const need = await ChildNeed.update(req.body, {where: {ID: id}})
+     
+       if(!need) return res.status(400).send('could not update this event')
+   
+     res.status(200).json(need);
+
+    } catch (error) {
+     
+     console.log(error)
+     res.status(500).json({
+         errorMessage: error.message
+     })
+     
+    }
+   
+
+}
+
+
 module.exports = {
 acceptProposal,
 confirmFulfill,
 fulfillChildNeed,
 acceptSponsor,
-createSponsorship
+createSponsorship,
+updateChildNeed,
 }

@@ -6,7 +6,7 @@ router.put('/accept',OrphanageManagerController.acceptProposal)
 
 router.put('/confirm',OrphanageManagerController.confirmFulfill)
 router.put('/childneed/confirm',OrphanageManagerController.fulfillChildNeed)
-
+router.put('/update',OrphanageManagerController.updateChildNeed)
 
 
 router.post('/sponsorship',OrphanageManagerController.createSponsorship)
