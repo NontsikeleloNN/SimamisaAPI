@@ -70,6 +70,23 @@ const getAllActiveNeedsByName = async(req,res) => {
     res.status(200).json(sortedDesc)
 
 }
+
+const deleteItem = async(req,res) =>{
+
+    try {
+        
+        const id = req.query.id
+        await ItemNeed.destroy({where : {ID : id}})
+        res.send('deleted')
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+}
 const createItem = async(req,res) =>{
 let newItem = {
     DueDate : req.body.DueDate,
@@ -113,4 +130,5 @@ getAllActiveNeedsByName,
 getOrphanageNeeds,
 createItem,
 updateItem,
+deleteItem
 }

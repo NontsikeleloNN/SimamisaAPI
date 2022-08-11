@@ -6,6 +6,7 @@ router.get('/active/',itemNeedController.getAllActiveNeeds)
 router.get('/orphanage/:id',itemNeedController.getOrphanageNeeds)
 router.get('/:name',itemNeedController.getAllActiveNeedsByName)
 
+router.delete('/',itemNeedController.deleteItem)
 router.post('/',itemNeedController.createItem)
 
 router.put('/',itemNeedController.updateItem)

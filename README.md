@@ -53,6 +53,7 @@ Needs
 - router.get('/:name',itemNeedController.getAllActiveNeedsByName)
 - router.post('/',itemNeedController.createItem)
 - router.put('/',itemNeedController.updateItem)
+- router.delete('/',itemNeedController.deleteItem) .../?id=#
 
 Children
 
@@ -80,6 +81,9 @@ Authentication
 
 Sponsorship on Orphanage Manager side
 */simamisa/orphanages/om*
+
+- router.put('/update',OrphanageManagerController.updateChildNeed) : 
+
 - router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor) :
 * here you make a person a sponsor, theyare added on to the list of sponsor. Everything concerning sponsorships will have to start here or the system will throw an exception. Takes in the id of the registered user you are trying to make a sponsor 
 .../?id=#
