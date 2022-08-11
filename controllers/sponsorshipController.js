@@ -1,3 +1,4 @@
+const { SponsorshipPost } = require('../models/')
 const db = require('../models/')
 const Sponsor = db.Sponsor
 const Child = db.Child
@@ -48,6 +49,35 @@ const getMyChildren  = async (req,res) => {
     
 }
 
+const post  = async (req,res) => {
+
+    
+        try {
+            
+            let newPost = {
+                PostDate : new Date(),
+                Title : req.body.Title,
+                Description : req.body.Description,
+                sponsorshipID : req.body.sponsorshipID,
+                ItemImage : req.body.ItemImage,
+               
+            }
+            
+            const savedPost = await SponsorshipPost.create(newPost)
+                if(!savedPost) return res.status(400).send('could not create post')
+                res.status(200).json(savedPost)
+
+        } catch (error) {
+            
+            console.log(error)
+            res.status(500).json({
+                errorMessage: error.message
+            })
+
+        }
+}
+
 module.exports = {
-    getMyChildren
+    getMyChildren,
+    post
 }

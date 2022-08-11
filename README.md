@@ -43,6 +43,8 @@ Proposals
 - router.get('/user/:id',itemProposalController.getUserProposals)
 - router.get('/unfulfilled',itemProposalController.getUnfulfilled) : thiss wil retrieve all the proposals that are unfulfilled
 - router.put('/accept',OrphanageManagerController.acceptProposal) : accept a proposal an OM made
+
+
 Needs
 - */simamisa/orphanages/needs*
 - router.get('/',itemNeedController.getAllNeeds)
@@ -57,9 +59,9 @@ Children
 */simamisa/orphanages/children*
 
 - router.get('/',childController.getAllChildren)
-- router.get('/mychildren',sponsorship.getMyChildren)
-- router.get('/child', childController.getChildbyID)
-- router.get('/orphanage/child', childController.getChildbyOrphanage)
+- router.get('/mychildren',sponsorship.getMyChildren) .../mychildren?id=# the id is this case is the sponsor id
+- router.get('/child', childController.getChildbyID) .../child?id=#
+
 Events
 - */simamisa/orphanages/events*
 - router.get('/', eventController.getAllEvents);

@@ -67,7 +67,12 @@ db.Donationfulfillment = require('./donationFulfillmentModel')(sequelize,DataTyp
 db.Offer = require('./offerModel')(sequelize,DataTypes)
 db.OfferItem = require('./offerItemModel')(sequelize,DataTypes)
 db.ItemProposal = require('./itemProposalModel')(sequelize,DataTypes)
+db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
 
+
+//sponsorship post
+db.Sponsorship.hasMany(db.SponsorshipPost,{ foreignKey: {allowNull:false}})
+db.SponsorshipPost.belongsTo(db.Sponsorship)
 
 //item proposals
 db.ItemNeed.hasMany(db.ItemProposal,{ foreignKey: {allowNull:false}})
