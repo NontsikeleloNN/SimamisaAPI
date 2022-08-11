@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
 
         Children: {
             type: DataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
 
         DefaultChildPassword: {
