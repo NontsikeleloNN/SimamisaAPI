@@ -1,8 +1,9 @@
-const { OrphanageManager } = require('../models/');
+//const { OrphanageManager } = require('../models/');
 const db = require('../models/')
-
+const bcrypt = require('bcryptjs');
 const Orphanage = db.Orphanage
-
+const regUser = db.RegisteredUser;
+const OrphanageManager = db.OrphanageManager
 
 
 console.log("just before entering ")
@@ -51,7 +52,7 @@ const regOrphanage = async (req,res) => {
 }
 
 const regManager = async (req,res) => {
-
+//update userole to M
    try {
     
     const salt = await bcrypt.genSalt(10)
@@ -62,20 +63,24 @@ const regManager = async (req,res) => {
         Email: req.body.Email,
         Phonenumber: req.body.Phonenumber,
         Status: req.body.Status,
-        UserRole : req.body.UserRole,
+        UserRole : 'U',
         isFlagged: req.body.isFlagged,
         UserPassword: hashed,
         UserAddress: req.body.UserAddress,
         orphanageID : req.body.orphanageID
     })
-  
+    
         const savedUser = await regUser.create(newUser);
         
-        let newOrphanageManager = ({
-            registeredUserID : savedUser.ID,
-            orphanageID : savedUser.orphanageID
-        })
+    console.log(newUser.orphanageID + 'here is it')
 
+        let newOrphanageManager = ({
+            registeredUserID : await savedUser.ID,
+            orphanageID : await newUser.orphanageID
+        })
+        console.log( await savedUser.orphanageID)
+        savedUser.UserRole = 'M'
+        await savedUser.save()
         const savedMan = await OrphanageManager.create(newOrphanageManager)
 
         res.status(200).json(savedMan)  
