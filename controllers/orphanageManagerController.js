@@ -2,7 +2,7 @@
 //checks for if accepted nd if fulfiled for proposal first
 
 const db = require('../models/')
-
+const bcrypt = require('bcryptjs');
 
 
 const OrphanageManager = db.OrphanageManager

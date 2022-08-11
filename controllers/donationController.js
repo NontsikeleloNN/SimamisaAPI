@@ -2,6 +2,7 @@ const db = require('../models/')
 
 const Donation = db.Donation
 
+
 /**const getAllItemDonations = async(req,res) => {
     const id = req.params.id
     let donations = await Donation.findAll({where : {itemNeedID : id}});
