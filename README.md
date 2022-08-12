@@ -32,9 +32,14 @@ OrphanageManager
 - /simamisa/orphanages/om/accept?propsalID=# accepts a proposal
 - /simamisa/orphanages/om/confirm?proposalID=# sets a proposal as fulfilled and accordingly updates the related itemNeed
 
+Child needs
+*/simamisa/orphanages/childneed*
+- router.get('/need ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
+- router.post('/',childneed.createChildNeed)
+- router.get('/child',childneed.getChildNeeds) // ...?childID=#
 
-Donations
-- all functions defined but I forgot to define the routes. Will have to redeploy so if they are needed, please let me know and I'll redeploy
+
+
 Proposals
 - */simamisa/orphanages/needs/proposals* 
 - router.get('/',itemProposalController.getAllProposals)
@@ -64,6 +69,7 @@ Children
 - router.get('/child', childController.getChildbyID) .../child?id=#
 - router.get('/orphanage/child', childController.getChildbyOrphanage) // ...?OrphID=#
 - router.get('/posts',sponsorship.getChildPosts) // ...?sponsorshipID=#
+- router.get('/sponsorship',childController.getSponsorshipID) //  .../?childID=#
 
 Events
 - */simamisa/orphanages/events*
