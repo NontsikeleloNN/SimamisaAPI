@@ -35,19 +35,31 @@ const getOrphanage = async (req,res) => {
 }
 
 const regOrphanage = async (req,res) => {
-    let newOrphanage = {
+    try {
+        
+
+        let newOrphanage = {
        
-        DateReg : req.body.Date,
-        OrphanageName : req.body.OrphanageName,
-        OrphanageDescription : req.body.OrphanageDescription,
-        OrphanageImage : req.body.OrphanageImage,
-        DefaultChildPassword: req.body.OrphanagePassword,
-        Children : req.body.Children
+            DateReg : req.body.Date,
+            OrphanageName : req.body.OrphanageName,
+            OrphanageDescription : req.body.OrphanageDescription,
+            OrphanageImage : req.body.OrphanageImage,
+            DefaultChildPassword: req.body.OrphanagePassword,
+            Children : req.body.Children
+        }
+        
+        const savedOrphanage = await Orphanage.create(newOrphanage)
+            if(!savedOrphanage) return res.status(400).send('could not create orphanage')
+            res.status(200).json(savedOrphanage)
+
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
     }
-    
-    const savedOrphanage = await Orphanage.create(newOrphanage)
-        if(!savedOrphanage) return res.status(400).send('could not create orphanage')
-        res.status(200).json(savedOrphanage)
     
 }
 

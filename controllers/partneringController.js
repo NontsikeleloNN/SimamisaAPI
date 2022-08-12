@@ -161,7 +161,7 @@ try {
     if (!orphs) return res.status(400).json('no partners')
 
 
-    orphs.forEach((element, index, arr) => {
+    for(let element of orphs){
       
         if (val == element.ReceiverID) {
             val = element.SenderID
@@ -177,7 +177,7 @@ try {
         OfferItem.create(off)
 
         val = from
-    });
+    }
 
 } catch (error) {
     console.log(error)
@@ -212,16 +212,16 @@ console.log(offers + 'before filter')
         }
 
         // for each element in the array, get all the related offer items where the id is that
-      let ofs = offers.map(element => {
+        for(let element of offers){
 
-            let temp = OfferItem.findAll({
+            let temp =  await OfferItem.findAll({
                 where: {
                     ReceivingPartner: id,
                     offerID: element.ID
                 }
             })
             offerItemArray.push(temp)
-        });
+        }
 
       //  offerItemArray.push(ofs)
     } catch (error) {
