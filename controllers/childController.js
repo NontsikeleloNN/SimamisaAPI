@@ -21,14 +21,30 @@ const getChildbyID = async(req,res) =>{
 }
 
 const getChildbyOrphanage = async(req,res) =>{
-   const id = req.query.OrphID
+   try {
+    
+    const id = req.query.OrphID
+    let kids = []
 
     let children = await Child.findAll({
-        where : {orphanageID : id}})
+        where : {orphanageID : id}});
+
+        for (const child of children) {
+            kids.push(child)
+        }
 
 
         
-   res.status(200).send(children)
+   res.status(200).send(kids)
+
+   } catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+   }
   
 }
 
