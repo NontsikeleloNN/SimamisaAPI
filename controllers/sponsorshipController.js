@@ -1,8 +1,9 @@
-const { SponsorshipPost } = require('../models/')
+
 const db = require('../models/')
 const Sponsor = db.Sponsor
 const Child = db.Child
 const Sponsorship = db.Sponsorship
+const SponsorshipPost = db.SponsorshipPost
 
 
 const getMyChildren  = async (req,res) => {
@@ -49,7 +50,29 @@ const getMyChildren  = async (req,res) => {
     
 }
 
-const post  = async (req,res) => {
+const getChildPosts  = async (req,res) => {
+    try {
+        
+        const id = req.query.sponsorshipID
+        let arrPosts = []
+        let posts = await SponsorshipPost.findAll({where : {sponsorshipID : id}})
+        for (const post of posts) {
+            arrPosts.push(post)
+        }
+    
+        res.status(200).json(arrPosts)
+
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+}
+
+const makePost  = async (req,res) => {
 
     
         try {
@@ -79,5 +102,6 @@ const post  = async (req,res) => {
 
 module.exports = {
     getMyChildren,
-    post
+    makePost,
+    getChildPosts
 }

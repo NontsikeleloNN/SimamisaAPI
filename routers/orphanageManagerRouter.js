@@ -12,7 +12,7 @@ router.put('/update',OrphanageManagerController.updateChildNeed)
 router.post('/sponsorship',OrphanageManagerController.createSponsorship)
 router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor)
 
-router.post('/post',SponsorshipController.post)
+router.post('/post',SponsorshipController.makePost)
 module.exports = router
 
 //error handlings

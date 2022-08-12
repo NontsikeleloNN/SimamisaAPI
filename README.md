@@ -62,6 +62,8 @@ Children
 - router.get('/',childController.getAllChildren)
 - router.get('/mychildren',sponsorship.getMyChildren) .../mychildren?id=# the id is this case is the sponsor id
 - router.get('/child', childController.getChildbyID) .../child?id=#
+- router.get('/orphanage/child', childController.getChildbyOrphanage) // ...?OrphID=#
+- router.get('/posts',sponsorship.getChildPosts) // ...?sponsorshipID=#
 
 Events
 - */simamisa/orphanages/events*
@@ -96,6 +98,8 @@ Sponsorship on Orphanage Manager side
 - router.post('/sponsorship',OrphanageManagerController.createSponsorship): 
 * here a sponsorship is created between a child and sponsor. Please refer to the list of tables I added at the bottom to see what fields are needed. 
 .../?childID=#&sponsorID=#&seed=#
+
+- router.post('/post',SponsorshipController.makePost)
 
  */simamisa/orphanages/meetings*
 - router.post('/', meetingController.createMeeting) : will take in the fields defined in the database. By default, the is accepted is said to false. The accept meeting method is there to change the accepted field to true. 
