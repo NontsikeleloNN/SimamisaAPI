@@ -64,12 +64,24 @@ const login = async (req,res )=>{
 }
 
 const getUsers = async (req,res) => {
-    let user = regUser.findAll({})
-
+    try {
+        
+        let users = await regUser.findAll({where : {isFlagged : false}})
+        let arrUsers = [];
+        for(let user of users){
+            arrUsers.push(user)
+        }
     
-    res.json({ID: user.ID, FirstName : user.FirstName, UserRole: user.UserRole, isFlagged: user.isFlagged, 
-        isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
-
+      /**   res.json({ID: user.ID, FirstName : user.FirstName, UserRole: user.UserRole, isFlagged: user.isFlagged, 
+            isVolunteer: user.isVolunteer, isSponsor: user.isSponsor, isDonor: user.isDonor});
+    */
+        res.status(200).json(arrUsers)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    }
 
       
 }
