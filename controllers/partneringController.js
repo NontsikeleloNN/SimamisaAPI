@@ -10,10 +10,13 @@ const { Op } = require("sequelize");
 //sending a request 
 
 const sendReq = async (req, res) => {
-    try {
-        const sendor = req.query.from
-    const rec = req.query.to
 
+    const sendor = req.query.from
+    const rec = req.query.to
+console.log(sendor+'jj')
+console.log(rec+'jjmm') 
+    try {
+        
 
     let newRequest = {
         PartnershipDate: new Date(),
