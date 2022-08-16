@@ -77,7 +77,7 @@ const deleteItem = async(req,res) =>{
         
         const id = req.query.id
         await ItemNeed.destroy({where : {ID : id}})
-        res.send('deleted')
+        res.status(200).json('deleted')
     } catch (error) {
         
         console.log(error)
