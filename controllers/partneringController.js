@@ -10,7 +10,8 @@ const { Op } = require("sequelize");
 //sending a request 
 
 const sendReq = async (req, res) => {
-    const sendor = req.query.from
+    try {
+        const sendor = req.query.from
     const rec = req.query.to
 
 
@@ -25,11 +26,20 @@ const sendReq = async (req, res) => {
     if (!created) return res.status(400).send(' could not send request ')
 
     res.status(200).json(created)
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
 }
 //how can I make this better?
 
 const getPartners = async (req, res) => {
-    const id = req.query.id
+    try {
+        const id = req.query.id
 
     let orphs = await Partnership.findAll({
         where: {
@@ -48,9 +58,21 @@ const getPartners = async (req, res) => {
     if (!orphs) return res.status(400).send('No such partners found')
 
     res.status(200).json(orphs)
+    } catch (error) {
+        
+
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+
+    }
 }
 //get requests made to me 
 const getRequests = async (req, res) => {
+   try {
+    
     const id = req.query.id
 
 
@@ -68,10 +90,21 @@ const getRequests = async (req, res) => {
 
     res.status(200).json(orphs)
 
+
+   } catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+   }
 }
 
 const acceptRequest = async (req, res) => {
 
+   try {
+    
     const to = req.query.to // the id of the person wanting to accept a request
     const from = req.query.from // the one i want to accept
     const request = await Partnership.findOne({
@@ -89,6 +122,15 @@ const acceptRequest = async (req, res) => {
 
     res.status(200).json('accepted')
 
+
+   } catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+   }
 
 }
 

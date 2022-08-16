@@ -67,7 +67,7 @@ Children
 - router.get('/',childController.getAllChildren)
 - router.get('/mychildren',sponsorship.getMyChildren) .../mychildren?id=# the id is this case is the sponsor id
 - router.get('/child', childController.getChildbyID) .../child?id=#
-- router.get('/orphanage/child', childController.getChildbyOrphanage) // ...?OrphID=#
+- router.get('/orphanage/child', c  hildController.getChildbyOrphanage) // ...?OrphID=#
 - router.get('/posts',sponsorship.getChildPosts) // ...?sponsorshipID=#
 - router.get('/sponsorship',childController.getSponsorshipID) //  .../?childID=#
 
@@ -115,9 +115,9 @@ Sponsorship on Orphanage Manager side
 Partnerships
 */simamisa/orphanages/partnering*
 
-- router.post('/',partneringController.sendReq)// sending a partnering request (... /from?=x&to?=y)
-- router.get('/',partneringController.getPartners) //get my partners ( orphanages/partnering/id?=x)
-- router.post('/offers/',partneringController.sendOfferToAll) // (orphanages/partnering/offers/id?=x)
+- router.post('/',partneringController.sendReq)// sending a partnering request (... /?from=x&to?=y)
+- router.get('/',partneringController.getPartners) //get my partners ( orphanages/partnering/?id=x)
+- router.post('/offers/',partneringController.sendOfferToAll) // (orphanages/partnering/offers/?id=x)
 - router.post('/offers/',partneringController.sendOfferToOne) check table for a partnership
 - router.put('/',partneringController.acceptRequest) // (/?from=x&to=y)
 - router.get('/offers/',partneringController.getMyOffers) //ffers made to me .. /offers/?id=x
