@@ -1,6 +1,7 @@
 const db = require('../models/')
 const ItemProposal = db.ItemProposal
 const ItemNeed = db.ItemNeed
+const Donation = db.Donation
 const {doASideEffect} = require('./utilities.js')
 const { Op } = require("sequelize");
 
@@ -29,7 +30,7 @@ async function calcAmountReceived(id){
 
 
      // for each loop to add 
-      return numItems
+      return props
 }
 
 
@@ -108,16 +109,68 @@ const createProposal = async(req,res) =>{
 }
 
 const updateProposal = async(req,res) => {
-    let id = req.body.ID;
+   try {
+    let id = req.body.id;
     // I think I should just receive the changes that I want to and update them accordingly
 
     const proposal = await ItemProposal.update(req.body,{where: {ID : id}})
         if(!proposal) return res.status(400).send('could not update item: '+ id);
 
         res.status(200).json(proposal)
+   } catch (error) {
+    res.status(500).send({
+        errorMessage: error.message
+   })
+   }
 }
 
+const donate = async (req,res) => {
+    const id = req.body.id // itemID
+    const amount = req.body.amount 
+    const comment = req.body.ProposalComment
+    const userid = req.body.registeredUserID
+    try {
+            
+        let item = await Donation.findOne({where : {ID : id}})
 
+        const money = item.UnitCost
+        
+        const numitems = Math.floor( amount/money) // need to round down
+        item.AmountReceived += amount // add by the amount donated
+        item.AmountNeeded -= amount // subtract amount donated
+        item.NumberReceived += numitems 
+        item.NumberNeeded -= numitems
+       
+        if (item.NumberReceived >= item.NumberNeeded || item.AmountReceived >= item.AmountNeeded){
+            item.isFulfilled = true
+         res.status(200).json('Item fulfilled')
+            //pause this, need to create a proposal 
+        }
+
+        await item.save()
+
+        let newproposal = {
+            ProposalComment: comment,
+            isFulfilled: true,
+            ProposalType: "DONATION",
+            AmountGiven : amount,
+            isAccepted : true,
+            itemNeedID : id,
+            registeredUserID: userid
+        }
+
+        await ItemProposal.create(newproposal);
+
+        res.status(200).json('donation successful')
+         // need to save modifications to the item
+    
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
+}
 
 module.exports = {
     updateProposal,
@@ -127,5 +180,6 @@ module.exports = {
     getProposal,
     getUnfulfilled,
     getUserProposals,
-    calcItemsReceived
+    calcItemsReceived,
+    donate // add to router and test 
 }
