@@ -2,6 +2,60 @@ const db = require('../models/'); // not having this in the events was causing a
 
 const ChildNeed = db.ChildNeed
 const Sponsorship = db.Sponsorship
+
+
+const editChildNeed = async(req,res) =>{
+   try {
+    
+    let id = req.body.id;
+    // I think I should just receive the changes that I want to and update them accordingly
+
+    const item = await ChildNeed.update(req.body,{where: {ID : id}})
+        if(!item) return res.status(400).json('could not update item: '+ id);
+
+   
+ 
+    res.status(200).json('updated')
+
+   } catch (error) {
+    res.status(200).json({
+        errorMessage : error.message
+    })
+   }
+
+}
+
+const getChildNeed = async (req,res) => {
+    try {
+        
+        let id = req.query.id
+        let orph = await ChildNeed.findOne({where: {ID: id}})
+        res.status(200).json(orph)
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
+}
+
+const deleteChildNeed = async(req,res) =>{
+
+    try {
+        
+        const id = req.query.id
+        await ChildNeed.destroy({where : {ID : id}})
+        res.status(200).json('deleted')
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+
+}
 const createChildNeed = async(req,res) =>{
     let newItem = {
         DueDate : req.body.DueDate,
@@ -81,5 +135,8 @@ const createChildNeed = async(req,res) =>{
     module.exports = {
     createChildNeed,
     getSponsorChildNeeds,
-    getChildNeeds
+    getChildNeeds,
+    getChildNeed,
+    editChildNeed,
+    deleteChildNeed
     }

@@ -37,7 +37,9 @@ Child needs
 - router.get('/need ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
 - router.post('/',childneed.createChildNeed)
 - router.get('/child',childneed.getChildNeeds) // ...?childID=#
-
+- router.get('/need', childneed.getChildNeed) // .. /need?id=x
+- router.delete('/',childneed.deleteChildNeed) // ......./id=x
+- router.put('/',childneed.editChildNeed)  // ......./id=x
 
 
 Proposals
@@ -70,6 +72,10 @@ Children
 - router.get('/orphanage/child', c  hildController.getChildbyOrphanage) // ...?OrphID=#
 - router.get('/posts',sponsorship.getChildPosts) // ...?sponsorshipID=#
 - router.get('/sponsorship',childController.getSponsorshipID) //  .../?childID=#
+- router.delete('/post', sponsorship.deletePost) // .. /post?id=x
+- router.put('/post',sponsorship.editPost) // .. /post?id=x
+- router.get('/post',sponsorship.getPost) // .. /post?id=x
+
 
 Events
 - */simamisa/orphanages/events*
@@ -115,7 +121,7 @@ Sponsorship on Orphanage Manager side
 Partnerships
 */simamisa/orphanages/partnering*
 
-- router.post('/',partneringController.sendReq)// sending a partnering request (... /?from=x&to?=y)
+- router.post('/',partneringController.sendReq)// sending a partnering request (... /?from=x&to=y)
 - router.get('/',partneringController.getPartners) //get my partners ( orphanages/partnering/?id=x)
 - router.post('/offers/',partneringController.sendOfferToAll) // (orphanages/partnering/offers/?id=x)
 - router.post('/offers/',partneringController.sendOfferToOne) check table for a partnership
@@ -126,6 +132,7 @@ Partnerships
 
 Main Route
 - https://simamisa.herokuapp.com/
+
 
 * Please not I will be updating our routes to use query strings as we progress with the project to make it easier to consume the api 
 
@@ -546,4 +553,7 @@ CREATE TABLE `chats` (
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-    
+
+   TEST LOG 
+   1. edit and update sponsorship post and childneed item 
+   2. donating towards a need 
