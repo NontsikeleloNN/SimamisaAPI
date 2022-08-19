@@ -6,6 +6,64 @@ const Sponsorship = db.Sponsorship
 const SponsorshipPost = db.SponsorshipPost
 
 
+const editPost = async (req,res) => {
+
+   try {
+    
+    const id = req.body.id;
+    // I think I should just receive the changes that I want to and update them accordingly
+
+    let item = await SponsorshipPost.update(req.body,{where: {ID : id}})
+        if(!item) return res.status(400).json('could not update item: '+ id);
+
+   
+   let t =  item.save()
+    res.status(200).json(t)
+
+   } catch (error) {
+    res.status(500).json({
+        errorMessage : error.message
+    })
+   }
+
+
+}
+
+const deletePost = async (req,res) => {
+    
+    try {
+        
+        const id = req.query.id
+        await SponsorshipPost.destroy({where : {ID : id}})
+        res.status(200).json('deleted')
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+
+
+}
+
+const getPost = async (req,res) => {
+    try {
+        
+        let id = req.query.id
+        let orph = await SponsorshipPost.findOne({where: {ID: id}})
+        res.status(200).json(orph)
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
+}
+
+
+
 const getMyChildren  = async (req,res) => {
         /**
          * Get my sponsorships
@@ -103,5 +161,8 @@ const makePost  = async (req,res) => {
 module.exports = {
     getMyChildren,
     makePost,
-    getChildPosts
+    getChildPosts,
+    getPost,
+    deletePost,
+    editPost
 }
