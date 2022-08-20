@@ -17,8 +17,8 @@ const editPost = async (req,res) => {
         if(!item) return res.status(400).json('could not update item: '+ id);
 
    
-   let t =  item.save()
-    res.status(200).json(t)
+  
+    res.status(200).json('updated')
 
    } catch (error) {
     res.status(500).json({

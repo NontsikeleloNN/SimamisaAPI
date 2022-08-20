@@ -23,15 +23,23 @@ const getAllOrphanages = async(req,res) =>{
     })
   }
 
-  res.status(200).send(orphs)
+  res.status(200).json(orphs)
 
 }
 
 
 const getOrphanage = async (req,res) => {
-    let id = req.params.id
-    let orph = await Orphanage.findOne({where: {id: id}})
-    res.status(200).send(orph)
+    try {
+        
+        let id = req.query.id
+        let orph = await Orphanage.findOne({where: {id: id}})
+        res.status(200).send(orph)
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
 }
 
 const regOrphanage = async (req,res) => {
