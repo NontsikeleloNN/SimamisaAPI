@@ -15,7 +15,7 @@ const getSponsorID  = async (req,res) => {
     let spononsorID = await Sponsor.findOne({where : {registeredUserID : id}})
     res.status(200).json(spononsorID.ID)
 
-    let ship = await 
+
    } catch (error) {
     res.status(500).json({
         errorMessage : error.message
