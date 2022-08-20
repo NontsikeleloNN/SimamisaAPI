@@ -58,7 +58,7 @@ const getAllActiveDonationsByName = async(req,res) => {
     let donations = await Donation.findAll({where : {isFulfilled : false,
     Title :
     {[Op.like]: '%' +name+ '%'}, }});
-        if(!donations) return res.status(404).send('there are no doantions')
+        if(!donations) return res.status(404).send('there are no such donations')
 
         const sortedDesc = donations.sort(
             (objA, objB) => Number(objB.PriorityRating) - Number(objA.PriorityRating),

@@ -131,23 +131,37 @@ const donate = async (req,res) => {
     const userid = req.body.registeredUserID
     try {
             
-        let item = await Donation.findOne({where : {ID : id}})
+        let item = await ItemNeed.findOne({where : {ID : id}})
 
-        const money = item.UnitCost
+        const money = Number(item.UnitCost)
         
-        const numitems = Math.floor( amount/money) // need to round down
-        item.AmountReceived += amount // add by the amount donated
-        item.AmountNeeded -= amount // subtract amount donated
-        item.NumberReceived += numitems 
-        item.NumberNeeded -= numitems
+        //most recent donation 
+      
+        item.AmountReceived += Number(amount) // add by the amount donated
+        item.AmountNeeded -= Number(amount) // subtract amount donated
+
+        //update changes first
+        await item.save()
+
+
+        let latestAmount = Number(item.AmountReceived)
+        //calculated by the latest value
+        console.log(latestAmount)
+        const numitems = Math.floor( latestAmount/money) // need to round down
+
+        //with the lastest amounts, update the costs and number received 
+        item.NumberReceived = Number(numitems) 
+        item.NumberNeeded -= Number(item.NumberReceived)
+        await item.save()
+        //amounts currently in the database 
        
         if (item.NumberReceived >= item.NumberNeeded || item.AmountReceived >= item.AmountNeeded){
             item.isFulfilled = true
-         res.status(200).json('Item fulfilled')
+        
             //pause this, need to create a proposal 
         }
 
-        await item.save()
+
 
         let newproposal = {
             ProposalComment: comment,

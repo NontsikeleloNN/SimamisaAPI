@@ -109,18 +109,40 @@ const savedItem = await ItemNeed.create(newItem)
     res.status(200).json(savedItem)
 }
 
-const updateItem = async(req,res) =>{
-    let id = req.body.ID;
-    // I think I should just receive the changes that I want to and update them accordingly
+const getNeed = async (req,res) => {
+    try {
+        
+        let id = req.query.id
+        let orph = await ItemNeed.findOne({where: {ID: id}})
+        res.status(200).json(orph)
 
-    const item = await ItemNeed.update(req.body,{where: {ID : id}})
-        if(!item) return res.status(400).send('could not update item: '+ id);
-
-    if(item.NumberReceived >= item.NumberNeeded){
-        item.isFulfilled = true;
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
     }
-    await item.save()
-    res.status(200).json(item)
+}
+
+const updateItem = async(req,res) =>{
+    try {
+        
+        let id = req.body.id;
+        // I think I should just receive the changes that I want to and update them accordingly
+    
+        let item = await ItemNeed.update(req.body,{where: {ID : id}})
+            if(!item) return res.status(400).json('could not update item: '+ id);
+    
+        if(item.NumberReceived >= item.NumberNeeded){
+            item.isFulfilled = true;
+        }
+        await item.save()
+        res.status(200).json(item)
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
 }
 
 module.exports = {
@@ -130,5 +152,6 @@ getAllActiveNeedsByName,
 getOrphanageNeeds,
 createItem,
 updateItem,
-deleteItem
+deleteItem,
+getNeed
 }

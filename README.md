@@ -38,8 +38,8 @@ Child needs
 - router.post('/',childneed.createChildNeed)
 - router.get('/child',childneed.getChildNeeds) // ...?childID=#
 - router.get('/need', childneed.getChildNeed) // .. /need?id=x
-- router.delete('/',childneed.deleteChildNeed) // ......./id=x
-- router.put('/',childneed.editChildNeed)  // ......./id=x
+- router.delete('/',childneed.deleteChildNeed) // ......./?id=x
+- router.put('/',childneed.editChildNeed)  // ......./?id=x
 
 
 Proposals
@@ -50,7 +50,8 @@ Proposals
 - router.get('/user/:id',itemProposalController.getUserProposals)
 - router.get('/unfulfilled',itemProposalController.getUnfulfilled) : thiss wil retrieve all the proposals that are unfulfilled
 - router.put('/accept',OrphanageManagerController.acceptProposal) : accept a proposal an OM made
-
+- 
+- router.post('/donation',itemProposalController.donate) //tested : input in the body itemid = id, comment + ProposalComment, userID = registeredUserID, donation amount = amount | 
 
 Needs
 - */simamisa/orphanages/needs*
