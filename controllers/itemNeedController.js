@@ -135,8 +135,8 @@ const updateItem = async(req,res) =>{
         if(item.NumberReceived >= item.NumberNeeded){
             item.isFulfilled = true;
         }
-        await item.save()
-        res.status(200).json(item)
+     
+        res.status(200).json('updated')
 
     } catch (error) {
         res.status(500).json({

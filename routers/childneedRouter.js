@@ -4,7 +4,7 @@ const childneed = require('../controllers/childneedController');
 const router = require('express').Router();
 
 
-router.get('/needs ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
+router.get('/needs',childneed.getSponsorChildNeeds) // .../?sponsorID=#
 router.post('/',childneed.createChildNeed)
 router.get('/child',childneed.getChildNeeds) // ...?childID=#
 

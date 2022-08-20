@@ -6,6 +6,23 @@ const Sponsorship = db.Sponsorship
 const SponsorshipPost = db.SponsorshipPost
 
 
+const getSponsorID  = async (req,res) => {
+
+   try {
+    
+    const id = req.query.id
+
+    let spononsorID = await Sponsor.findOne({where : {registeredUserID : id}})
+    res.status(200).json(spononsorID.ID)
+
+    let ship = await 
+   } catch (error) {
+    res.status(500).json({
+        errorMessage : error.message
+    })
+   }
+}
+
 const editPost = async (req,res) => {
 
    try {
@@ -111,14 +128,19 @@ const getMyChildren  = async (req,res) => {
 const getChildPosts  = async (req,res) => {
     try {
         
-        const id = req.query.sponsorshipID
-        let arrPosts = []
-        let posts = await SponsorshipPost.findAll({where : {sponsorshipID : id}})
-        for (const post of posts) {
-            arrPosts.push(post)
+        let posts = [];
+       
+        let sponsorships;
+        const id = req.query.id // this is the sponsorid
+        console.log(id)
+        sponsorships = await Sponsorship.findAll({where : {sponsorID : id}}) // list of all the sponsorships I have
+        for(let cv of sponsorships){
+           let post = await SponsorshipPost.findAll({where : {sponsorshipID :cv.ID }})
+            posts.push(post)
+            console.log(post)
         }
     
-        res.status(200).json(arrPosts)
+        res.status(200).json(posts)
 
     } catch (error) {
         
@@ -164,5 +186,6 @@ module.exports = {
     getChildPosts,
     getPost,
     deletePost,
-    editPost
+    editPost,
+    getSponsorID
 }

@@ -83,18 +83,16 @@ const createChildNeed = async(req,res) =>{
         let need;
         let sponsorships = await Sponsorship.findAll({where : {sponsorID : id}}) // all of the sponsorships belonging to this guy
 
-      /**  sponsorships.forEach(element => {
-            needs.push(ChildNeed.findAll({where : {sponsorshipID : element.ID, isFulfilled : false}}))
-        });*/
-
+    
         for(let cv of sponsorships){
             need = await ChildNeed.findAll({where : {sponsorshipID : cv.ID, isFullfilled : false}})
             needs.push(need)
             console.log(need)
+
         }
 
 
-
+        res.status(200).json(needs)
         } catch (error) {
             console.log(error)
           res.status(500).json({
@@ -102,7 +100,7 @@ const createChildNeed = async(req,res) =>{
             })
         }
     
-        res.status(200).json(needs)
+        
     }
 
     const getChildNeeds = async (req,res) => {

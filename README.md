@@ -27,14 +27,20 @@
 * The following are the defined routes :
 - /simamisa/orphanages/getSingleOrphanage takes in an id in the body and brings back a single orphanage. I     only learnt later how to do query strings, I apologize that option is not available. I will fix it in our next iteration
 Orphanages
+/simamisa/orphanages
 - /simamisa/orphanages/ - gets all orphs
+- router.get('/sponsorID',sponsor.getSponsorID) // ..?id=x
+
+
 OrphanageManager
+
+/simamisa/orphanages/om
 - /simamisa/orphanages/om/accept?propsalID=# accepts a proposal
 - /simamisa/orphanages/om/confirm?proposalID=# sets a proposal as fulfilled and accordingly updates the related itemNeed
 
 Child needs
 */simamisa/orphanages/childneed*
-- router.get('/need ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
+- router.get('/needs ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
 - router.post('/',childneed.createChildNeed)
 - router.get('/child',childneed.getChildNeeds) // ...?childID=#
 - router.get('/need', childneed.getChildNeed) // .. /need?id=x
@@ -71,7 +77,7 @@ Children
 - router.get('/mychildren',sponsorship.getMyChildren) .../mychildren?id=# the id is this case is the sponsor id
 - router.get('/child', childController.getChildbyID) .../child?id=#
 - router.get('/orphanage/child', c  hildController.getChildbyOrphanage) // ...?OrphID=#
-- router.get('/posts',sponsorship.getChildPosts) // ...?sponsorshipID=#
+- router.get('/posts',sponsorship.getChildPosts) // ...?id=#
 - router.get('/sponsorship',childController.getSponsorshipID) //  .../?childID=#
 - router.delete('/post', sponsorship.deletePost) // .. /post?id=x
 - router.put('/post',sponsorship.editPost) // .. /post?id=x
