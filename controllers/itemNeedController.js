@@ -88,25 +88,33 @@ const deleteItem = async(req,res) =>{
     }
 }
 const createItem = async(req,res) =>{
-let newItem = {
-    DueDate : req.body.DueDate,
-    DateEstablished : new Date(),
-    Title : req.body.Title,
-    Description : req.body.Description,
-    isFulfilled : false,
-    PriorityRating : req.body.PriorityRating,
-    orphanageID : req.body.orphanageID,
-    ItemImage : req.body.ItemImage,
-    NumberReceived : 0,
-    UnitCost : req.body.UnitCost,
-    NumberNeeded : req.body.NumberNeeded,
-    AmountNeeded : req.body.UnitCost * req.body.NumberNeeded,
-    AmountReceived : 0
-}
 
-const savedItem = await ItemNeed.create(newItem)
-    if(!savedItem) return res.status(400).send('could not create item')
-    res.status(200).json(savedItem)
+    try {
+        let newItem = {
+            DueDate : req.body.DueDate,
+            DateEstablished : new Date(),
+            Title : req.body.Title,
+            Description : req.body.Description,
+            isFulfilled : false,
+            PriorityRating : req.body.PriorityRating,
+            orphanageID : req.body.orphanageID,
+            ItemImage : req.body.ItemImage,
+            NumberReceived : 0,
+            UnitCost : req.body.UnitCost,
+            NumberNeeded : req.body.NumberNeeded,
+            AmountNeeded : req.body.UnitCost * req.body.NumberNeeded,
+            AmountReceived : 0
+        }
+        
+        const savedItem = await ItemNeed.create(newItem)
+            if(!savedItem) return res.status(400).json('could not create item')
+            res.status(200).json(savedItem)
+        
+    } catch (error) {
+        req.status(500).json({
+            errorMessage : error.message
+        })
+    }
 }
 
 const getNeed = async (req,res) => {
@@ -134,8 +142,10 @@ const updateItem = async(req,res) =>{
     
         if(item.NumberReceived >= item.NumberNeeded){
             item.isFulfilled = true;
+            await item.save()
         }
      
+       
         res.status(200).json('updated')
 
     } catch (error) {

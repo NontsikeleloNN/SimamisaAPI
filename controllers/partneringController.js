@@ -8,7 +8,45 @@ const OfferItem = db.OfferItem
 const { Op } = require("sequelize");
 
 //sending a request 
+const acceptOffer = async (req,res) => {
 
+    try {
+        const offerq = req.body.offerItemID
+    const id = req.body.id // id of the orphanage accepting the offer
+    const amount = req.body.amount
+    //find the offer eq
+    let offer = await OfferItem.findOne( {where: {
+        [Op.and]: [
+          {ReceivingPartner : id},
+            {ID : offerq}]
+    }
+    })
+
+    if(!offer || offer ==null){
+        res.status(400).json('this offer is not directed to you ')
+    }
+
+   const tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
+
+   if(tempOff.isAvailable && amount <= tempOff.Quantity){
+    offer.AmountTaken = Number(amount)
+    tempOff.Quantity -= amount // decreasing quantity available
+    await tempOff.save() //save changes 
+
+    if(tempOff.Quantity <= 0){
+        tempOff.isAvailable = false
+        await tempOff.save() 
+    }
+    await offer.save()
+
+    res.status(200).json('accepted')
+   }
+    } catch (error) {
+        res.status(500).json({                                                                                                                                                  
+            errorMessage : error.message
+        })
+    }
+}
 const sendReq = async (req, res) => {
 
     const sendor = req.query.from
@@ -148,7 +186,7 @@ const sendOfferToOne = async (req, res) => {
         Description: req.body.Description,
         DateMade: new Date(),
         isAvailable: true,
-        Quantity: req.body.Quantity,
+        Quantity: Number(req.body.Quantity),
         orphanageID: from
     }
 
@@ -169,7 +207,7 @@ const sendOfferToOne = async (req, res) => {
     })
    }
 
-   res.status(200).json('successfully sent request ')
+   res.status(200).json('successfully sent offer ')
 }
 
 const sendOfferToAll = async (req, res) => {
@@ -183,7 +221,7 @@ try {
         Description: req.body.Description,
         DateMade: new Date(),
         isAvailable: true,
-        Quantity: req.body.Quantity,
+        Quantity: Number(req.body.Quantity),
         orphanageID: from
     }
 
@@ -216,7 +254,7 @@ try {
 
         let off = {
             ReceivingPartner: val,
-            AmountTaken: 0,
+            AmountTaken: Number(0),
             offerID: storeOffer.ID
         }
         OfferItem.create(off)
@@ -268,7 +306,7 @@ console.log(offers + 'before filter')
             offerItemArray.push(temp)
         }
 
-      //  offerItemArray.push(ofs)
+     
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -289,5 +327,6 @@ module.exports = {
     sendOfferToAll,
     getMyOffers, // not working
     getPartners, 
-    getRequests
+    getRequests,
+    acceptOffer
 }

@@ -18,7 +18,7 @@ const editChildNeed = async(req,res) =>{
     res.status(200).json('updated')
 
    } catch (error) {
-    res.status(200).json({
+    res.status(400).json({
         errorMessage : error.message
     })
    }
@@ -57,6 +57,8 @@ const deleteChildNeed = async(req,res) =>{
 
 }
 const createChildNeed = async(req,res) =>{
+try {
+    
     let newItem = {
         DueDate : req.body.DueDate,
         Title : req.body.Title,
@@ -69,8 +71,14 @@ const createChildNeed = async(req,res) =>{
     }
     
     const savedItem = await ChildNeed.create(newItem)
-        if(!savedItem) return res.status(400).send('could not create item')
+        if(!savedItem) return res.status(400).json('could not create item')
         res.status(200).json(savedItem)
+
+} catch (error) {
+    res.status(500).json({
+        errorMessage : error.message
+    })
+}
     }
     
     const getSponsorChildNeeds = async(req,res) => {
