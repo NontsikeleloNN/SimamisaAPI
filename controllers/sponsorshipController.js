@@ -152,6 +152,27 @@ const getChildPosts  = async (req,res) => {
     }
 }
 
+const editSponsorship = async (req,res) => {
+
+   try {
+    
+    let id = req.body.id;
+    // I think I should just receive the changes that I want to and update them accordingly
+
+    const item = await Sponsorship.update(req.body,{where: {ID : id}})
+
+    res.status(200).json(item)
+   } catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+
+   }
+}
+
 const makePost  = async (req,res) => {
 
     
@@ -180,6 +201,8 @@ const makePost  = async (req,res) => {
         }
 }
 
+
+
 module.exports = {
     getMyChildren,
     makePost,
@@ -187,5 +210,6 @@ module.exports = {
     getPost,
     deletePost,
     editPost,
-    getSponsorID
+    getSponsorID,
+    editSponsorship
 }
