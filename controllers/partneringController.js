@@ -6,6 +6,8 @@ const Partnership = db.Partnership
 const Offer = db.Offer
 const OfferItem = db.OfferItem
 const { Op } = require("sequelize");
+const {doASideEffect, getSingleItem} = require('./utilities.js');
+const { Orphanage } = require('../models/');
 
 //sending a request 
 const acceptOffer = async (req,res) => {
@@ -82,6 +84,7 @@ const getPartners = async (req, res) => {
     try {
         const id = req.query.id
 
+        let orphies = []
     let orphs = await Partnership.findAll({
         where: {
             [Op.and]: [
@@ -96,9 +99,26 @@ const getPartners = async (req, res) => {
         }
     });
 
-    if (!orphs) return res.status(400).send('No such partners found')
 
-    res.status(200).json(orphs)
+  for (const o of orphs) {
+    
+    if(o.ReceiverID == id){
+      const p = await Orphanage.findOne({where : {ID : o.SenderID}})
+
+      orphies.push(p)
+    } else if (o.SenderID == id) {
+        const p = await Orphanage.findOne({where : {ID : o.ReceiverID}})
+
+        orphies.push(p)
+    } else {
+        
+    }
+  }
+
+    res.status(200).json(orphies)
+
+
+
     } catch (error) {
         
 
@@ -274,6 +294,7 @@ res.status(200).json(orphs)
 
 const getMyOffers = async (req, res) => {
     let offerItemArray = [];
+    let offer = [];
     const id = req.query.id
     try {
         // get all offerItems where I am the receiving partner and get the corresponding offers
@@ -294,6 +315,8 @@ console.log(offers + 'before filter')
             })
         }
 
+        // await doASideEffect(req.params.id, "NumberSomething", "ItemNeed", async (id) => {
+
         // for each element in the array, get all the related offer items where the id is that
         for(let element of offers){
 
@@ -303,7 +326,21 @@ console.log(offers + 'before filter')
                     offerID: element.ID
                 }
             })
-            offerItemArray.push(temp)
+            if(temp != null){
+              // let temp2 = getSingleItem(Offer,temp.offerID)
+               console.log(temp.offerID )
+                offerItemArray.push(...temp)
+            }
+   
+        }
+
+      for (let a of offerItemArray ) {
+            if(a != null ) {
+                console.log(Number(a.offerID) + 'hello hello')
+            console.log({a})
+            let temp2 = await Offer.findOne({where:{ID:a.offerID}})
+            offer.push(temp2)
+            }
         }
 
      
@@ -315,7 +352,7 @@ console.log(offers + 'before filter')
     }
 
     res.status(200).json(
-        offerItemArray
+        offer
     )
 
 }
@@ -325,7 +362,7 @@ module.exports = {
     sendReq,
     sendOfferToOne, //not tested 
     sendOfferToAll,
-    getMyOffers, // not working
+    getMyOffers, // working
     getPartners, 
     getRequests,
     acceptOffer
