@@ -46,6 +46,29 @@ const editPost = async (req,res) => {
 
 }
 
+const getByChildID = async (req,res) => {
+
+    try {
+        const id = req.query.id //childID
+
+    // need to find sponsorship this belongs to 
+
+    const spononsorID = (await Sponsorship.findOne({where : {childID : id}})).ID
+
+    let posts = await SponsorshipPost.findAll({where : {sponsorshipID:spononsorID}})
+
+    res.status(200).json(posts)
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+
+}
+
 const deletePost = async (req,res) => {
     
     try {
@@ -79,7 +102,10 @@ const getPost = async (req,res) => {
     }
 }
 
-
+const getPosts = async (req,res) => {
+    let id = req.query.id
+    let posts = await SPo
+}
 
 const getMyChildren  = async (req,res) => {
         /**
@@ -211,5 +237,6 @@ module.exports = {
     deletePost,
     editPost,
     getSponsorID,
-    editSponsorship
+    editSponsorship,
+    getByChildID
 }

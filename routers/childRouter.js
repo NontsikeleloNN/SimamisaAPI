@@ -13,5 +13,6 @@ router.delete('/post', sponsorship.deletePost) // .. /post?id=x
 router.put('/post',sponsorship.editPost) // .. /post?id=x
 router.get('/post',sponsorship.getPost) // .. /post?id=x
 router.put('/sponsorship',sponsorship.editSponsorship ) //body
+router.get('/child/post',sponsorship.getByChildID) // ..?id=x
 
 module.exports = router;
