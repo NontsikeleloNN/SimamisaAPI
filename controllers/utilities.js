@@ -7,7 +7,13 @@ const updateRow = async (parameterID, toUpdate, modelName, algorithm) => {
       
     );
 }
-
+// Model name and the id of the request
+const getSingleItem = async (modelName, id) => {
+  await modelName.findOne({
+    where : {ID : id}
+ })
+}
 module.exports = {
-    updateRow
+    updateRow,
+    getSingleItem
 }

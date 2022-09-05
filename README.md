@@ -38,6 +38,12 @@ OrphanageManager
 - /simamisa/orphanages/om/accept?propsalID=# accepts a proposal
 - /simamisa/orphanages/om/confirm?proposalID=# sets a proposal as fulfilled and accordingly updates the related itemNeed
 
+
+*Paypal*
+- https://simamisa.herokuapp.com/simamisa/success
+- https://simamisa.herokuapp.com/simamisa/cancel
+- https://simamisa.herokuapp.com/simamisa/pay/:amt
+
 Child needs
 */simamisa/orphanages/childneed*
 - router.get('/needs ',childneed.getSponsorChildNeeds) // .../?sponsorID=#
@@ -82,6 +88,8 @@ Children
 - router.delete('/post', sponsorship.deletePost) // .. /post?id=x
 - router.put('/post',sponsorship.editPost) // .. /post?id=x
 - router.get('/post',sponsorship.getPost) // .. /post?id=x
+- router.put('/sponsorship',sponsorship.editSponsorship ) //body
+- router.get('/child/post',sponsorship.getByChildID) // ..?id=x this will get all child posts/ipdates 
 
 
 Events
@@ -143,7 +151,7 @@ Main Route
 
 * Please not I will be updating our routes to use query strings as we progress with the project to make it easier to consume the api 
 
-Please do not hesitate to reach out if you have any further questions
+Please hesitate to reach out if you have any further questions
 
 
 _______________________________________________________________________________________________________________

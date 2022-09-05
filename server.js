@@ -1,8 +1,93 @@
 const express = require('express')
 const cors = require('cors')
+const paypal = require('paypal-rest-sdk');
 //const orphanageController = require('./controllers/orphanageController.js')
+/////////////////////////////////
+
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'AcCf708AwPbCEEGrD6yd7R4CZbDu1EB3wKkKPmpUuTS7u328x_-TmRdTb22xSEMQywd2KKFMW7ERHFkU',
+    'client_secret': 'ENcxxYTBd-XBJ8_Q-TAxjVC_vheVBvYlnZW8F6WXf4UEly8eOGpL2lASauKq6GcZekuzePnOoUscBX6m'
+  });
+
+//Paypal
 
 const app = express()
+
+var amt = null;
+
+app.get('simamisa/pay/:amt', (req, res) => {
+   
+    amt = req.params.amt;
+
+    const create_payment_json = {
+      "intent": "sale",
+      "payer": {
+          "payment_method": "paypal"
+      },
+      "redirect_urls": {
+          "return_url": "https://simamisa.herokuapp.com/simamisa/success",
+          "cancel_url": "https://simamisa.herokuapp.com/simamisa/cancel"
+      },
+      "transactions": [{
+          "item_list": {
+              "items": [{
+                  "name": "Red Hat",
+                  "sku": "001",
+                  "price": amt,
+                  "currency": "USD",
+                  "quantity": 1
+              }]
+          },
+          "amount": {
+              "currency": "USD",
+              "total": amt
+          },
+          "description": "Hat for the best team ever"
+      }]
+  };
+  
+  paypal.payment.create(create_payment_json, function (error, payment) {
+    if (error) {
+        throw error;
+    } else {
+        for(let i = 0;i < payment.links.length;i++){
+          if(payment.links[i].rel === 'approval_url'){
+            res.redirect(payment.links[i].href);
+          }
+        }
+    }
+  });
+  
+  });
+
+  app.get('/simamisa/success', (req, res) => {
+    const payerId = req.query.PayerID;
+    const paymentId = req.query.paymentId;
+    console.log("payerId",payerId,"paymentId",paymentId) 
+    const execute_payment_json = {
+      "payer_id": payerId,
+      "transactions": [{
+          "amount": {
+              "currency": "USD",
+              "total": amt
+          }
+      }]
+    };
+  
+    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
+      if (error) {
+          console.log("error",error.response);
+          throw error;
+      } else {
+          res.sendFile(__dirname + "/success.html")
+      }
+  });
+});
+
+app.get('/simamisa/cancel', (req, res) => res.json('Cancelled'));
+
+////////////////////////////////////////
 
 app.use(
     cors()
@@ -57,9 +142,6 @@ const orphanageRouter = require('./routers/orphanageRouter')
 app.use('/simamisa/orphanages',orphanageRouter)
 
 
-app.get('/',(req,res) => {
-    res.json({message: 'hello world'})
-})
 
 //To get the ipm run ipconfig ina terminal. FIX bad english
 /*const baseUrl = "192.adadasd.asd"
