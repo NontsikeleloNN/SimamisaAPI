@@ -27,8 +27,8 @@ app.get('/simamisa/pay/:amt', (req, res) => {
           "payment_method": "paypal"
       },
       "redirect_urls": {
-          "return_url": "http://localhost:8080/simamisa/success",
-          "cancel_url": "http://localhost:8080/simamisa/cancel"
+          "return_url": "https://simamisa.herokuapp.com/simamisa/success",
+          "cancel_url": "https://simamisa.herokuapp.com/simamisa/cancel"
       },
       "transactions": [{
           "item_list": {
