@@ -65,9 +65,32 @@ console.log(rec+'jjmm')
         ReceiverID: rec
     }
 
-    const created = await Partnership.create(newRequest)
-    if (!created) return res.status(400).send(' could not send request ')
+  
+    let orphs = await Partnership.findAll({
+        where: {
+            [Op.and]: [
+                {
+                    [Op.or]: [
 
+                        { SenderID: sendor },
+                        { ReceiverID: sendor }]
+                },
+                {
+                    [Op.or]: [
+
+                    { SenderID: rec },
+                    { ReceiverID: rec }]}
+            ]
+        }
+    });
+    if (orphs != null) {
+
+return res.status(500).json({
+    errorMessage: "partnership exits"
+})
+    }
+
+    const created = await Partnership.create(newRequest)
     res.status(200).json(created)
     } catch (error) {
         
@@ -135,7 +158,7 @@ const getRequests = async (req, res) => {
    try {
     
     const id = req.query.id
-
+    let orphies = []
 
     let orphs = await Partnership.findAll({
         where: {
@@ -145,11 +168,17 @@ const getRequests = async (req, res) => {
             ]
         }
     });
+
+    for (const o of orphs) {
+        const p = await Orphanage.findOne({where : {ID : o.SenderID}})
+       orphies.push(p)
+        
+    }
     console.log(orphs)
 
     if (orphs == []) return res.status(400).send('No requests')
 
-    res.status(200).json(orphs)
+    res.status(200).json(orphies)
 
 
    } catch (error) {
