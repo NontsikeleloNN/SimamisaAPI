@@ -15,12 +15,15 @@ paypal.configure({
 
 
 
-var amt = null;
 
-app.get('/simamisa/pay/:amt', (req, res) => {
+
+app.post('/simamisa/pay/:amt', (req, res) => {
    
-    amt = req.params.amt;
-
+    let q = req.params.amt
+    q = q.substring(1)
+   let  amt = q//'"'+q+'"'
+  // amt = amt.substring(1)
+console.log(amt)
     const create_payment_json = {
       "intent": "sale",
       "payer": {
