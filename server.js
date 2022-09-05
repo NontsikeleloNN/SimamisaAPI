@@ -4,6 +4,7 @@ const paypal = require('paypal-rest-sdk');
 //const orphanageController = require('./controllers/orphanageController.js')
 /////////////////////////////////
 
+const app = express()
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': 'AcCf708AwPbCEEGrD6yd7R4CZbDu1EB3wKkKPmpUuTS7u328x_-TmRdTb22xSEMQywd2KKFMW7ERHFkU',
@@ -12,11 +13,11 @@ paypal.configure({
 
 //Paypal
 
-const app = express()
+
 
 var amt = null;
 
-app.get('simamisa/pay/:amt', (req, res) => {
+app.get('/simamisa/pay/:amt', (req, res) => {
    
     amt = req.params.amt;
 
@@ -26,8 +27,8 @@ app.get('simamisa/pay/:amt', (req, res) => {
           "payment_method": "paypal"
       },
       "redirect_urls": {
-          "return_url": "https://simamisa.herokuapp.com/simamisa/success",
-          "cancel_url": "https://simamisa.herokuapp.com/simamisa/cancel"
+          "return_url": "http://localhost:8080/simamisa/success",
+          "cancel_url": "http://localhost:8080/simamisa/cancel"
       },
       "transactions": [{
           "item_list": {
@@ -46,6 +47,7 @@ app.get('simamisa/pay/:amt', (req, res) => {
           "description": "Hat for the best team ever"
       }]
   };
+  
   
   paypal.payment.create(create_payment_json, function (error, payment) {
     if (error) {
