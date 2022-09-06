@@ -17,7 +17,7 @@ paypal.configure({
 
 
 
-app.post('/simamisa/pay/:amt', (req, res) => {
+app.get('/simamisa/pay/:amt', (req, res) => {
    
     let q = req.params.amt
     q = q.substring(1)
