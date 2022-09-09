@@ -22,7 +22,7 @@ app.get('/simamisa/pay/:amt', (req, res) => {
     let q = req.params.amt
     q = q.substring(1)
    let  amt = q//'"'+q+'"'
-  // amt = amt.substring(1)
+
 console.log(amt)
     const create_payment_json = {
       "intent": "sale",
@@ -110,6 +110,8 @@ app.use(express.urlencoded({extended: true}))
 const partnering = require('./routers/partneringRouter')
 app.use('/simamisa/orphanages/partnering',partnering)
 
+const admin = require('./routers/adminRouter')
+app.use('/simamisa/admin',admin)
 
 const meeting = require('./routers/meetingRouter')
 app.use('/simamisa/orphanages/meetings',meeting)

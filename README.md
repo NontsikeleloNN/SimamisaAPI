@@ -145,6 +145,12 @@ Partnerships
 - router.get('/requests/', partneringController.getRequests) //get my .. /requests/?id=x
 
 
+Admin
+*/simamisa/admin*
+
+- router.get('/needs', adminController.getAllOrphanageItemsMonths) ... /simamisa/admin/needs?rating=#
+
+
 Main Route
 - https://simamisa.herokuapp.com/
 
