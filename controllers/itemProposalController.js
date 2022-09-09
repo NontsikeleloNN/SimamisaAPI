@@ -95,15 +95,7 @@ const createProposal = async(req,res) =>{
     const savedProposal = await ItemProposal.create(newProposal);
         if(!savedProposal) return res.status(400).json('could not create proposal')
 
-        await doASideEffect(req.params.id, "NumberSomething", "ItemNeed", async (id) => {
-            let numItems = await ItemProposal.count({where :{ [Op.and]: [
-                { itemNeedID: id },
-                { ProposalType: 'ITEM' },
-                {isFulfilled : true}
-              ] }});
-        
-              return numItems
-        })
+       
         
     res.status(200).json(savedProposal)
 
