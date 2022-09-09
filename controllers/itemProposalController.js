@@ -87,7 +87,8 @@ const createProposal = async(req,res) =>{
         NumberToGive : req.body.NumberToGive,
         registeredUserID : req.body.registeredUserID,
         itemNeedID : req.body.itemNeedID,
-        AmountGiven : req.body.AmountGiven
+        AmountGiven : req.body.AmountGiven,
+        ProposalType: "ITEM"
 
     }
 
