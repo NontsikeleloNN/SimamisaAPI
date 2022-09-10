@@ -31,6 +31,8 @@ const getAllUnmetOrphaganes  = async (req, res) => {
     let allOrph = await Orphanage.findAll({})
 
        for (const i of allOrph) {
+        var total =  await ItemNeed.count({  where: 
+            { orphanageID: i.ID}})
            var num = await ItemNeed.count({ 
             where: 
             { orphanageID: i.ID,
@@ -38,7 +40,7 @@ const getAllUnmetOrphaganes  = async (req, res) => {
           
         })  // get all for this current orph
            console.log(i.orphanageID)
-           var obj = { Name: i.OrphanageName, Unmet: Number(num) }
+           var obj = { Name: i.OrphanageName, Unmet: Number(num) , Total: Number(total)}
            itemsArr.push(obj)
        }
     
