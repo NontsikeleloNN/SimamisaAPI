@@ -7,20 +7,32 @@ const db = require('../models')
 const Orphanage = db.Orphanage
 const ItemNeed = db.ItemNeed
 const ChildNeed = db.ChildNeed
-const dataForge = require('data-forge');require('data-forge-fs')
+const Children = db.Child
+const Sponsor = db.Sponsor
+const RegisterUser = db.RegisteredUser
 const { Op } = require("sequelize");
 
 //all the itemNeeds who are still needed and are highest priority 
 //I can send this with the numbers for each orphanage and send as x and y values 
-const getAllOrphanageItemsDate  = async (req, res) => {
+const getAllUnmetOrphaganes  = async (req, res) => {
 
    try {
     
     let itemsArr = []
-    let x = []
-    let y = []
-    let temp;
+   
+    let allOrph = await Orphanage.findAll({})
 
+       for (const i of allOrph) {
+           var num = await ItemNeed.count({ 
+            where: 
+            { orphanageID: i.ID,
+            isFulfilled: 0 }
+          
+        })  // get all for this current orph
+           console.log(i.orphanageID)
+           var obj = { Name: i.OrphanageName, Unmet: Number(num) }
+           itemsArr.push(obj)
+       }
     
     
 
@@ -36,27 +48,81 @@ const getAllOrphanageItemsDate  = async (req, res) => {
    }
 }
 
+const getNumberofOrphanages = async (req,res) => {
+  try {
+    
+    var numOrphs = await Orphanage.count({
+    })
+    res.status(200).json(numOrphs)
+
+  } catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+
+  }
+}
+
+const getNumberofRegisteredUsers = async (req,res) => {
+    try {
+      
+      var numOrphs = await RegisterUser.count({
+      })
+    
+      res.status(200).json(numOrphs)
+  
+    } catch (error) {
+      
+      console.log(error)
+      res.status(500).json({
+          errorMessage: error.message
+      })
+  
+  
+    }
+  }
+
+const getNumberofSponsors = async (req,res) => {
+    try {
+      
+      var numOrphs = await Sponsor.count({
+      })
+      res.status(200).json(numOrphs)
+  
+    } catch (error) {
+      
+      console.log(error)
+      res.status(500).json({
+          errorMessage: error.message
+      })
+  
+  
+    }
+  }
+
+const getNumberofChildren = async (req,res) => {
+    try {
+      
+      var numOrphs = await Children.count({
+      })
+      res.status(200).json(numOrphs)
+  
+    } catch (error) {
+      
+      console.log(error)
+      res.status(500).json({
+          errorMessage: error.message
+      })
+  
+  
+    }
+  }
 
 const getAllOrphanageItemsMonths = async (req, res) => {
-/**
- * number of needs 
- * number of met needs
- * month 
- */
 
-
-
-/**var resultList = [];
-var date = new Date("October 13, 2014");
-var endDate = new Date("January 13, 2015");
-var monthNameList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-//while (date <= endDate)
-
-    var stringDate = monthNameList[date.getMonth()] + " " + date.getFullYear();
-    resultList.push(stringDate);
-    date.setMonth(date.getMonth() + 1);
- */
     try {
 
         var rate = req.query.rating
@@ -129,16 +195,17 @@ var monthNameList = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Se
     }
  }
 // all needs that are not not fulfilled and do not have sponsors 
-const childrenUnsponsored = async (req,res) =>{
+const childrenNeeds = async (req,res) =>{
    try {
     
-    let needs = await ChildNeed.findAll({
+    let needs = await ChildNeed.count({
         where : {
             sponsorshipID : null,
             isFullfilled : 0
         }
     })
 
+    res.status(200).json(needs)
    } catch (error) {
     
     console.log(error)
@@ -152,5 +219,11 @@ const childrenUnsponsored = async (req,res) =>{
 
 
 module.exports={
-    getAllOrphanageItemsMonths
+    getAllOrphanageItemsMonths,
+    getAllUnmetOrphaganes,
+    getNumberofChildren,
+    getNumberofOrphanages,
+    getNumberofRegisteredUsers,
+    getNumberofSponsors,
+    childrenNeeds
 }

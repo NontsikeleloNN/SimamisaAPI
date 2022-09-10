@@ -151,6 +151,18 @@ const updateChildNeed = async (req,res) => {
 
 }
 
+/**
+ * Posts with the most interaction (difficult to do with no category to control)
+ * or see category of more interactive group, we need age and gender
+ * items unmet
+ * children sponsored vs unsponsored
+ * most valuable user
+ * all items (inventory) function?
+ * sponsor, how many needs to fulfill, how many they have
+ * Most unreliable users (have isAcccepted but is unfulfilled)
+ * Children with the most needs
+ */
+
 
 module.exports = {
 acceptProposal,

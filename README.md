@@ -149,7 +149,11 @@ Admin
 */simamisa/admin*
 
 - router.get('/needs', adminController.getAllOrphanageItemsMonths) ... /simamisa/admin/needs?rating=#
-
+- router.get('/childneeds', adminController.childrenNeeds)
+- router.get('/users',adminController.getNumberofRegisteredUsers)
+- router.get('/sponsors',adminController.getNumberofSponsors)
+- router.get('/unfulfilled',adminController.getAllUnmetOrphaganes)
+- router.get('/orphanages',adminController.getNumberofOrphanages)
 
 Main Route
 - https://simamisa.herokuapp.com/
