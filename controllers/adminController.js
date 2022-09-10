@@ -14,6 +14,14 @@ const { Op } = require("sequelize");
 
 //all the itemNeeds who are still needed and are highest priority 
 //I can send this with the numbers for each orphanage and send as x and y values 
+
+const getChildren  = async (req, res) => {
+
+    var num = await Children.count({})
+
+    res.status(200).json(Number(num))
+}
+
 const getAllUnmetOrphaganes  = async (req, res) => {
 
    try {
@@ -225,5 +233,6 @@ module.exports={
     getNumberofOrphanages,
     getNumberofRegisteredUsers,
     getNumberofSponsors,
-    childrenNeeds
+    childrenNeeds,
+    getChildren
 }

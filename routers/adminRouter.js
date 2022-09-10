@@ -7,5 +7,6 @@ router.get('/users',adminController.getNumberofRegisteredUsers)
 router.get('/sponsors',adminController.getNumberofSponsors)
 router.get('/unfulfilled',adminController.getAllUnmetOrphaganes)
 router.get('/orphanages',adminController.getNumberofOrphanages)
+router.get('/children', adminController.getChildren)
 
 module.exports = router
