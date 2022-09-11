@@ -86,16 +86,7 @@ if(proposal.isAccepted){
    return res.status(400).send("proposal is not yet accepted, therefore it cannot be fulfilled")
 }
 
-
-if(proposal.ProposalType === "DONATION"){
-//change spelling
-    itemNeed.AmountReceived += proposal.AmountGiven
-    if (proposal.AmountGiven >= itemNeed.UnitCost){
-        const itemNumber = Math.floor(proposal.AmountGiven/itemNeed.UnitCost)
-        itemNeed.NumberReceived += itemNumber
-    }
-
-} else if (proposal.ProposalType === "ITEM") {
+ if (proposal.ProposalType === "ITEM") {
 
     tempnumItem = itemNeed.NumberReceived +proposal.NumberToGive
     const itemValue = itemNeed.UnitCost * proposal.NumberToGive
