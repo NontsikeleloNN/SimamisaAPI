@@ -1,6 +1,6 @@
 const db = require('../models/');
 const bcrypt = require('bcryptjs');
-const { OrphanageManager } = require('../models/');
+const { OrphanageManager, RegisteredUser } = require('../models/');
 const regUser = db.RegisteredUser;
 
 
@@ -63,6 +63,22 @@ const login = async (req,res )=>{
     }
 }
 
+const getPhonenumber  = async (req,res) => {
+
+    try {
+        const id = req.query.id 
+
+    const user = await RegisteredUser.findOne({where : {ID : id}})
+
+    res.status(200).json(user.Phonenumber)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    }
+}
+
 const getUsers = async (req,res) => {
     try {
         
@@ -89,5 +105,6 @@ const getUsers = async (req,res) => {
 module.exports = {
 registerUser,
 login,
-getUsers
+getUsers,
+getPhonenumber
 }

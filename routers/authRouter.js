@@ -5,7 +5,8 @@ const router = require('express').Router();
 
 router.post('/register',authC.registerUser);
 router.post('/login',authC.login)
-router.get('/',authC.getUsers)
+router.get('/all',authC.getUsers)
+router.get('/',authC.getPhonenumber)
 
 
 module.exports = router;

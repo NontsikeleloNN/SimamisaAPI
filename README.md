@@ -52,7 +52,7 @@ Child needs
 - router.get('/need', childneed.getChildNeed) // .. /need?id=x
 - router.delete('/',childneed.deleteChildNeed) // ......./?id=x
 - router.put('/',childneed.editChildNeed)  // ......./?id=x
-
+- router.put('/pay',childneed.fulfillChildNeed) // ../pay?amt=#&id=# (childneedID)    *payment*
 
 Proposals
 - */simamisa/orphanages/needs/proposals* 
@@ -63,7 +63,8 @@ Proposals
 - router.get('/unfulfilled',itemProposalController.getUnfulfilled) : thiss wil retrieve all the proposals that are unfulfilled
 - router.put('/accept',OrphanageManagerController.acceptProposal) : accept a proposal an OM made
 - 
-- router.post('/donation',itemProposalController.donate) //tested : input in the body itemid = id, comment + ProposalComment, userID = registeredUserID, donation amount = amount | 
+- router.post('/donation',itemProposalController.donate) //tested : input in the body itemid = id, comment + ProposalComment, userID = registeredUserID, donation amount = amount |
+- router.get('/orphanage',itemProposalController.getOrphanageProposals) /id?=x 
 
 Needs
 - */simamisa/orphanages/needs*
@@ -103,16 +104,17 @@ Events
 - router.delete('/:id',eventController.deleteEvent);
 
 Authentication
+
 - */simamisa/orphanages/users*
 - router.post('/register',authC.registerUser);
 - router.post('/login',authC.login)
-
+- 
+router.get('/',authC.getPhonenumber) /?id=x
 
 Sponsorship on Orphanage Manager side
 */simamisa/orphanages/om*
 
 - router.put('/update',OrphanageManagerController.updateChildNeed) : 
-
 - router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor) :
 * here you make a person a sponsor, theyare added on to the list of sponsor. Everything concerning sponsorships will have to start here or the system will throw an exception. Takes in the id of the registered user you are trying to make a sponsor 
 .../?id=#
@@ -155,6 +157,12 @@ Admin
 - router.get('/unfulfilled',adminController.getAllUnmetOrphaganes)
 - router.get('/orphanages',adminController.getNumberofOrphanages)
 - router.get('/children', adminController.getChildren)
+
+Payments
+
+-
+
+
 Main Route
 - https://simamisa.herokuapp.com/
 
