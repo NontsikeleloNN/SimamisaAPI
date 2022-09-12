@@ -188,7 +188,7 @@ const donate = async (req,res) => {
 
 
         let newproposal = {
-            ProposalComment: comment,
+            ProposalComment: 'Donation fulfilled',
             isFulfilled: true,
             ProposalType: "DONATION",
             AmountGiven : amount,
