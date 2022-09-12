@@ -12,4 +12,5 @@ router.get('/need', childneed.getChildNeed) // .. /need?id=x
 router.delete('/',childneed.deleteChildNeed) // ......./id=x
 
 router.put('/',childneed.editChildNeed)  // ......./id=x
+router.put('/pay',childneed.fulfillChildNeed) // ../pay?amt=#&id=# (childneedID)
 module.exports = router

@@ -4,6 +4,35 @@ const ChildNeed = db.ChildNeed
 const Sponsorship = db.Sponsorship
 
 
+const fulfillChildNeed = async (req,res) => {
+
+try {
+        
+const childneedID = req.query.id
+
+const amt = Number(req.query.amt)
+
+var need = await ChildNeed.findOne({where : {ID : childneedID}})
+
+    const prev = need.AmountNeeded
+    need.AmountNeeded -= amt
+    need.AmountReceived += amt
+    const total = amt + Number(need.AmountReceived)
+
+    if (total >= prev){
+        need.isFullfilled = '1'
+    }
+
+    await need.save()
+
+    res.status(200).json(need)
+    } catch (error) {
+        res.status(400).json({
+            errorMessage : error.message
+        })
+    }
+}
+
 const editChildNeed = async(req,res) =>{
    try {
     
@@ -144,5 +173,6 @@ try {
     getChildNeeds,
     getChildNeed,
     editChildNeed,
-    deleteChildNeed
+    deleteChildNeed,
+    fulfillChildNeed
     }

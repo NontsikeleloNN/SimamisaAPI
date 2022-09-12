@@ -3,6 +3,9 @@
 
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
+const { Op } = require('sequelize')
+const { OfferItem, Offer } = require('../models/');
+const { NUMERIC } = require('sequelize');
 
 
 const OrphanageManager = db.OrphanageManager
@@ -13,14 +16,165 @@ const Sponsor = db.Sponsor
 const Sponsorship = db.Sponsorship
 const Reg = db.RegisteredUser
 /**
- * They should be able to create, update and delete stuff 
- * get manager for orphanage 
- * accept/forgo
- * isfulfilled`1
- * fulfill child need 
- * approve sponsor 
- * create sponsorship
+ 1. Inventory (all the items they have donated items+offer items)
+2. Get number of all Children in the orphanage, get all number of sponsored children, number of sponsors
+3. I need exactly what you did for the admin on needs report per month.
+   - but this time with orphanage needs.
+4. . Orphanage Needs Report (For Pie Chart)
+   return  {
+            NeedsMet,
+	    NeedsUnMet,
+	    NeedsPending
+           } but this will be for item proposals instead of needs
  */
+
+     const getInventory = async (req, res) => {
+      
+        try {
+            const id = req.query.id
+            var items = [];
+            var info = {ItemName : '', Quantity: ''}
+            var my = await ItemNeed.findAll({
+                where : {
+                    orphanageID : id,
+                isFulfilled : 1}}) // mine and are fulfilled
+    
+         for (const i of my) {
+            var info = {ItemName : i.Title, Quantity: i.NumberReceived}
+            items.push(info)
+         }
+    
+            var offs = await OfferItem.findAll({
+                where : {
+                    receivingPartner : id,
+                AmountTaken: {
+                [Op.gte] : 1 }
+            }
+            }) // all of the offers that I accepted
+    
+            for (const o of offs) {
+                var p = await Offer.findOne({where : {ID : o.offerID}})
+                var info = {ItemName : p.Title, Quantity: o.AmountTaken}
+                items.push(info)
+            }
+
+            res.status(200).json(items)
+        } catch (error) {
+            res.status(500).json({
+                errorMessage: error.message
+            })
+        }
+    }
+
+    const getOrphanageProposalsReport = async (req, res) => {
+        try {
+            const id = req.query.id
+            var items = await ItemNeed.findAll({where : {orphanageID : id}}) //get all of the ,
+            //proposals fulfilled,  proposals  UnMet, proposals  Pending
+            var propInfo = {fulfilled: 0, unmet: 0, pending: 0}
+            for (const p of items) {
+                var fulfilled = await ItemProposal.count({where : { isFulfilled:true, isAccepted:true , itemNeedID :p.ID, ProposalType : "ITEM"}}) //all fulfilled proposals 
+                var pending = await ItemProposal.count({where :{ 
+                     isFulfilled:false,
+                    isAccepted: false, 
+                    itemNeedID :p.ID,
+                    ProposalType : "ITEM" }})
+                    var unmet = await ItemProposal.count({where :{ 
+                        isFulfilled:false,
+                       isAccepted: true , 
+                       itemNeedID :p.ID, 
+                       ProposalType : "ITEM"}})
+    
+                       propInfo.fulfilled+= Number(fulfilled)
+                       propInfo.unmet += Number(unmet)
+                       propInfo.pending += Number(pending)
+            }
+            res.status(200).json(propInfo)
+        } catch (error) {
+            res.status(500).json({
+                errorMessage: error.message
+            })
+        }
+
+    }
+
+ const getMyItemsMonths = async (req, res) => {
+
+    try {
+        var id = req.query.id
+        var rate = req.query.rating
+        var rate = req.query.rating
+        let priority1 = [
+            {key : 'Jan',needs: '',metNeeds: '',   },
+            {key : 'Feb',needs: '',metNeeds: '',   },
+            {key : 'March',needs: '',metNeeds: '',   },
+            {key : 'April',needs: '',metNeeds: '',   },
+            {key : 'May',needs: '',metNeeds: '',   },
+            {key : 'Jun',needs: '',metNeeds: '',   },
+            {key : 'Jul',needs: '',metNeeds: '',   },
+            {key : 'Aug',needs: '',metNeeds: '',   },
+            {key : 'Sept',needs: '',metNeeds: '',   },
+            {key : 'Oct',needs: '',metNeeds: '',   },
+            {key : 'Nov',needs: '',metNeeds: '',   },
+            {key : 'Dec',needs: '',metNeeds: '',   },
+         ]
+         var count = 0;
+        var date = new Date('2022-01-01') //first date 
+        date.setDate(1)
+        while (count <= 11) {
+           
+            var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+            var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+           firstDay.setHours(0, 0, 0, 0);
+           lastDay.setHours(23, 59, 59, 999);
+        
+            var met = await ItemNeed.count({
+                where :{
+                    orphanageID: id,
+                    isFulfilled : 1, // is  fulfilled 
+                    DateEstablished : {
+                        [Op.between]: [firstDay, lastDay],
+                       },
+                       PriorityRating: rate
+                }
+            })
+
+            var total = await ItemNeed.count({
+                where :{
+                    orphanageID: id,
+                    DateEstablished : {
+                        [Op.between]: [firstDay, lastDay],
+                       },
+                       PriorityRating: rate
+                }
+            })
+
+            priority1[count].metNeeds = Number(met)
+            priority1[count].needs = Number(total)
+            date.setMonth(firstDay.getMonth() + 1)
+          
+            //console.log(lastDay.getUTCDate())
+            console.log( priority1[count].metNeeds)
+            console.log( priority1[count].needs)
+            count++
+
+        }
+
+     
+
+  
+     res.status(200).json(priority1)
+    } catch (error) {
+     
+     console.log(error)
+     res.status(500).json({
+         errorMessage: error.message
+     })
+ 
+ 
+    }
+ }
+
 
  const createSponsorship  = async(req,res) =>{ 
     //check if they are not already a sponsor 
@@ -162,4 +316,7 @@ fulfillChildNeed,
 acceptSponsor,
 createSponsorship,
 updateChildNeed,
+getMyItemsMonths,
+getInventory,
+getOrphanageProposalsReport
 }

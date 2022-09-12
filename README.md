@@ -130,6 +130,10 @@ Sponsorship on Orphanage Manager side
 
 - router.post('/post',SponsorshipController.makePost)
 
+- router.get('/report/inventory', OrphanageManagerController.getInventory) //?id=x (orphanageID)
+- router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)
+- router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x&rating=x
+
  */simamisa/orphanages/meetings*
 - router.post('/', meetingController.createMeeting) : will take in the fields defined in the database. By default, the is accepted is said to false. The accept meeting method is there to change the accepted field to true. 
 - router.get('/',meetingController.getAllActiveMeetings) : gets all meetings that have no passed the current date. This is where the OM should be able to accept or not keep the meeting 

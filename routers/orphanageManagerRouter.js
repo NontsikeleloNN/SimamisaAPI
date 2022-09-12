@@ -1,5 +1,6 @@
 const OrphanageManagerController = require('../controllers/orphanageManagerController');
-const SponsorshipController = require('../controllers/sponsorshipController')
+const SponsorshipController = require('../controllers/sponsorshipController');
+const { OrphanageManager } = require('../models');
 const router = require('express').Router();
 
 router.put('/accept',OrphanageManagerController.acceptProposal)
@@ -11,8 +12,11 @@ router.put('/update',OrphanageManagerController.updateChildNeed)
 
 router.post('/sponsorship',OrphanageManagerController.createSponsorship)
 router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor)
-
+router.get('/report/inventory', OrphanageManagerController.getInventory)
+router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)
+router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x
 router.post('/post',SponsorshipController.makePost)
+
 module.exports = router
 
 //error handlings

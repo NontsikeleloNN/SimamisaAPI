@@ -20,7 +20,7 @@ var amt = null;
 app.get('/simamisa/pay/:amt', (req, res) => {
    
     let q = req.params.amt
- 
+   
     amt = parseFloat(q).toFixed(2);
 
 
@@ -64,6 +64,13 @@ app.get('/simamisa/pay/:amt', (req, res) => {
     }
   });
   
+  /**
+   * get the childNeed id, get sponsor id, get child ID
+   * find sponsorship id
+   * get the amount they paid
+   * change the amount received, 
+   */
+
   });
 
   app.get('/simamisa/success', (req, res) => {
