@@ -81,7 +81,8 @@ const getItemProposals = async(req,res) =>{
 
 const getUserProposals = async(req,res) =>{
     user = req.params.id
-    let proposals = await ItemProposal.findAll({where : {registeredUserID: user}});
+    let proposals = await ItemProposal.findAll({where : {registeredUserID: user,
+    ProposalType:'ITEM'}});
      if(!proposals) return res.status(404).send('there are no proposals')
 
      res.status(200).json(proposals)
