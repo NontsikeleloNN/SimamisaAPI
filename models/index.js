@@ -122,6 +122,8 @@ db.OrphanageManager.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
 db.SponsorRequest.belongsTo(db.OrphanageManager)
 db.RegisteredUser.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
 db.SponsorRequest.belongsTo(db.RegisteredUser)
+db.Child.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
+db.SponsorRequest.belongsTo(db.Child)
 
 //orphanage managering
 db.Orphanage.hasMany(db.OrphanageManager, {foreignKey: {allowNull:false}})

@@ -1,14 +1,17 @@
 const db = require('../models/')
 const { Op } = require("sequelize");
+const { Child } = require('../models/');
 const Request = db.SponsorRequest
+const Sponsor = db.Sponsor
+const RegisteredUser = db.RegisteredUser
+const Sponsorship = db.Sponsorship
 
 const acceptRequest = async (req,res) =>{
     try {
         
         const rid = req.query.rid
-        const cid =  req.query.childID
-        const seed = req.query.seed
-        const id =  req.query.userID
+       
+      
     
         let request = await Request.findOne({where : {ID : rid}})
     
@@ -18,12 +21,12 @@ const acceptRequest = async (req,res) =>{
       
         console.log(id)
             let newSpons = {
-                registeredUserID : id,
+                registeredUserID : request.registeredUserID,
                 Profession : "JOB" 
             }
         
             const created = await Sponsor.create(newSpons)
-            const reg = await Reg.findOne({where : {ID : id}})
+            const reg = await RegisteredUser.findOne({where : {ID : id}})
             reg.isSponsor = true
             await reg.save()
            const sid = await created.ID
@@ -35,10 +38,10 @@ const acceptRequest = async (req,res) =>{
         
             let sponsorship = {
                 DateStarted : new Date(), // now ,
-                MonthlySeed : seed,
+                MonthlySeed : 0,
                 isActive : true,
                 sponsorID : sid,
-                childID : cid
+                childID : request.childID
             }
         
             const spons = Sponsorship.create(sponsorship)
@@ -63,10 +66,13 @@ const createRequest = async (req,res) => {
             RequestDate : new Date(),
             isAccepted : false,
             registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : req.body.orphanageManagerID
-    
+            orphanageManagerID : req.body.orphanageManagerID,
+            childID : req.body.childID,
+            childName : ''
         }
-    
+        
+        var child = await Child.findOne({where : { ID : request.childID}})
+        request.childName = child.Nickname
         const created = await Request.create(request)
         if(!request) return res.status(400).json('could not create meeting')
     

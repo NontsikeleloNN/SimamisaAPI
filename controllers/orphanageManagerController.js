@@ -3,8 +3,8 @@
 
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize')
-const { OfferItem, Offer } = require('../models/');
+const { Op, where } = require('sequelize')
+const { OfferItem, Offer, RegisteredUser } = require('../models/');
 const { NUMERIC } = require('sequelize');
 
 
@@ -97,6 +97,33 @@ const Reg = db.RegisteredUser
         }
 
     }
+
+    const getDemographics = async (req, res) => {
+        const id = req.query.id // orphanage ID 
+        var props = []
+        var needs = await ItemNeed.findAll({where : {orphanageID : id}}) // get all items for orphanage 
+        var stats = {female: 0, male:0,  }
+        for (const n of needs) {
+            var prop = await ItemProposal.findAll({
+                where : {
+                    itemNeedID : n.ID,
+                    isAccepted: true,
+                    isFulfilled : true 
+                    }})
+
+                    props.push(...prop)
+        }
+
+
+        for (const p of props) {
+            var gender = await RegisteredUser.count({
+                where : { 
+                    ID : p.registeredUserID,
+                    Gender :''
+                }})
+                }
+    }
+
 
  const getMyItemsMonths = async (req, res) => {
 
@@ -197,7 +224,7 @@ const Reg = db.RegisteredUser
  }
 
  //accepts a certain sponsor and sets them as a sponsor
- const acceptSponsor  = async(req,res) =>{ 
+ /*const acceptSponsor  = async(req,res) =>{ 
     const id =  req.query.id //reg ID 
 console.log(id)
     let newSpons = {
@@ -212,7 +239,7 @@ console.log(id)
     if(!created) return res.status(400).send('event could not be created')
 
   res.status(200).json(created)
- }
+ }*/
 
 const acceptProposal = async(req,res) =>{ //update to is accepted
 const itempPropID = req.query.proposalID
@@ -313,7 +340,7 @@ module.exports = {
 acceptProposal,
 confirmFulfill,
 fulfillChildNeed,
-acceptSponsor,
+
 createSponsorship,
 updateChildNeed,
 getMyItemsMonths,
