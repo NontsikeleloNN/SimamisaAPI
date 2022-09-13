@@ -82,11 +82,15 @@ const regManager = async (req,res) => {
         Surname: req.body.Surname,
         Email: req.body.Email,
         Phonenumber: req.body.Phonenumber,
-        Status: req.body.Status,
-        UserRole : 'U',
-        isFlagged: req.body.isFlagged,
+        Status: 'Manager',
+        UserRole : 'R',
+        isFlagged: false,
         UserPassword: hashed,
         UserAddress: req.body.UserAddress,
+        DOB : req.body.DOB,
+        isDonor: false,
+        isSponsor: false,
+        Gender : req.body.Gender,
         orphanageID : req.body.orphanageID
     })
     
@@ -96,7 +100,7 @@ const regManager = async (req,res) => {
 
         let newOrphanageManager = ({
             registeredUserID : await savedUser.ID,
-            orphanageID : await newUser.orphanageID
+            orphanageID : req.body.orphanageID
         })
         console.log( await savedUser.orphanageID)
         savedUser.UserRole = 'M'

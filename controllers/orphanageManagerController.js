@@ -99,29 +99,47 @@ const Reg = db.RegisteredUser
     }
 
     const getDemographics = async (req, res) => {
-        const id = req.query.id // orphanage ID 
-        var props = []
-        var needs = await ItemNeed.findAll({where : {orphanageID : id}}) // get all items for orphanage 
-        var stats = {female: 0, male:0,  }
-        for (const n of needs) {
-            var prop = await ItemProposal.findAll({
-                where : {
-                    itemNeedID : n.ID,
-                    isAccepted: true,
-                    isFulfilled : true 
-                    }})
-
-                    props.push(...prop)
-        }
-
-
-        for (const p of props) {
-            var gender = await RegisteredUser.count({
-                where : { 
-                    ID : p.registeredUserID,
-                    Gender :''
+try {
+    const id = req.query.id // orphanage ID 
+    var props = []
+    var needs = await ItemNeed.findAll({where : {orphanageID : id}}) // get all items for orphanage 
+    var stats = {female: 0, male:0,  }
+    for (const n of needs) {
+        var prop = await ItemProposal.findAll({
+            where : {
+                itemNeedID : n.ID,
+                isAccepted: true,
+                isFulfilled : true 
                 }})
-                }
+
+                props.push(...prop)
+    }   
+
+
+    for (const p of props) {
+        var F = await RegisteredUser.count({
+            where : { 
+                ID : p.registeredUserID,
+                Gender :'F'
+            }})
+
+        var M = await RegisteredUser.count({
+            where : { 
+                ID : p.registeredUserID,
+                Gender :'M'
+            }})
+
+            stats.female += Number(F)
+            stats.male += Number(M)
+            }
+
+            res.status(200).json(stats)
+} catch (error) {
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+}
     }
 
 
@@ -130,9 +148,8 @@ const Reg = db.RegisteredUser
     try {
         var id = req.query.id
         var rate = req.query.rating
-        var rate = req.query.rating
         let priority1 = [
-            {key : 'Jan',needs: '',metNeeds: '',   },
+            {key : 'Jan',needs: '',metNeeds: '',},
             {key : 'Feb',needs: '',metNeeds: '',   },
             {key : 'March',needs: '',metNeeds: '',   },
             {key : 'April',needs: '',metNeeds: '',   },
@@ -192,7 +209,7 @@ const Reg = db.RegisteredUser
   
      res.status(200).json(priority1)
     } catch (error) {
-     
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
      console.log(error)
      res.status(500).json({
          errorMessage: error.message
@@ -203,7 +220,7 @@ const Reg = db.RegisteredUser
  }
 
 
- const createSponsorship  = async(req,res) =>{ 
+ /*const createSponsorship  = async(req,res) =>{ 
     //check if they are not already a sponsor 
     const cid =  req.query.childID
     const sid =  req.query.sponsorID
@@ -221,7 +238,7 @@ const Reg = db.RegisteredUser
     if(!created) return res.status(400).send('error creating sponsorship')
 
     res.status(200).json('created')
- }
+ }**/
 
  //accepts a certain sponsor and sets them as a sponsor
  /*const acceptSponsor  = async(req,res) =>{ 
@@ -341,7 +358,7 @@ acceptProposal,
 confirmFulfill,
 fulfillChildNeed,
 
-createSponsorship,
+//createSponsorship,
 updateChildNeed,
 getMyItemsMonths,
 getInventory,

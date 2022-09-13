@@ -10,7 +10,7 @@ router.put('/childneed/confirm',OrphanageManagerController.fulfillChildNeed)
 router.put('/update',OrphanageManagerController.updateChildNeed)
 
 
-router.post('/sponsorship',OrphanageManagerController.createSponsorship)
+//router.post('/sponsorship',OrphanageManagerController.createSponsorship)
 //router.post('/sponsorship/accept',OrphanageManagerController.acceptSponsor)
 router.get('/report/inventory', OrphanageManagerController.getInventory)
 router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)

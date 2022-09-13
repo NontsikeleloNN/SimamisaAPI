@@ -60,7 +60,7 @@ const getAllActiveNeedsByName = async(req,res) => {
     const name = req.params.name
 
     let items = await ItemNeed.findAll({where : {isFulfilled : false,
-    Title :
+    Description :
     {[Op.like]: '%' +name+ '%'}, }});
         if(!items) return res.status(404).send('there are no events')
 
