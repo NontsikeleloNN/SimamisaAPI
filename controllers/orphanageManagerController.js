@@ -289,10 +289,14 @@ if(proposal.isAccepted){
     tempnumItem = Number(itemNeed.NumberReceived) +Number(proposal.NumberToGive)
     const itemValue = Number(itemNeed.UnitCost * proposal.NumberToGive)
     itemNeed.AmountReceived += Number(itemValue)
+    var tempA = itemNeed.AmountNeed 
+    itemNeed.AmountNeed = 0
 
 itemNeed.NumberReceived = 0
 await itemNeed.save()
 itemNeed.NumberReceived += tempnumItem
+itemNeed.AmountNeed = Number(tempA -  itemNeed.AmountReceived)
+await itemNeed.save()
 console.log(proposal)
 
 } 
