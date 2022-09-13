@@ -289,19 +289,19 @@ if(proposal.isAccepted){
     tempnumItem = Number(itemNeed.NumberReceived) +Number(proposal.NumberToGive)
     const itemValue = Number(itemNeed.UnitCost * proposal.NumberToGive)
     itemNeed.AmountReceived += Number(itemValue)
-    var tempA = itemNeed.AmountNeeded 
-    itemNeed.AmountNeeded = 0
+
+ 
 
 itemNeed.NumberReceived = 0
 await itemNeed.save()
 itemNeed.NumberReceived += tempnumItem
-itemNeed.AmountNeeded = Number(tempA -  itemNeed.AmountReceived)
+
 await itemNeed.save()
 console.log(proposal)
 
 } 
 //change to needed after test 
-if (itemNeed.NumberReceived >= itemNeed.NumberNeeded || itemNeed.AmountReceived >= itemNeed.AmountNeed)  {
+if (itemNeed.NumberReceived >= itemNeed.NumberNeeded || itemNeed.AmountReceived >= itemNeed.AmountNeeded)  {
     itemNeed.isFulfilled = true
     
     }
