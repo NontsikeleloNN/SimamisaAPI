@@ -17,7 +17,7 @@ const getChildbyID = async(req,res) =>{
     const id = req.query.id
     let child = await Child.findOne({
         where : {ID : id}})
-   res.status(200).send(child)
+   res.status(200).json(child)
   
 }
 const getSponsorshipID = async(req,res) => {
