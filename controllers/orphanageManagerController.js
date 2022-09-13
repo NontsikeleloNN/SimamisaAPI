@@ -284,13 +284,15 @@ if(proposal.isAccepted){
    return res.status(400).send("proposal is not yet accepted, therefore it cannot be fulfilled")
 }
 
- if (proposal.ProposalType === "ITEM") {
+ if (proposal.ProposalType == "ITEM") {
 
-    tempnumItem = itemNeed.NumberReceived +proposal.NumberToGive
-    const itemValue = itemNeed.UnitCost * proposal.NumberToGive
-    itemNeed.AmountReceived += itemValue
+    tempnumItem = Number(itemNeed.NumberReceived) +Number(proposal.NumberToGive)
+    const itemValue = Number(itemNeed.UnitCost * proposal.NumberToGive)
+    itemNeed.AmountReceived += Number(itemValue)
 
-itemNeed.NumberReceived = tempnumItem
+itemNeed.NumberReceived = 0
+await itemNeed.save()
+itemNeed.NumberReceived += tempnumItem
 console.log(proposal)
 
 } 
