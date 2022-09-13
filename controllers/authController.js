@@ -7,7 +7,8 @@ const regUser = db.RegisteredUser;
 //case sensetive. This is  why we don't do camel case :)
 // I
 const registerUser = async (req,res) => {
-
+try {
+    
     const salt = await bcrypt.genSalt(10)
     const hashed = await bcrypt.hash(req.body.UserPassword,salt)
     let newUser = ({
@@ -15,17 +16,25 @@ const registerUser = async (req,res) => {
         Surname: req.body.Surname,
         Email: req.body.Email,
         Phonenumber: req.body.Phonenumber,
-        Status: req.body.Status,
-        UserRole : req.body.UserRole,
-        isFlagged: req.body.isFlagged,
+        Status: 'Badge Info',
+        UserRole : 'R',
+        isFlagged: false,
         UserPassword: hashed,
-        UserAddress: req.body.UserAddress
+        UserAddress: req.body.UserAddress,
+        DOB : req.body.DOB,
+        Gender : req.body.Gender
     })
   
         const savedUser = await regUser.create(newUser);
-        res.send(savedUser);
+        res.json(savedUser);
   
-       // res.status(400).send(err + "Didn't go through mainnnn");
+    
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
    
 }
 

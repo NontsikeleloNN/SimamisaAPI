@@ -92,7 +92,7 @@ try {
         DueDate : req.body.DueDate,
         Title : req.body.Title,
         Description : req.body.Description,
-        isFullfilled : false,
+        isFulfilled : false,
         orphanageID : req.body.orphanageID,
         sponsorshipID : req.body.sponsorshipID,
         AmountReceived : req.body.AmountReceived,
@@ -122,7 +122,7 @@ try {
 
     
         for(let cv of sponsorships){
-            need = await ChildNeed.findAll({where : {sponsorshipID : cv.ID, isFullfilled : false}})
+            need = await ChildNeed.findAll({where : {sponsorshipID : cv.ID, isFulfilled : false}})
             needs.push(need)
             console.log(need)
 
@@ -149,7 +149,7 @@ try {
       console.log(id + 'id')
         let sponsorships = await Sponsorship.findOne({where : {childID : id}}) // all of the sponsorships belonging to this guy
 
-        let spons = await ChildNeed.findAll({where : {sponsorshipID : sponsorships.ID, isFullfilled : false}})
+        let spons = await ChildNeed.findAll({where : {sponsorshipID : sponsorships.ID, isFulfilled : false}})
             
         for (const sponsers of spons) {
             needs.push(sponsers)

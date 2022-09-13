@@ -9,7 +9,7 @@ module.exports = (sequelize,DataTypes)  => {
 
         },
         DueDate:{
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
 
         },
         Title:{
@@ -20,7 +20,7 @@ module.exports = (sequelize,DataTypes)  => {
             type: DataTypes.STRING,
             allowNull:false
         },
-        isFullfilled:{
+        isFulfilled:{
             type: DataTypes.BOOLEAN,
             allowNull: false
         },

@@ -48,7 +48,7 @@ db.UserSubscription = require('./userSubscriptionModel.js')(sequelize,DataTypes)
 db.Sponsor = require('./sponsorModel')(sequelize,DataTypes)
 db.Sponsorship = require('./sponsorshipModel')(sequelize,DataTypes)
 db.OrphanageManager = require('./orphanageManagerModel')(sequelize,DataTypes)
-db.Meeting = require('./meetingModel')(sequelize,DataTypes)
+db.SponsorRequest = require('./sponsorRequestModel')(sequelize,DataTypes)
 db.Chat = require('./chatModel')(sequelize,DataTypes)
 db.Message = require('./messageModel')(sequelize,DataTypes)
 db.Volunteer = require('./volunteerModel')(sequelize,DataTypes)
@@ -68,17 +68,24 @@ db.Offer = require('./offerModel')(sequelize,DataTypes)
 db.OfferItem = require('./offerItemModel')(sequelize,DataTypes)
 db.ItemProposal = require('./itemProposalModel')(sequelize,DataTypes)
 db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
-
+db.generalDonation = require('./generalDonationModel') (sequelize,DataTypes)
 
 //sponsorship post
 db.Sponsorship.hasMany(db.SponsorshipPost,{ foreignKey: {allowNull:false}})
 db.SponsorshipPost.belongsTo(db.Sponsorship)
+
+db.Orphanage.hasMany(db.ItemNeed,{ foreignKey: {allowNull:false}})
+db.ItemNeed.belongsTo(db.Orphanage)
 
 //item proposals
 db.ItemNeed.hasMany(db.ItemProposal,{ foreignKey: {allowNull:false}})
 db.ItemProposal.belongsTo(db.ItemNeed)
 db.RegisteredUser.hasMany(db.ItemProposal,{ foreignKey: {allowNull:false}})
 db.ItemProposal.belongsTo(db.RegisteredUser)
+
+// sponsor
+db.RegisteredUser.hasMany(db.Sponsor)
+db.Sponsor.belongsTo(db.RegisteredUser)
 
 // events
 db.Orphanage.hasMany(db.Event)
@@ -109,14 +116,59 @@ db.ItemNeed.hasMany(db.Donation)
 db.Donation.belongsTo(db.ItemNeed)
 
 
+
+//meeting
+db.OrphanageManager.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
+db.SponsorRequest.belongsTo(db.OrphanageManager)
+db.RegisteredUser.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
+db.SponsorRequest.belongsTo(db.RegisteredUser)
+
+//orphanage managering
+db.Orphanage.hasMany(db.OrphanageManager, {foreignKey: {allowNull:false}})
+db.OrphanageManager.belongsTo(db.Orphanage)
+db.RegisteredUser.hasMany(db.OrphanageManager, {foreignKey: {allowNull:false}})
+db.OrphanageManager.belongsTo(db.RegisteredUser)
+
+//sponsorship handling 
+db.Sponsor.hasMany(db.Sponsorship,{foreignKey: { allowNull:false}})
+db.Sponsorship.belongsTo(db.Sponsor)
+db.Child.hasOne(db.Sponsorship,{foreignKey: {unique:true, allowNull:false}})
+db.Sponsorship.belongsTo(db.Child)
+
+
+ 
+//user subscription and orph and reg user
+db.Orphanage.hasMany(db.UserSubscription, {foreignKey:{allowNull: false, name: 'OrphID'}}),
+db.RegisteredUser.hasMany(db.UserSubscription, {foreignKey:{allowNull: false, name: 'UserID'}}),
+db.UserSubscription.belongsTo(db.RegisteredUser),
+db.UserSubscription.belongsTo(db.Orphanage),
+db.UserSubscription.removeAttribute('registeredUserID'),
+db.UserSubscription.removeAttribute('orphanageID')
+
+
+//orphanage and partnerships
+db.Orphanage.hasMany(db.Partnership,{ foreignKey: { allowNull: false, name: 'SenderID' }})
+db.Orphanage.hasMany(db.Partnership,{ foreignKey: { allowNull: false, name: 'ReceiverID'  }})
+db.Partnership.belongsTo(db.Orphanage)
+db.Partnership.removeAttribute('orphanageID')
+
+//orphanage and child
+db.Orphanage.hasMany(db.Child, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
+db.Child.belongsTo(db.Orphanage)
+
 //item need
-db.Orphanage.hasMany(db.ItemNeed,{ foreignKey: {allowNull:false}})
-db.ItemNeed.belongsTo(db.Orphanage)
+
 
 //child need
 db.Sponsorship.hasMany(db.ChildNeed)
 db.ChildNeed.belongsTo(db.Sponsorship)
 
+db.generalDonation.belongsTo(db.Orphanage)
+db.Orphanage.hasMany(db.generalDonation)
+db.generalDonation.belongsTo(db.Child)
+db.Child.hasMany(db.generalDonation)
+db.generalDonation.belongsTo(db.RegisteredUser)
+db.RegisteredUser.hasMany(db.generalDonation)
 
 //sponsor documents
 db.Sponsor.hasMany(db.SponsorFile,{ foreignKey: {allowNull:false}})
@@ -165,46 +217,6 @@ db.Message.belongsTo(db.Child)
 db.Message.belongsTo(db.RegisteredUser)
 db.Message.removeAttribute('registeredUserID') //case sensetive
 
-//meeting
-db.OrphanageManager.hasMany(db.Meeting, {foreignKey: {allowNull:false}})
-db.Meeting.belongsTo(db.OrphanageManager)
-db.RegisteredUser.hasMany(db.Meeting, {foreignKey: {allowNull:false}})
-db.Meeting.belongsTo(db.RegisteredUser)
-
-//orphanage managering
-db.Orphanage.hasMany(db.OrphanageManager, {foreignKey: {allowNull:false}})
-db.OrphanageManager.belongsTo(db.Orphanage)
-db.RegisteredUser.hasMany(db.OrphanageManager, {foreignKey: {allowNull:false}})
-db.OrphanageManager.belongsTo(db.RegisteredUser)
-
-//sponsorship handling 
-db.Sponsor.hasMany(db.Sponsorship,{foreignKey: { allowNull:false}})
-db.Sponsorship.belongsTo(db.Sponsor)
-db.Child.hasOne(db.Sponsorship,{foreignKey: {unique:true, allowNull:false}})
-db.Sponsorship.belongsTo(db.Child)
-
-// sponsor
-db.RegisteredUser.hasMany(db.Sponsor)
-db.Sponsor.belongsTo(db.RegisteredUser)
- 
-//user subscription and orph and reg user
-db.Orphanage.hasMany(db.UserSubscription, {foreignKey:{allowNull: false, name: 'OrphID'}}),
-db.RegisteredUser.hasMany(db.UserSubscription, {foreignKey:{allowNull: false, name: 'UserID'}}),
-db.UserSubscription.belongsTo(db.RegisteredUser),
-db.UserSubscription.belongsTo(db.Orphanage),
-db.UserSubscription.removeAttribute('registeredUserID'),
-db.UserSubscription.removeAttribute('orphanageID')
-
-
-//orphanage and partnerships
-db.Orphanage.hasMany(db.Partnership,{ foreignKey: { allowNull: false, name: 'SenderID' , onDelete: 'CASCADE' }})
-db.Orphanage.hasMany(db.Partnership,{ foreignKey: { allowNull: false, name: 'ReceiverID' , onDelete: 'CASCADE' }})
-db.Partnership.belongsTo(db.Orphanage)
-db.Partnership.removeAttribute('orphanageID')
-
-//orphanage and child
-db.Orphanage.hasMany(db.Child, { foreignKey: { allowNull: false }, onDelete: 'CASCADE' })
-db.Child.belongsTo(db.Orphanage)
 
 
 

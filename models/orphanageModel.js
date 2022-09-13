@@ -20,7 +20,18 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-
+        NavigationAddress: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        Email: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        ContactNumber: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
         OrphanageImage: {
             type: DataTypes.STRING,
             allowNull: false
@@ -32,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         DateReg: {
-            type: DataTypes.STRING, //this might be cause of an error because I have no clue what date is in js
+            type: DataTypes.DATEONLY, //this might be cause of an error because I have no clue what date is in js
             allowNull: false
         },
 

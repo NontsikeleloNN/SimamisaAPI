@@ -9,7 +9,7 @@ module.exports = (sequelize,DataTypes)  => {
 
         },
         PostDate:{
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
 
         },
         Title:{
@@ -22,7 +22,7 @@ module.exports = (sequelize,DataTypes)  => {
         },
 
         PostImage:{
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true
         },
     },

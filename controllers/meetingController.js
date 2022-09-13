@@ -1,17 +1,49 @@
 const db = require('../models/')
 const { Op } = require("sequelize");
-const Meeting = db.Meeting
+const Request = db.SponsorRequest
 
-const acceptMeeting = async (req,res) =>{
+const acceptRequest = async (req,res) =>{
     try {
         
-        const id = req.query.id
-        let meeting = await Meeting.findOne({where : {ID : id}})
+        const rid = req.query.rid
+        const cid =  req.query.childID
+        const seed = req.query.seed
+        const id =  req.query.userID
     
-        meeting.MeetingAccepted = true
-        await meeting.save()
+        let request = await Request.findOne({where : {ID : rid}})
     
-        res.status(200).json(meeting)
+        request.isAccepted = true
+        await request.save()
+
+      
+        console.log(id)
+            let newSpons = {
+                registeredUserID : id,
+                Profession : "JOB" 
+            }
+        
+            const created = await Sponsor.create(newSpons)
+            const reg = await Reg.findOne({where : {ID : id}})
+            reg.isSponsor = true
+            await reg.save()
+           const sid = await created.ID
+       
+
+            
+           
+            
+        
+            let sponsorship = {
+                DateStarted : new Date(), // now ,
+                MonthlySeed : seed,
+                isActive : true,
+                sponsorID : sid,
+                childID : cid
+            }
+        
+            const spons = Sponsorship.create(sponsorship)
+
+        res.status(200).json(spons)
 
     } catch (error) {
         
@@ -23,22 +55,20 @@ const acceptMeeting = async (req,res) =>{
     }
 }
 
-const createMeeting = async (req,res) => {
+const createRequest = async (req,res) => {
 
     try {
         
-        let newMeeting = {
-            MeetingDate : req.body.MeetingDate,
-            MeetingVenue : req.body.MeetingVenue,
-            MeetingComments : 'for orphanage manager',
-            MeetingAccepted : false,
+        let request = {
+            RequestDate : new Date(),
+            isAccepted : false,
             registeredUserID: req.body.registeredUserID,
             orphanageManagerID : req.body.orphanageManagerID
     
         }
     
-        const created = await Meeting.create(newMeeting)
-        if(!newMeeting) return res.status(400).json('could not create meeting')
+        const created = await Request.create(request)
+        if(!request) return res.status(400).json('could not create meeting')
     
         res.status(200).json(created)
 
@@ -52,28 +82,9 @@ const createMeeting = async (req,res) => {
     }
 }
 
-const getAllActiveMeetings = async (req,res) => {
- 
-    const namuhla = new Date()
-    const future = new Date(2050, 11, 24, 10, 33);
-    const active = await Meeting.findAll({where:{
-        MeetingDate: 
-            {[Op.between]: [namuhla,future ]}
-           }, 
-           order : ['MeetingDate']
-        })
 
-        if(!active) return res.status(404).send('meetings not found')
 
-        res.json(active)
-}
-
-const Test = async (req,res) => {
-    res.json('nothing really matters')
-}
 module.exports = {
-    createMeeting,
-    getAllActiveMeetings,
-    Test,
-    acceptMeeting
+    createRequest,
+    acceptRequest
 }

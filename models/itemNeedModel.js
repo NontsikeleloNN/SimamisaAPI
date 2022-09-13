@@ -11,11 +11,11 @@ module.exports = (sequelize,DataTypes)  => {
 
         },
         DueDate:{
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
 
         },
         DateEstablished:{
-            type: DataTypes.DATE,
+            type: DataTypes.DATEONLY,
             allowNull: true
         },
         Title:{
@@ -36,7 +36,7 @@ module.exports = (sequelize,DataTypes)  => {
             allowNull: false
         },
         ItemImage:{
-            type: DataTypes.BLOB,
+            type: DataTypes.STRING,
             allowNull: true
         },
         NumberReceived:{

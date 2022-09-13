@@ -27,14 +27,18 @@ module.exports = (sequelize,DataTypes)  => {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Avatar: {
-        type: DataTypes.BLOB,
-        allowNull: false
-    },
-    ChildPassword: {
+    ChildInterest: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
+    DOB: {
+        type: DataTypes.DATEONLY,
+        allowNull: false
+    },
+    Avatar: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
 },
   { //s freezeTableName: true,
     timestamps:false

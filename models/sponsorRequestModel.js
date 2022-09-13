@@ -1,25 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Meeting = sequelize.define("meeting", {
+    const SponsorRequest = sequelize.define("sponsorRequest", {
          ID: {
              type: DataTypes.INTEGER,
              allowNull: false,
              primaryKey: true,
              autoIncrement: true
          },
-         MeetingDate:{
+         RequestDate:{
             type: DataTypes.DATE,
             allowNull: false
          },
-         MeetingVenue:{
-            type: DataTypes.STRING,
-            allowNull: false
-         },
-         MeetingAccepted:{
+
+         isAccepted:{
             type: DataTypes.BOOLEAN,
             allowNull: false
          },
-         MeetingComments:{
+         ChildName:{
             type: DataTypes.STRING,
             allowNull: true
          },
@@ -30,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
       
       });
       
-      return Meeting
+      return SponsorRequest
       }

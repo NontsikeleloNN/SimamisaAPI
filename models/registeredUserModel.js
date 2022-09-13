@@ -35,11 +35,7 @@ module.exports = (sequelize,DataTypes)  => {
             allowNull: false,
             default: 'false'
         },
-        isVolunteer:{
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-        },
+    
         isSponsor:{
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -58,6 +54,14 @@ module.exports = (sequelize,DataTypes)  => {
             type: DataTypes.STRING,
             allowNull: false
         }, 
+        Gender: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        DOB: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
         
         UserAddress:{
             type: DataTypes.STRING,

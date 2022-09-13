@@ -121,7 +121,7 @@ const admin = require('./routers/adminRouter')
 app.use('/simamisa/admin',admin)
 
 const meeting = require('./routers/meetingRouter')
-app.use('/simamisa/orphanages/meetings',meeting)
+app.use('/simamisa/orphanages/requests',meeting)
 
 const childneed = require('./routers/childneedRouter')
 app.use('/simamisa/orphanages/childneed',childneed)

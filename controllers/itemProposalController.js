@@ -151,7 +151,7 @@ const updateProposal = async(req,res) => {
 const donate = async (req,res) => {
     const id = req.body.id // itemID
     const amount = req.body.amount 
-    const comment = req.body.ProposalComment
+    
     const userid = req.body.registeredUserID
     try {
             
