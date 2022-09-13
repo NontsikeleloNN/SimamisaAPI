@@ -66,29 +66,7 @@ console.log(rec+'jjmm')
     }
 
   
-    let orphs = await Partnership.findAll({
-        where: {
-            [Op.and]: [
-                {
-                    [Op.or]: [
-
-                        { SenderID: sendor },
-                        { ReceiverID: sendor }]
-                },
-                {
-                    [Op.or]: [
-
-                    { SenderID: rec },
-                    { ReceiverID: rec }]}
-            ]
-        }
-    });
-    if (orphs != null) {
-
-return res.status(500).json({
-    errorMessage: "partnership exits"
-})
-    }
+    
 
     const created = await Partnership.create(newRequest)
     res.status(200).json(created)
