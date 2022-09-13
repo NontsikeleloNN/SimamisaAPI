@@ -15,37 +15,21 @@ const acceptRequest = async (req,res) =>{
     
         let request = await Request.findOne({where : {ID : rid}})
     
-        request.isAccepted = true
-        await request.save()
+    
 
       
         console.log(id)
-            let newSpons = {
-                registeredUserID : request.registeredUserID,
-                Profession : "JOB" 
-            }
+            
         
             const created = await Sponsor.create(newSpons)
-            const reg = await RegisteredUser.findOne({where : {ID : id}})
-            reg.isSponsor = true
-            await reg.save()
-           const sid = await created.ID
+           
        
 
             
            
             
         
-            let sponsorship = {
-                DateStarted : new Date(), // now ,
-                MonthlySeed : 0,
-                isActive : true,
-                sponsorID : sid,
-                childID : request.childID
-            }
-        
-            const spons = Sponsorship.create(sponsorship)
-
+           
         res.status(200).json(spons)
 
     } catch (error) {
@@ -64,19 +48,40 @@ const createRequest = async (req,res) => {
         
         let request = {
             RequestDate : new Date(),
-            isAccepted : false,
+            isAccepted : true,
             registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : req.body.orphanageManagerID,
+            orphanageManagerID : 1,
             childID : req.body.childID,
-            childName : ''
         }
         
-        var child = await Child.findOne({where : { ID : request.childID}})
-        request.childName = child.Nickname
+        
         const created = await Request.create(request)
         if(!request) return res.status(400).json('could not create meeting')
     
-        res.status(200).json(created)
+        let newSpons = {
+            registeredUserID : request.registeredUserID,
+            Profession : "JOB" 
+        }
+
+        const spons = await Sponsor.create(newSpons)
+
+        const reg = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+        reg.isSponsor = true
+        await reg.save()
+       const sid = await spons.ID
+
+
+       let sponsorship = {
+        DateStarted : new Date(), // now ,
+        MonthlySeed : 0,
+        isActive : true,
+        sponsorID : sid,
+        childID : request.childID
+    }
+
+    const sponsoring = await Sponsorship.create(sponsorship)
+
+        res.status(200).json(sponsoring)
 
     } catch (error) {
         
