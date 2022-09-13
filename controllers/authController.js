@@ -21,6 +21,8 @@ try {
         isFlagged: false,
         UserPassword: hashed,
         UserAddress: req.body.UserAddress,
+        isDonor: false,
+        isSponsor: false,
         DOB : req.body.DOB,
         Gender : req.body.Gender
     })
