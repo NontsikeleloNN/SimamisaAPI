@@ -139,13 +139,11 @@ Sponsorship on Orphanage Manager side
 - router.post('/', meetingController.createRequest)
 
 *    registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : req.body.orphanageManagerID*
+            orphanageManagerID : req.body.orphanageManagerID,
+            childID : req.body.childID,*
 
 - router.put('/',meetingController.acceptRequest)
-*  const rid = req.query.rid [requestID]
-        const cid =  req.query.childID
-        const seed = req.query.seed
-        const id =  req.query.userID *
+*  const rid = req.query.rid [requestID] *
 
 Partnerships
 */simamisa/orphanages/partnering*
