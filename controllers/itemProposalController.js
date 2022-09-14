@@ -168,7 +168,7 @@ const donate = async (req,res) => {
         //most recent donation 
       
         item.AmountReceived += Number(amount) // add by the amount donated
-        item.AmountNeeded -= Number(amount) // subtract amount donated
+      //  item.AmountNeeded -= Number(amount) // subtract amount donated
 
         //update changes first
         await item.save()
