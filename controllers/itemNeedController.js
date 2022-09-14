@@ -31,7 +31,12 @@ const getAllNeeds = async(req,res) => {
 }
 
 const getAllActiveNeeds = async(req,res) => {
-    let items = await ItemNeed.findAll({where : {isFulfilled : false}});
+    let items = await ItemNeed.findAll({include: [
+        {
+            model: Orphanage, 
+            attributes: ['OrphanageName']
+        }
+    ],where : {isFulfilled : false}});
         if(!items) return res.status(400).send('there are no events')
 
 
@@ -119,10 +124,12 @@ const createItem = async(req,res) =>{
 
 const getNeed = async (req,res) => {
     try {
-        
+        var op = {some :'', orphanageName:''}
         let id = req.query.id
         let orph = await ItemNeed.findOne({where: {ID: id}})
-        res.status(200).json(orph)
+        op.some = orph
+        op.orphanageName = orph.orphanageName
+        res.status(200).json(op)
 
     } catch (error) {
         res.status(500).json({

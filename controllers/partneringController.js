@@ -49,6 +49,7 @@ const acceptOffer = async (req,res) => {
         })
     }
 }
+
 const sendReq = async (req, res) => {
 
     const sendor = req.query.from
@@ -66,31 +67,7 @@ console.log(rec+'jjmm')
     }
 
   
-    let orphs = await Partnership.findAll({
-        where: {
-            [Op.and]: [
-                {
-                    [Op.or]: [
-
-                        { SenderID: sendor },
-                        { ReceiverID: rec }]
-                },
-                {
-                    [Op.or]: [
-
-                    { SenderID: rec },
-                    { ReceiverID: sendor }]}
-            ]
-        }
-    });
-    
-    if (orphs != null) {
-
-return res.status(500).json({
-    errorMessage: "partnership exits"
-})
-    }
-
+   
     const created = await Partnership.create(newRequest)
     res.status(200).json(created)
     } catch (error) {

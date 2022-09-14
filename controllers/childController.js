@@ -1,4 +1,4 @@
-const { Sponsorship } = require('../models/');
+const { Sponsorship, Orphanage } = require('../models/');
 const db = require('../models/'); // not having this in the events was causing an error
 
 const Child = db.Child
@@ -15,9 +15,14 @@ const getAllChildren = async(req,res) =>{
 const getChildbyID = async(req,res) =>{
   
     const id = req.query.id
+    var op = {some: '', OrphanageName: ''}
     let child = await Child.findOne({
         where : {ID : id}})
-   res.status(200).json(child)
+
+        let orph = await Orphanage.findOne({where : {ID : child.orphanageID}})
+        op.some = child
+        op.OrphanageName = orph.OrphanageName
+   res.status(200).json(op)
   
 }
 const getSponsorshipID = async(req,res) => {
