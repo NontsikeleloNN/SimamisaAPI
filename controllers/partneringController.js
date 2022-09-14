@@ -301,6 +301,7 @@ const getMyOffers = async (req, res) => {
     let offerItemArray = [];
     let offer = [];
     const id = req.query.id
+    var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' }
     try {
         // get all offerItems where I am the receiving partner and get the corresponding offers
         //find all where offeritem.rec = id
@@ -341,10 +342,15 @@ console.log(offers + 'before filter')
 
       for (let a of offerItemArray ) {
             if(a != null ) {
-                console.log(Number(a.offerID) + 'hello hello')
-            console.log({a})
+             var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' }
             let temp2 = await Offer.findOne({where:{ID:a.offerID}})
-            offer.push(temp2)
+            temp.ID = a.ID
+            temp.ReceivingPartner = a.ReceivingPartner
+            temp.AmountTaken = a.AmountTaken
+            temp.Title = temp2.Title
+            temp.Description = temp2.Description
+            temp.Quantity = temp2.Quantity
+            offer.push(temp)
             }
         }
 
@@ -357,7 +363,7 @@ console.log(offers + 'before filter')
     }
 
     res.status(200).json(
-        offerItemArray
+        offer
     )
 
 }
