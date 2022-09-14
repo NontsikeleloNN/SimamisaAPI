@@ -6,7 +6,7 @@
  const db = require('../models/')
 const ItemNeed = db.ItemNeed
 const { Op } = require('sequelize')
-
+import { Orphanage } from '../models/'
 const { calcItemsReceived } = require('./itemProposalController')
 
 
