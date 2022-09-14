@@ -24,9 +24,7 @@ const acceptOffer = async (req,res) => {
     }
     })
 
-    if(!offer || offer ==null){
-        res.status(400).json('this offer is not directed to you ')
-    }
+ 
 
    const tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
 
@@ -303,6 +301,7 @@ const getMyOffers = async (req, res) => {
     let offerItemArray = [];
     let offer = [];
     const id = req.query.id
+    var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' }
     try {
         // get all offerItems where I am the receiving partner and get the corresponding offers
         //find all where offeritem.rec = id
@@ -315,12 +314,7 @@ const getMyOffers = async (req, res) => {
                 isAvailable: true
             }
         })
-console.log(offers + 'before filter')
-        if (!offers.length) {
-            res.status(404).json({
-                errorMessage: "No  available offers found"
-            })
-        }
+
 
         // await doASideEffect(req.params.id, "NumberSomething", "ItemNeed", async (id) => {
 
@@ -343,14 +337,22 @@ console.log(offers + 'before filter')
 
       for (let a of offerItemArray ) {
             if(a != null ) {
-                console.log(Number(a.offerID) + 'hello hello')
-            console.log({a})
+             var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' }
             let temp2 = await Offer.findOne({where:{ID:a.offerID}})
-            offer.push(temp2)
+            temp.ID = a.ID
+            temp.ReceivingPartner = a.ReceivingPartner
+            temp.AmountTaken = a.AmountTaken
+            temp.Title = temp2.Title
+            temp.Description = temp2.Description
+            temp.Quantity = temp2.Quantity
+            offer.push(temp)
             }
         }
 
      
+    res.status(200).json(
+        offer 
+    )
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -358,9 +360,6 @@ console.log(offers + 'before filter')
         })
     }
 
-    res.status(200).json(
-        offer
-    )
 
 }
 

@@ -15,7 +15,9 @@ router.put('/update',OrphanageManagerController.updateChildNeed)
 router.get('/report/inventory', OrphanageManagerController.getInventory)
 router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)
 router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x
+router.get('/report/demographics',OrphanageManagerController.getDemographics) // ?id=x (orphanageID)
 router.post('/post',SponsorshipController.makePost)
+
 
 module.exports = router
 
