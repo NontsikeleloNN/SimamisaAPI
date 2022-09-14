@@ -8,6 +8,7 @@ const ItemNeed = db.ItemNeed
 const { Op } = require('sequelize')
 
 const { calcItemsReceived } = require('./itemProposalController')
+const { Orphanage } = require('../models/')
 
 
 
