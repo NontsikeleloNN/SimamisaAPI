@@ -357,7 +357,7 @@ console.log(offers + 'before filter')
     }
 
     res.status(200).json(
-        offer
+        offerItemArray
     )
 
 }
