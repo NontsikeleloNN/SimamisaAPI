@@ -4,6 +4,7 @@ const ItemNeed = db.ItemNeed
 const Donation = db.Donation
 const {doASideEffect} = require('./utilities.js')
 const { Op } = require("sequelize");
+const { Orphanage } = require('../models/')
 
 async function wrapperCalc(itemList){
 for (const item of itemList) {
