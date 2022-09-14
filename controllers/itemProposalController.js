@@ -46,7 +46,7 @@ const getAllProposals = async(req, res) =>{
 
 const getOrphanageProposals = async(req, res) =>{
     try {
-        const id = req.query.id // orphID
+    const id = req.query.id // orphID
     var props  = []
     var items = await ItemNeed.findAll({where : {orphanageID : id}})
 
@@ -84,8 +84,8 @@ const getUserProposals = async(req,res) =>{
     user = req.params.id
     let proposals = await ItemProposal.findAll({include: [
         {
-            model: Orphanage, 
-            attributes: ['OrphanageName']
+            model: ItemNeed, 
+            attributes: ['Title']
         }
     ],where : {registeredUserID: user,
     ProposalType:'ITEM'}});
