@@ -50,11 +50,14 @@ const createRequest = async (req,res) => {
             RequestDate : new Date(),
             isAccepted : true,
             registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : 1,
+            orphanageManagerID : 7,
             childID : req.body.childID,
         }
         
-        
+        const reg = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+        if (reg.isSponsor){
+            var tem = await Sponsor.findOne({where: {registeredUserID : reg.ID}})
+        }
         const created = await Request.create(request)
         if(!request) return res.status(400).json('could not create meeting')
     
@@ -65,7 +68,7 @@ const createRequest = async (req,res) => {
 
         const spons = await Sponsor.create(newSpons)
 
-        const reg = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+        
         reg.isSponsor = true
         await reg.save()
        const sid = await spons.ID
