@@ -368,5 +368,6 @@ fulfillChildNeed,
 updateChildNeed,
 getMyItemsMonths,
 getInventory,
-getOrphanageProposalsReport
+getOrphanageProposalsReport,
+getDemographics
 }
