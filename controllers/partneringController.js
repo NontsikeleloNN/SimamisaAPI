@@ -314,12 +314,7 @@ const getMyOffers = async (req, res) => {
                 isAvailable: true
             }
         })
-console.log(offers + 'before filter')
-        if (!offers.length) {
-            res.status(404).json({
-                errorMessage: "No  available offers found"
-            })
-        }
+
 
         // await doASideEffect(req.params.id, "NumberSomething", "ItemNeed", async (id) => {
 
