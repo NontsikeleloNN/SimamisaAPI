@@ -16,13 +16,16 @@ const getChildbyID = async(req,res) =>{
   
     const id = req.query.id
     var op = {some: '', OrphanageName: ''}
-    let child = await Child.findOne({
+    let child = await Child.findOne({include: [
+        {
+            model: Orphanage, 
+            attributes: ['OrphanageName']
+        }
+    ],
         where : {ID : id}})
 
-        let orph = await Orphanage.findOne({where : {ID : child.orphanageID}})
-        op.some = child
-        op.OrphanageName = orph.OrphanageName
-   res.status(200).json(op)
+        
+   res.status(200).json(child)
   
 }
 const getSponsorshipID = async(req,res) => {
