@@ -355,6 +355,9 @@ console.log(offers + 'before filter')
         }
 
      
+    res.status(200).json(
+        offer 
+    )
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -362,9 +365,6 @@ console.log(offers + 'before filter')
         })
     }
 
-    res.status(200).json(
-        offer
-    )
 
 }
 
