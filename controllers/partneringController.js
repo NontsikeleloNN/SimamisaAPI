@@ -24,9 +24,7 @@ const acceptOffer = async (req,res) => {
     }
     })
 
-    if(!offer || offer ==null){
-        res.status(400).json('this offer is not directed to you ')
-    }
+ 
 
    const tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
 
