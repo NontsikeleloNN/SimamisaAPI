@@ -211,7 +211,7 @@ const childrenNeeds = async (req,res) =>{
     let needs = await ChildNeed.count({
         where : {
             sponsorshipID : null,
-            isFullfilled : 0
+            isFulfilled : 0
         }
     })
 
