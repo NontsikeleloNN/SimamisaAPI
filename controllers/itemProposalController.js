@@ -82,16 +82,34 @@ const getItemProposals = async(req,res) =>{
 
 const getUserProposals = async(req,res) =>{
     user = req.params.id
-    let proposals = await ItemProposal.findAll({include: [
-        {
-            model: ItemNeed, 
-            attributes: ['Title']
-        }
-    ],where : {registeredUserID: user,
+    let objArray = [];
+  
+    let proposals = await ItemProposal.findAll({where : {registeredUserID: user,
     ProposalType:'ITEM'}});
+
+    for (const i of proposals) {
+        var object = {ID: '', PickUpPlace: '', PickUpTime: '',DropOffTime: '',NumberToGive: '', ProposalComment: '',ProposalType: '',AmountGiven: '',isFulfilled: '',isAccepted: '', Title: '', OrphanageName: ''}
+    
+        var need = await ItemNeed.findOne({where : {ID: i.itemNeedID}})
+
+        object.ID = i.ID
+        object.PickUpPlace = i.PickUpPlace
+        object.PickUpTime = i.PickUpTime
+        object.DropOffTime = i.DropOffTime
+        object.NumberToGive = i.NumberToGive
+        object.ProposalComment = i.ProposalComment
+        object.ProposalType = i.ProposalType
+        object.AmountGiven = i.AmountGiven
+        object.isFulfilled = i.isFulfilled
+        object.isAccepted = i.isAccepted
+        object.isAccepted = need.Title
+        object.OrphanageName = (await Orphanage.findOne({where :{ID : need.orphanageID}})).OrphanageName
+    
+        objArray.push(object)
+    }
      if(!proposals) return res.status(404).send('there are no proposals')
 
-     res.status(200).json(proposals)
+     res.status(200).json(objArray)
 }
 
 const getProposal = async(req,res) =>{
