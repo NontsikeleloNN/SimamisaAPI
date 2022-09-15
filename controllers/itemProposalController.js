@@ -51,7 +51,12 @@ const getOrphanageProposals = async(req, res) =>{
     var items = await ItemNeed.findAll({where : {orphanageID : id}})
 
     for (const i of items) {
-        var temp = await ItemProposal.findAll({where: {itemNeedID : i.ID}})
+        var temp = await ItemProposal.findAll({include: [
+            {
+                model: ItemNeed, 
+                attributes: ['Title']
+            }
+        ],where: {itemNeedID : i.ID}})
         props.push(...temp)
     }
 
