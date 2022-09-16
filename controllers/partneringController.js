@@ -297,6 +297,15 @@ try {
 res.status(200).json(orphs)
 }
 
+const getAllOffers = async (req,res) => {
+const temp = Offer.findAll({})
+res.status(200).json(temp)
+}
+
+const getAllOfferItems = async (req,res) => {
+    const temp = OfferItem.findAll({})
+    res.status(200).json(temp)
+    }
 const getMyOffers = async (req, res) => {
     let offerItemArray = [];
     let offer = [];
@@ -371,5 +380,7 @@ module.exports = {
     getMyOffers, // working
     getPartners, 
     getRequests,
-    acceptOffer
+    acceptOffer,
+    getAllOfferItems,
+    getAllOffers
 }

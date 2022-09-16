@@ -40,6 +40,39 @@ try {
    
 }
 
+const registerAdmin = async (req,res) => {
+    try {
+        
+        const salt = await bcrypt.genSalt(10)
+        const hashed = await bcrypt.hash(req.body.UserPassword,salt)
+        let newUser = ({
+            FirstName: req.body.FirstName,
+            Surname: req.body.Surname,
+            Email: req.body.Email,
+            Phonenumber: req.body.Phonenumber,
+            Status: 'Admin',
+            UserRole : 'A',
+            isFlagged: false,
+            UserPassword: hashed,
+            UserAddress: req.body.UserAddress,
+            isDonor: false,
+            isSponsor: false,
+            DOB : req.body.DOB,
+            Gender : req.body.Gender
+        })
+      
+            const savedUser = await regUser.create(newUser);
+            res.json(savedUser);
+      
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    }
+       
+    }
 const login = async (req,res )=>{
 
 
@@ -117,5 +150,6 @@ module.exports = {
 registerUser,
 login,
 getUsers,
-getPhonenumber
+getPhonenumber,
+registerAdmin
 }

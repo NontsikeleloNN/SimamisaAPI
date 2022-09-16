@@ -2,6 +2,8 @@ const partneringController = require('../controllers/partneringController')
 
 const router = require('express').Router()
 
+router.get('/allOffers',partneringController.getAllOffers)
+router.get('/allOfferItems', partneringController.getAllOfferItems)
 router.post('/',partneringController.sendReq)// sending a partnering request (... /from?=x&to?=y)
 router.get('/',partneringController.getPartners) //get my partners ( orphanages/partnering/id?=x)
 router.post('/offers/publish/',partneringController.sendOfferToAll) // (orphanages/partnering/offers/publish/id?=x)
