@@ -298,12 +298,12 @@ res.status(200).json(orphs)
 }
 
 const getAllOffers = async (req,res) => {
-const temp = Offer.findAll({})
+const temp = await Offer.findAll({})
 res.status(200).json(temp)
 }
 
 const getAllOfferItems = async (req,res) => {
-    const temp = OfferItem.findAll({})
+    const temp = await OfferItem.findAll({})
     res.status(200).json(temp)
     }
 const getMyOffers = async (req, res) => {
