@@ -69,6 +69,12 @@ db.OfferItem = require('./offerItemModel')(sequelize,DataTypes)
 db.ItemProposal = require('./itemProposalModel')(sequelize,DataTypes)
 db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
 db.generalDonation = require('./generalDonationModel') (sequelize,DataTypes)
+db.Distribution = require('./distributionModel') (sequelize,DataTypes)
+
+
+// distribution
+db.Orphanage.hasMany(db.Distribution)
+db.Distribution.belongsTo(db.Orphanage)
 
 //sponsorship post
 db.Sponsorship.hasMany(db.SponsorshipPost,{ foreignKey: {allowNull:false}})
@@ -118,7 +124,7 @@ db.Donation.belongsTo(db.ItemNeed)
 
 
 //meeting
-db.OrphanageManager.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
+db.OrphanageManager.hasMany(db.SponsorRequest, {foreignKey: {allowNull:true}})
 db.SponsorRequest.belongsTo(db.OrphanageManager)
 db.RegisteredUser.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
 db.SponsorRequest.belongsTo(db.RegisteredUser)

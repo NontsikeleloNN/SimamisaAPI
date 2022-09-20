@@ -50,7 +50,7 @@ const createRequest = async (req,res) => {
             RequestDate : new Date(),
             isAccepted : true,
             registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : 7,
+          
             childID : req.body.childID,
         }
         
@@ -66,7 +66,9 @@ const createRequest = async (req,res) => {
             Profession : "JOB" 
         }
 
+       if (!reg.isSponsor){
         const spons = await Sponsor.create(newSpons)
+       }
 
         
         reg.isSponsor = true
