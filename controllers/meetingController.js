@@ -67,10 +67,12 @@ const createRequest = async (req,res) => {
             Profession : "JOB" 
         }
 
+        var  spons = null
+        
        if (!reg.isSponsor){
-        const spons = await Sponsor.create(newSpons)
+        spons = await Sponsor.create(newSpons)
        }else {
-        const spons = await Sponsor.findOne({where : {registeredUserID: request.registeredUserID}})
+        spons = await Sponsor.findOne({where : {registeredUserID: request.registeredUserID}})
        }
 
         
