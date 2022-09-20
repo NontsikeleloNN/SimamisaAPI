@@ -69,7 +69,7 @@ db.OfferItem = require('./offerItemModel')(sequelize,DataTypes)
 db.ItemProposal = require('./itemProposalModel')(sequelize,DataTypes)
 db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
 db.generalDonation = require('./generalDonationModel') (sequelize,DataTypes)
-db.Distribution = require('./distributionModel') (sequelize,DataTypes)
+//db.Distribution = require('./distributionModel') (sequelize,DataTypes)
 
 
 // distribution
