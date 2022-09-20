@@ -107,7 +107,7 @@ const getUserProposals = async(req,res) =>{
         object.AmountGiven = i.AmountGiven
         object.isFulfilled = i.isFulfilled
         object.isAccepted = i.isAccepted
-        object.isAccepted = need.Title
+        object.Title = need.Title
         object.OrphanageName = (await Orphanage.findOne({where :{ID : need.orphanageID}})).OrphanageName
     
         objArray.push(object)
