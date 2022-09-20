@@ -1,6 +1,7 @@
 const db = require('../models/')
 const { Op } = require("sequelize");
 const { Child } = require('../models/');
+const e = require('express');
 const Request = db.SponsorRequest
 const Sponsor = db.Sponsor
 const RegisteredUser = db.RegisteredUser
@@ -68,6 +69,8 @@ const createRequest = async (req,res) => {
 
        if (!reg.isSponsor){
         const spons = await Sponsor.create(newSpons)
+       }else {
+        const spons = await Sponsor.findOne({where : {registeredUserID: request.registeredUserID}})
        }
 
         
