@@ -50,7 +50,7 @@ const createRequest = async (req,res) => {
             RequestDate : new Date(),
             isAccepted : true,
             registeredUserID: req.body.registeredUserID,
-          
+            orphanageManagerID : 10,
             childID : req.body.childID,
         }
         
