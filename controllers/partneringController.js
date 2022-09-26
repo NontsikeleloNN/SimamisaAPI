@@ -346,7 +346,7 @@ const getMyOffers = async (req, res) => {
 
       for (let a of offerItemArray ) {
             if(a != null ) {
-             var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' }
+             var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' , Sender: ''}
             let temp2 = await Offer.findOne({where:{ID:a.offerID}})
             temp.ID = a.ID
             temp.ReceivingPartner = a.ReceivingPartner
@@ -354,6 +354,7 @@ const getMyOffers = async (req, res) => {
             temp.Title = temp2.Title
             temp.Description = temp2.Description
             temp.Quantity = temp2.Quantity
+            temp.Sender = temp2.OrphanageName
             offer.push(temp)
             }
         }
