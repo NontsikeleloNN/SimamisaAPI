@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const Orphanage = db.Orphanage
 const regUser = db.RegisteredUser;
 const OrphanageManager = db.OrphanageManager
+const Notification = db.Notification
 
 
 console.log("just before entering ")
@@ -71,6 +72,23 @@ const regOrphanage = async (req,res) => {
     
 }
 
+const getAllNotifications = async (req,res) => {
+    try {
+        
+        var id = req.query.orphanageID
+        var notes = await Notification.findAll({where : { orphanageID : id}})
+    
+        res.stats(200).json(notes)
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    
+    }
+    }
+
 const regManager = async (req,res) => {
 //update userole to M
    try {
@@ -122,5 +140,6 @@ module.exports = {
     getAllOrphanages,
     getOrphanage,
     regOrphanage,
-    regManager
+    regManager,
+    getAllNotifications // add to routes 
 }

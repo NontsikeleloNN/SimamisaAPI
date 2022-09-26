@@ -1,10 +1,13 @@
 const db = require('../models/')
 const ItemProposal = db.ItemProposal
 const ItemNeed = db.ItemNeed
+const Notification = db.Notification
+const User = db.RegisteredUser
 const Donation = db.Donation
 const {doASideEffect} = require('./utilities.js')
 const { Op } = require("sequelize");
 const { Orphanage } = require('../models/')
+const { DATE } = require('sequelize')
 
 async function wrapperCalc(itemList){
 for (const item of itemList) {
@@ -150,6 +153,16 @@ try {
     const savedProposal = await ItemProposal.create(newProposal);
         if(!savedProposal) return res.status(400).json('could not create proposal')
 
+        //need to find corresponding orphanaage ID
+        var item = await ItemNeed.findOne({where : {ID : newProposal.itemNeedID}}) //find the itemNeed we're creating a proposal for, find it's orphanage
+        
+        var user = await User.findOne({where : {ID : newProposal.registeredUserID}}) //find maker of the proposal
+        let notify = {
+        orphanageID : item.orphanageID,
+        Title : "Proposal made for the need " + item.Title,
+        Body : user.FirstName + " made a proposal for the need " + item.Title + "and needs acceptance",
+        NotificationTime : new Date()
+    }
        
         
     res.status(200).json(savedProposal)
