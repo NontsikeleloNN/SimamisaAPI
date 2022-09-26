@@ -1,3 +1,4 @@
+
 const express = require('express')
 const cors = require('cors')
 const paypal = require('paypal-rest-sdk');
@@ -6,6 +7,21 @@ const s3 = require('./s3.js');
 /////////////////////////////////
 
 const app = express()
+app.use(
+    cors()
+)
+
+//S3 This is only to allow users to upload
+app.get('/s3url',(req,res)=>{
+    //you nay want to check that this is an orphanage manager
+    const url = s3.generateUploadURL();
+   url.then((ans)=>{
+    console.log("URL",ans);
+    let obj={URL:ans}
+    res.json(obj);
+    })
+    
+})
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': 'AcCf708AwPbCEEGrD6yd7R4CZbDu1EB3wKkKPmpUuTS7u328x_-TmRdTb22xSEMQywd2KKFMW7ERHFkU',
@@ -102,22 +118,14 @@ app.get('/simamisa/cancel', (req, res) => res.json('Cancelled'));
 
 ////////////////////////////////////////
 
-app.use(
-    cors()
-)
-//S3 This is only to allow users to upload
-app.get('/s3url',(req,res)=>{
-    //you nay want to check that this is an orphanage manager
-    const url = s3.generateUploadURL();
-   url.then((ans)=>{
-    console.log("URL",ans);
-    let obj={URL:ans}
-    res.json(obj);
-    })
-    
-})
 
+// {
+//     origin: "*",
+//     methods: ["PUT","GET","POST","DELETE"]
+// }
 
+// app.options('*',cors())
+//middleware configurations
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
