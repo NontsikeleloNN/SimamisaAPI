@@ -69,6 +69,8 @@ db.OfferItem = require('./offerItemModel')(sequelize,DataTypes)
 db.ItemProposal = require('./itemProposalModel')(sequelize,DataTypes)
 db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
 db.generalDonation = require('./generalDonationModel') (sequelize,DataTypes)
+db.Notification = require('./notificationModel')(sequelize,DataTypes)
+db.Document = require('./documentsModel') (sequelize,DataTypes)
 //db.Distribution = require('./distributionModel') (sequelize,DataTypes)
 
 
@@ -124,8 +126,6 @@ db.Donation.belongsTo(db.ItemNeed)
 
 
 //meeting
-db.OrphanageManager.hasMany(db.SponsorRequest, {foreignKey: {allowNull:true}})
-db.SponsorRequest.belongsTo(db.OrphanageManager)
 db.RegisteredUser.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
 db.SponsorRequest.belongsTo(db.RegisteredUser)
 db.Child.hasMany(db.SponsorRequest, {foreignKey: {allowNull:false}})
@@ -178,9 +178,9 @@ db.Child.hasMany(db.generalDonation)
 db.generalDonation.belongsTo(db.RegisteredUser)
 db.RegisteredUser.hasMany(db.generalDonation)
 
-//sponsor documents
-db.Sponsor.hasMany(db.SponsorFile,{ foreignKey: {allowNull:false}})
-db.SponsorFile.belongsTo(db.Sponsor)
+//sponsor documents and request
+db.SponsorRequest.hasMany(db.Document,{ foreignKey: {allowNull:false}})
+db.Document.belongsTo(db.SponsorRequest)
 
 
 //product
@@ -211,6 +211,7 @@ db.Service.belongsTo(db.Orphanage)
 db.Volunteer.hasMany(db.VolunteerSkill)
 db.VolunteerSkill.belongsTo(db.Volunteer)
 
+
 //volunteer
 db.RegisteredUser.hasMany(db.Volunteer, {foreignKey: {allowNull: false}})
 db.Volunteer.belongsTo(db.RegisteredUser)
@@ -225,8 +226,9 @@ db.Message.belongsTo(db.Child)
 db.Message.belongsTo(db.RegisteredUser)
 db.Message.removeAttribute('registeredUserID') //case sensetive
 
-
-
+//notificarions
+db.Orphanage.hasMany(db.Notification, {foreignKey: {allowNull: false}})
+db.Notification.belongsTo(db.Orphanage)
 
 db.sequelize.sync({force: false})  // resync means to update the database with the chnages you've made. froce, true and alter. Force deletes and redoes, alter makes changes but doesn't scrap the whole table
 .then(() => {

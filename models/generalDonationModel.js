@@ -8,24 +8,8 @@ module.exports = (sequelize, DataTypes) => {
              autoIncrement: true
          },
 
-        UserID: {
+        Amount: {
             type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        
-
-        ChilID: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-
-        OrphID: {
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-
-        Type: {
-            type: DataTypes.STRING,
             allowNull: false
         }
     },

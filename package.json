@@ -10,15 +10,18 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1223.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "data-forge": "^1.9.6",
     "data-forge-fs": "^0.0.9",
+    "dotenv": "^16.0.2",
     "express": "^4.18.1",
     "mysql2": "^2.3.3",
     "paypal-rest-sdk": "^1.8.1",
     "sequelize": "^6.21.2",
-    "sequelize-auto": "^0.8.8"
+    "sequelize-auto": "^0.8.8",
+    "sib-api-v3-sdk": "^8.4.2"
   },
   "devDependencies": {
     "nodemon": "^1.3.3"

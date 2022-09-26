@@ -14,6 +14,7 @@ const ItemNeed = db.ItemNeed
 const ChildNeed = db.ChildNeed
 const Sponsor = db.Sponsor
 const Sponsorship = db.Sponsorship
+const Notification = db.Notification
 const Reg = db.RegisteredUser
 /**
  1. Inventory (all the items they have donated items+offer items)
@@ -321,6 +322,8 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
     await need.save()
     res.status(200).json(need)
 }
+
+
 
 const updateChildNeed = async (req,res) => {
 

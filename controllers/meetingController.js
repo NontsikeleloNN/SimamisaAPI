@@ -1,38 +1,148 @@
 const db = require('../models/')
 const { Op } = require("sequelize");
-const { Child } = require('../models/');
-const e = require('express');
+const { Child, SponsorRequest, Orphanage } = require('../models/');
 const Request = db.SponsorRequest
 const Sponsor = db.Sponsor
+const Notification = db.Notification
 const RegisteredUser = db.RegisteredUser
 const Sponsorship = db.Sponsorship
+
+const Sib = require('sib-api-v3-sdk')
+
+require('dotenv').config()
+
+const client = Sib.ApiClient.instance
+
+const apiKey = client.authentications['api-key']
+apiKey.apiKey = process.env.API_KEY
+
 
 const acceptRequest = async (req,res) =>{
     try {
         
         const rid = req.query.rid
        
-      
-    
-        let request = await Request.findOne({where : {ID : rid}})
-    
-    
+        var request = await SponsorRequest.findOne({where : {ID : rid}})
 
-      
-        console.log(id)
+        request.isAccepted = true  // accepted, now create sponsorship
+
+        var user = await RegisteredUser.findOne({where : {ID:request.registeredUserID}}) //get the applicant
+
+        let sponsorship = ""
+
+        if(user.isSponsor){
+// if they already are a sponsor, create a sponsorship between them and the child 
+            sponsorship = {
+                DateStarted : new Date(), // now ,
+                MonthlySeed : 0,
+                isActive : true,
+                sponsorID : sid,
+                childID : request.childID
+            }
+        }else{
+            //make them a sponsor 
+            let newSpons = {
+                registeredUserID : request.registeredUserID,
+                Profession : "JOB" 
+            }
+
+            var sponsor = await Sponsor.create(newSpons) 
             
+            user.isSponsor = true // turn them into a sponsor now 
+
+
+            sponsorship = {
+                DateStarted : new Date(), // now ,
+                MonthlySeed : 0,
+                isActive : true,
+                sponsorID : sponsor.ID,
+                childID : request.childID
+            }
         
-            const created = await Sponsor.create(newSpons)
            
-       
-
+        }
             
-           
+        var spo = await Sponsorship.create(sponsorship)
+        var child = await Child.findOne({where : { ID : sponsorship.childID}})
+        var orph = await Orphanage.findOne({where : {ID : child.orphanageID}})
             
+        //send notification to sponsor via email that their sponsorship has been accepted 
+        const sender = {
+            email: 'ndumonnn@gmail.com',
+            name: 'Simamisa',
+        }
         
-           
-        res.status(200).json(spons)
+        const recivers = [
+            {
+                email: user.Email,
+            },
+        ]
+        
+        const transactionalEmailApi = new Sib.TransactionalEmailsApi()
+        
+        transactionalEmailApi
+            .sendTransacEmail({
+                subject: 'Sponsorship at {{params.orphName}}',
+                sender,
+                to: recivers,
+             textContent: `Dear {{params.username}}, we are pleased to inform you that your request to sponsor {{params.childName}} has been approved. You will now see their updates to you and their needs on the mobile app`,
+             params: {
+                orphName: orph.OrphanageName,
+                childName: child.Username,
+                username: user.FirstName
+            },
+        })
+        .then(console.log)
+        .catch(console.log)
+        res.status(200).json('success')
 
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+}
+
+const rejectRequest = async (req,res) => {
+
+    try {
+        
+        const id = req.query.id
+        await Request.destroy({where : {ID : id}})
+        res.status(200).json('deleted')
+
+        //send email notification
+
+        const sender = {
+            email: 'ndumonnn@gmail.com',
+            name: 'Simamisa',
+        }
+        
+        const recivers = [
+            {
+                email: user.Email,
+            },
+        ]
+        
+        const transactionalEmailApi = new Sib.TransactionalEmailsApi()
+        
+        transactionalEmailApi
+            .sendTransacEmail({
+                subject: 'Sponsorship at {{params.orphName}}',
+                sender,
+                to: recivers,
+             textContent: `Dear {{username}}, we regret to inform you that your sponsorship for {{childName}} at {{orphName}} has been rejected. You may reapply if you are still interested or consider sponsoring a different child `,
+             params: {
+                orphName: orph.OrphanageName,
+                childName: child.Username,
+                username: user.FirstName
+            },
+        })
+        .then(console.log)
+        .catch(console.log)
     } catch (error) {
         
         console.log(error)
@@ -46,52 +156,36 @@ const acceptRequest = async (req,res) =>{
 const createRequest = async (req,res) => {
 
     try {
-        
+
+        // create a false requests that will later be accepted
         let request = {
             RequestDate : new Date(),
-            isAccepted : true,
-            registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : 10,
-            childID : req.body.childID,
+            isAccepted : false,
+            isRejected: false,
+            registeredUserID: req.query.registeredUserID,
+            childID : req.query.childID,
         }
-        
-        const reg = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
-        if (reg.isSponsor){
-            var tem = await Sponsor.findOne({where: {registeredUserID : reg.ID}})
+       
+        const savedReq = await Request.create(request)
+        const child = await Child.findOne({where : {ID : request.childID}})
+        const user = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+
+        let notify = {
+            orphanageID : child.orphanageID,
+            Title : "Sponsorship requests made for " + child.Username ,
+            Body : user.FirstName + " made a sponsorship request for " + child.Username + "and needs acceptance",
+            NotificationTime : new Date()
         }
-        const created = await Request.create(request)
-        if(!request) return res.status(400).json('could not create meeting')
-    
-        let newSpons = {
-            registeredUserID : request.registeredUserID,
-            Profession : "JOB" 
-        }
+           
+       
+        Notification.create(notify)
 
-        var  spons = null
-        
-       if (!reg.isSponsor){
-        spons = await Sponsor.create(newSpons)
-       }else {
-        spons = await Sponsor.findOne({where : {registeredUserID: request.registeredUserID}})
-       }
-
-        
-        reg.isSponsor = true
-        await reg.save()
-       const sid = await spons.ID
+       
 
 
-       let sponsorship = {
-        DateStarted : new Date(), // now ,
-        MonthlySeed : 0,
-        isActive : true,
-        sponsorID : sid,
-        childID : request.childID
-    }
+   
 
-    const sponsoring = await Sponsorship.create(sponsorship)
-
-        res.status(200).json(sponsoring)
+        res.status(200).json(request)
 
     } catch (error) {
         
@@ -107,5 +201,6 @@ const createRequest = async (req,res) => {
 
 module.exports = {
     createRequest,
-    acceptRequest
+    acceptRequest,
+    rejectRequest
 }

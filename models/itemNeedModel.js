@@ -10,10 +10,6 @@ module.exports = (sequelize,DataTypes)  => {
             autoIncrement:true
 
         },
-        DueDate:{
-            type: DataTypes.DATEONLY,
-
-        },
         DateEstablished:{
             type: DataTypes.DATEONLY,
             allowNull: true

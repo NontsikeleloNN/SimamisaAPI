@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const paypal = require('paypal-rest-sdk');
+const s3 = require('./s3.js');
 //const orphanageController = require('./controllers/orphanageController.js')
 /////////////////////////////////
 
@@ -104,13 +105,19 @@ app.get('/simamisa/cancel', (req, res) => res.json('Cancelled'));
 app.use(
     cors()
 )
-// {
-//     origin: "*",
-//     methods: ["PUT","GET","POST","DELETE"]
-// }
+//S3 This is only to allow users to upload
+app.get('/s3url',(req,res)=>{
+    //you nay want to check that this is an orphanage manager
+    const url = s3.generateUploadURL();
+   url.then((ans)=>{
+    console.log("URL",ans);
+    let obj={URL:ans}
+    res.json(obj);
+    })
+    
+})
 
-// app.options('*',cors())
-//middleware configurations
+
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
