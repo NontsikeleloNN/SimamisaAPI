@@ -209,8 +209,7 @@ const makePost  = async (req,res) => {
                 Title : req.body.Title,
                 Description : req.body.Description,
                 sponsorshipID : req.body.sponsorshipID,
-                ItemImage : req.body.ItemImage,
-               
+                PostImage :req.body.PostImage
             }
             
             const savedPost = await SponsorshipPost.create(newPost)
