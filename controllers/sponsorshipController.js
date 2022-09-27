@@ -4,7 +4,7 @@ const Sponsor = db.Sponsor
 const Child = db.Child
 const Sponsorship = db.Sponsorship
 const SponsorshipPost = db.SponsorshipPost
-
+const Orphanage = db.Orphanage
 
 const getSponsorID  = async (req,res) => {
 
@@ -135,7 +135,14 @@ const getMyChildren  = async (req,res) => {
         });*/
 
      for(let cv of sponsorships){
-            child = await Child.findOne({where : {ID :cv.childID }})
+       //     child = await Child.findOne({where : {ID :cv.childID }})
+             child = await Child.findOne({include: [
+                {
+                    model: Orphanage, 
+                    attributes: ['OrphanageName','NavigationAddress']
+                }
+            ],
+                where : {ID :cv.childID }})
             children.push(child)
             console.log(child)
         }
