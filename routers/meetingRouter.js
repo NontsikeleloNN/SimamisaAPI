@@ -6,6 +6,7 @@ router.post('/', meetingController.createRequest)
 
 router.put('/',meetingController.acceptRequest)
 router.delete('/',meetingController.rejectRequest)
+router.get('/',meetingController.getAllRequests)
 
 module.exports = router
 

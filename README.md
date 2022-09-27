@@ -133,17 +133,21 @@ Sponsorship on Orphanage Manager side
 - router.get('/report/inventory', OrphanageManagerController.getInventory) //?id=x (orphanageID)
 - router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)
 - router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x&rating=x
+- router.get('/notifications',OrphanageManagerController.getAllNotifications) // ?id=x (orphanageID)
+
 
  */simamisa/orphanages/requests*
 
 - router.post('/', meetingController.createRequest)
 
 *    registeredUserID: req.body.registeredUserID,
-            orphanageManagerID : req.body.orphanageManagerID,
+              DocUrl: req.body.url,
             childID : req.body.childID,*
 
 - router.put('/',meetingController.acceptRequest)
 *  const rid = req.query.rid [requestID] *
+- router.get('/',meetingController.getAllRequests) // id=x (orphanageID)
+- router.delete('/',meetingController.rejectRequest) // id=x (orphanageID)
 
 Partnerships
 */simamisa/orphanages/partnering*

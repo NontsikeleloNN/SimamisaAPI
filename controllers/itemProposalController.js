@@ -163,6 +163,8 @@ try {
         Body : user.FirstName + " made a proposal for the need " + item.Title + "and needs acceptance",
         NotificationTime : new Date()
     }
+
+    var note = await Notification.create(notify)
        
         
     res.status(200).json(savedProposal)

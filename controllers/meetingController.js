@@ -25,7 +25,7 @@ const acceptRequest = async (req,res) =>{
         var request = await SponsorRequest.findOne({where : {ID : rid}})
 
         request.isAccepted = true  // accepted, now create sponsorship
-
+        await request.save()
         var user = await RegisteredUser.findOne({where : {ID:request.registeredUserID}}) //get the applicant
 
         let sponsorship = ""
@@ -50,7 +50,7 @@ const acceptRequest = async (req,res) =>{
             
             user.isSponsor = true // turn them into a sponsor now 
 
-
+          await  user.save()
             sponsorship = {
                 DateStarted : new Date(), // now ,
                 MonthlySeed : 0,
@@ -104,6 +104,13 @@ const acceptRequest = async (req,res) =>{
         })
 
     }
+}
+
+const getAllRequests = async (req,res) => {
+    const id = req.query.id //orphanage ids
+
+    var reqs = Request.findAll({where : {orphanageID: id}})
+    res.status(200).json(reqs)
 }
 
 const rejectRequest = async (req,res) => {
@@ -162,14 +169,30 @@ const createRequest = async (req,res) => {
             RequestDate : new Date(),
             isAccepted : false,
             isRejected: false,
-            registeredUserID: req.query.registeredUserID,
-            childID : req.query.childID,
+            registeredUserID: req.body.registeredUserID,
+            childID : req.body.childID,
         }
+
+        /**
+         * create a document folder, that points to a request id
+         * reqID, docUrl
+         * that's it. 
+         * Will probably need to make a get documents 
+         * Make an automatic "set up meeting button for the orphanage manager "
+         */
+
        
         const savedReq = await Request.create(request)
         const child = await Child.findOne({where : {ID : request.childID}})
         const user = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
 
+        
+        let docs = {
+            DocUrl: req.body.url,
+            sponosorRequestID: savedReq.ID
+        }
+
+        await Request.create(docs)
         let notify = {
             orphanageID : child.orphanageID,
             Title : "Sponsorship requests made for " + child.Username ,
@@ -202,5 +225,6 @@ const createRequest = async (req,res) => {
 module.exports = {
     createRequest,
     acceptRequest,
-    rejectRequest
+    rejectRequest,
+    getAllRequests
 }

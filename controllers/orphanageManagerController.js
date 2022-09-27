@@ -4,7 +4,7 @@
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
 const { Op, where } = require('sequelize')
-const { OfferItem, Offer, RegisteredUser } = require('../models/');
+const { OfferItem, Offer, RegisteredUser, Orphanage } = require('../models/');
 const { NUMERIC } = require('sequelize');
 
 
@@ -16,6 +16,17 @@ const Sponsor = db.Sponsor
 const Sponsorship = db.Sponsorship
 const Notification = db.Notification
 const Reg = db.RegisteredUser
+
+
+const Sib = require('sib-api-v3-sdk')
+
+require('dotenv').config()
+
+const client = Sib.ApiClient.instance
+
+const apiKey = client.authentications['api-key']
+apiKey.apiKey = process.env.API_KEY
+
 /**
  1. Inventory (all the items they have donated items+offer items)
 2. Get number of all Children in the orphanage, get all number of sponsored children, number of sponsors
@@ -143,7 +154,20 @@ try {
 }
     }
 
+const getAllNotifications = async (req,res) =>{
+    const id = req.query.id //orphanage ID 
+    var obj = {Notes: "", num : ""};
+    try {
+        var notes = await Notification.findAll({where : {ID : id}}) //all this orphanages ntoes
+        var num = await Notification.count({where : {ID : id}}) //all this orphanages ntoes
+       obj.Notes = notes
+       obj.num = num
+        res.status(200).json(obj)
 
+    } catch (error) {
+        
+    }
+}
  const getMyItemsMonths = async (req, res) => {
 
     try {
@@ -260,25 +284,73 @@ console.log(id)
  }*/
 
 const acceptProposal = async(req,res) =>{ //update to is accepted
-const itempPropID = req.query.proposalID
+
+    try {
+        const itempPropID = req.query.proposalID
 
 const proposal = await ItemProposal.findOne({where : {ID : itempPropID}})
+const user = await RegisteredUser.findOne({where : {ID : proposal.registeredUserID}})
+const itemID = proposal.itemNeedID
+const itemNeed = await ItemNeed.findOne({where : { ID : itemID}})
+const orph = await Orphanage.findOne({where:{ID : itemNeed.orphanageID}})
+
+const sender = {
+    email: 'ndumonnn@gmail.com',
+    name: 'Simamisa',
+}
+
+const recivers = [
+    {
+        email: user.Email,
+    },
+]
+
+const transactionalEmailApi = new Sib.TransactionalEmailsApi()
+
+transactionalEmailApi
+    .sendTransacEmail({
+        subject: 'Donation at {{params.orphName}}',
+        sender,
+        to: recivers,
+     textContent: `Dear {{params.username}}, we thank you so much for your support. {{params.orphName}} has accepted your donation proposal and are looking forward to seeing you soon! You can view and edit the details of your proposal on our mobile app`,
+     params: {
+        orphName: orph.OrphanageName,
+        username: user.FirstName
+    },
+})
+.then(console.log)
+.catch(console.log)
+
 console.log(itempPropID)
 console.log(proposal)
 proposal.isAccepted = true
 await proposal.save()
 res.status(200).json(proposal)
+    } catch (error) {
+        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    
+
+    }
 }
 
 const confirmFulfill = async(req,res) =>{ //update to is accepted
-const itempPropID = req.query.proposalID
+
+
+try {
+    const itempPropID = req.query.proposalID
 var tempnumItem = 0
 
 console.log(itempPropID)
 const proposal = await ItemProposal.findOne({where : {ID : itempPropID}})
+
+
 const itemID = proposal.itemNeedID
 const itemNeed = await ItemNeed.findOne({where : { ID : itemID}})
-
+const orph = await Orphanage.findOne({where:{ID : itemNeed.orphanageID}})
 if(proposal.isAccepted){
     proposal.isFulfilled = true
 } else {
@@ -310,7 +382,17 @@ if (itemNeed.NumberReceived >= itemNeed.NumberNeeded || itemNeed.AmountReceived 
 
 await itemNeed.save()
 await proposal.save()
+
+//email 
+// I need orph and user 
+
 res.status(200).json(itemNeed)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
 }
 
 const fulfillChildNeed = async(req,res) =>{ //update to is accepted
@@ -366,7 +448,7 @@ module.exports = {
 acceptProposal,
 confirmFulfill,
 fulfillChildNeed,
-
+getAllNotifications,
 //createSponsorship,
 updateChildNeed,
 getMyItemsMonths,
