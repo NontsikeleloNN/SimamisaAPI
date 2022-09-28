@@ -186,15 +186,6 @@ const createRequest = async (req,res) => {
             registeredUserID: req.body.registeredUserID,
             childID : req.body.childID,
         }
-
-        /**
-         * create a document folder, that points to a request id
-         * reqID, docUrl
-         * that's it. 
-         * Will probably need to make a get documents 
-         * Make an automatic "set up meeting button for the orphanage manager "
-         */
-
        
         const savedReq = await Request.create(request)
         const child = await Child.findOne({where : {ID : request.childID}})
@@ -203,7 +194,7 @@ const createRequest = async (req,res) => {
         
         let docs = {
             DocUrl: req.body.url,
-            sponosorRequestID: savedReq.ID
+            sponsorRequestID: savedReq.ID
         }
 
         await Document.create(docs)
