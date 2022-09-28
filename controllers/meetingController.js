@@ -109,9 +109,15 @@ const acceptRequest = async (req,res) =>{
 
 const getAllRequests = async (req,res) => {
     const id = req.query.id //orphanage ids
-
-    var reqs = Request.findAll({where : {orphanageID: id}})
-    res.status(200).json(reqs)
+  var array = []
+    var reqs = await Request.findAll({where : {orphanageID: id}})
+    for (const r of reqs) {
+        var obj = {Request : "", Documents:""}
+        obj.Request = r
+        obj.Documents = await Document.findAll({where : {sponosorRequestID : r.ID}})
+        array.push(obj)
+    }
+    res.status(200).json(array)
 }
 
 const rejectRequest = async (req,res) => {
