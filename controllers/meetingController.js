@@ -110,15 +110,22 @@ const acceptRequest = async (req,res) =>{
 const getAllRequests = async (req,res) => {
     const id = req.query.id //orphanage ids
    var orphs = await Orphanage.findOne({where : {ID : id}})
-   var children = await Child.findAll({where : {orphanageID : orphs.ID}})
+  var children = await Child.findAll({where : {orphanageID : orphs.ID}})
   var array = []
   for (const c of children) {
     
-    var reqs = await Request.findAll({where : {childID: c.ID}})
+    var reqs = await Request.findAll({include: [
+        {
+            model: Child, 
+            attributes: ['Nickname']
+        }
+    ]  ,where : {childID: c.ID}})
     for (const r of reqs) {
-        var obj = {Request : "", Documents:""}
+       
+        var obj = {Request : "", Documents:"",RegisteredUser:""}
         obj.Request = r
         obj.Documents = await Document.findAll({where : {sponsorRequestID : r.ID}})
+        obj.RegisteredUser = await RegisteredUser.findAll({where:{ID:r.registeredUserID}})
         array.push(obj)
     }
 
