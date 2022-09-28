@@ -130,10 +130,7 @@ const getAllRequests = async (req,res) => {
     ]  ,where : {childID: c.ID}})
     for (const r of reqs) {
        
-        var obj = {Request : "", Documents:""}
-        obj.Request = r
-        obj.Documents = await Document.findAll({where : {sponsorRequestID : r.ID}})
-        array.push(obj)
+         array.push(r)
     }
 
   }
