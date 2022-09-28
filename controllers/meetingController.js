@@ -122,6 +122,10 @@ const getAllRequests = async (req,res) => {
         {
             model: Child, 
             attributes: ['Nickname']
+        },
+        {
+            model:Document,
+            attributes: ['DocUrl']
         }
     ]  ,where : {childID: c.ID}})
     for (const r of reqs) {
