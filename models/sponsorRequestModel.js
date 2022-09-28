@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false
          },
-         ChildName:{
-            type: DataTypes.STRING,
-            allowNull: true
+         isRejected:{
+            type: DataTypes.BOOLEAN,
+            allowNull: false
          },
       
         },

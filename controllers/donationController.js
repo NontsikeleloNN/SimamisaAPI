@@ -1,6 +1,8 @@
+const { generalDonation } = require('../models/')
 const db = require('../models/')
 
 const Donation = db.Donation
+const gDonation = db.generalDonation
 
 
 /**const getAllItemDonations = async(req,res) => {
@@ -15,6 +17,29 @@ const Donation = db.Donation
 
 }
 */
+
+const generalDonate = async(req,res) => {
+try {
+    
+    const amount = Number(req.body.amt)
+    const user = req.body.userid
+
+    let donation = {
+        Amount : amount,
+        registeredUserID : user
+    }
+    var d =await gDonation.create(donation)
+
+    res.status(200).json(d)
+} catch (error) {
+    
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+}
+}
 const getAllDonations = async(req,res) => {
     
     let donations = await Donation.findAll({});
@@ -93,5 +118,6 @@ const createDonation = async(req,res) =>{
         getAllActiveDonation,
         getAllActiveDonationsByName,
         getOrphanageDonations,
-        getAllDonations
+        getAllDonations,
+        generalDonate
     }

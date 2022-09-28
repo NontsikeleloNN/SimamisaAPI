@@ -158,7 +158,7 @@ app.use('/simamisa/orphanages/om',om)
 
 
 const donation = require('./routers/donationRouter')
-app.use('/simamisa/orphanages/donations',donation)
+app.use('/simamisa/donations',donation)
 // proposal router
 const proposal = require('./routers/itemProposalRouter')
 app.use('/simamisa/orphanages/needs/proposals',proposal)

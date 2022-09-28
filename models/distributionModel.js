@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const generalDonation = sequelize.define("distribution", {
+    const distribution = sequelize.define("distribution", {
          ID: {
              type: DataTypes.INTEGER,
              allowNull: false,
@@ -19,5 +19,5 @@ module.exports = (sequelize, DataTypes) => {
   });
   
 
-    return generalDonation
+    return distribution
 }

@@ -17,7 +17,12 @@ module.exports = (sequelize,DataTypes)  => {
         isActive:{
             type: DataTypes.CHAR,
             allowNull:false
-        }
+        },
+        
+        isRejected:{
+            type: DataTypes.CHAR,
+            allowNull:false
+        },
     },
     { //s freezeTableName: true,
       timestamps:false

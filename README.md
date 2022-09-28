@@ -92,6 +92,16 @@ Children
 - router.put('/sponsorship',sponsorship.editSponsorship ) //body
 - router.get('/child/post',sponsorship.getByChildID) // ..?id=x this will get all child posts/ipdates 
 
+General Donations
+*/simamisa/donations*
+
+
+- router.post('/',donationController.generalDonate)
+/** 
+ *  const amount = Number(req.body.amt)
+    const user = req.body.userid
+
+*/
 
 Events
 - */simamisa/orphanages/events*

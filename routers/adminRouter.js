@@ -8,5 +8,13 @@ router.get('/sponsors',adminController.getNumberofSponsors)
 router.get('/unfulfilled',adminController.getAllUnmetOrphaganes)
 router.get('/orphanages',adminController.getNumberofOrphanages)
 router.get('/children', adminController.getChildren)
+router.get('/donations', adminController.getAmount)
+router.get('/highestPriority',adminController.orphanageHighestPriority)
 
+router.post('/',adminController.distributeFunds)
+
+/** console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    }) */
 module.exports = router

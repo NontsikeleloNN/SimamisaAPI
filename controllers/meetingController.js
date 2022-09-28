@@ -132,10 +132,14 @@ const rejectRequest = async (req,res) => {
     try {
         
         const id = req.query.id
+        var request = await Request.findOne({where : {ID : id}})
         await Request.destroy({where : {ID : id}})
         res.status(200).json('deleted')
 
-        //send email notification
+       
+        const child = await Child.findOne({where : {ID : request.childID}})
+        const user = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+        const orph = await Orphanage.findOne({where : { ID: child.orphanageID}})
 
         const sender = {
             email: 'ndumonnn@gmail.com',
@@ -155,7 +159,7 @@ const rejectRequest = async (req,res) => {
                 subject: 'Sponsorship at {{params.orphName}}',
                 sender,
                 to: recivers,
-             textContent: `Dear {{username}}, we regret to inform you that your sponsorship for {{childName}} at {{orphName}} has been rejected. You may reapply if you are still interested or consider sponsoring a different child `,
+             textContent: `Dear {{params.username}}, we regret to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} has been rejected. You may reapply if you are still interested or consider sponsoring a different child `,
              params: {
                 orphName: orph.OrphanageName,
                 childName: child.Username,
@@ -172,6 +176,51 @@ const rejectRequest = async (req,res) => {
         })
 
     }
+}
+
+const setUpMeeting = async (req,res) => {
+ const id = req.body.id
+ const mlink = req.body.link
+ var request = await Request.findOne({where : {ID : id}})
+
+
+ const child = await Child.findOne({where : {ID : request.childID}})
+ const user = await RegisteredUser.findOne({where : {ID : request.registeredUserID}})
+ const orph = await Orphanage.findOne({where : { ID: child.orphanageID}})
+
+ request.isAccepted = true
+ request.isRejected = true
+
+ await request.save()
+ const sender = {
+     email: 'ndumonnn@gmail.com',
+     name: 'Simamisa',
+ }
+ 
+ const recivers = [
+     {
+         email: user.Email,
+     },
+ ]
+ 
+ const transactionalEmailApi = new Sib.TransactionalEmailsApi()
+ 
+ transactionalEmailApi
+     .sendTransacEmail({
+         subject: 'Sponsorship at {{params.orphName}}',
+         sender,
+         to: recivers,
+      textContent: `Dear {{params.username}}, we wish to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} is being reviewed. The orphanage manager is interested in meeting with you, details in the following link {{params.link}}`,
+      params: {
+         orphName: orph.OrphanageName,
+         childName: child.Username,
+         username: user.FirstName,
+         link: mlink
+     },
+ })
+ .then(console.log)
+ .catch(console.log)
+
 }
 
 const createRequest = async (req,res) => {
@@ -201,8 +250,8 @@ const createRequest = async (req,res) => {
 
         let notify = {
             orphanageID : child.orphanageID,
-            Title : "Sponsorship requests made for " + child.Username ,
-            Body : user.FirstName + " made a sponsorship request for " + child.Username + "and needs acceptance",
+            Title : "Sponsorship request for " + child.Username ,
+            Body : user.FirstName + " made a sponsorship request for " + child.Username + ", and needs reviewing",
             NotificationTime : new Date()
         }
            
@@ -232,5 +281,6 @@ module.exports = {
     createRequest,
     acceptRequest,
     rejectRequest,
-    getAllRequests
+    getAllRequests,
+    setUpMeeting
 }

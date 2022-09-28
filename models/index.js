@@ -71,12 +71,12 @@ db.SponsorshipPost = require('./sponsorshipPostModel') (sequelize,DataTypes)
 db.generalDonation = require('./generalDonationModel') (sequelize,DataTypes)
 db.Notification = require('./notificationModel')(sequelize,DataTypes)
 db.Document = require('./documentsModel') (sequelize,DataTypes)
-//db.Distribution = require('./distributionModel') (sequelize,DataTypes)
+db.Distribution = require('./distributionModel') (sequelize,DataTypes)
 
 
 // distribution
-/*db.Orphanage.hasMany(db.Distribution)
-db.Distribution.belongsTo(db.Orphanage)*/
+db.Orphanage.belongsTo(db.Distribution)
+db.Distribution.hasMany(db.Orphanage)
 
 //sponsorship post
 db.Sponsorship.hasMany(db.SponsorshipPost,{ foreignKey: {allowNull:false}})
@@ -171,10 +171,7 @@ db.Child.belongsTo(db.Orphanage)
 db.Sponsorship.hasMany(db.ChildNeed)
 db.ChildNeed.belongsTo(db.Sponsorship)
 
-db.generalDonation.belongsTo(db.Orphanage)
-db.Orphanage.hasMany(db.generalDonation)
-db.generalDonation.belongsTo(db.Child)
-db.Child.hasMany(db.generalDonation)
+
 db.generalDonation.belongsTo(db.RegisteredUser)
 db.RegisteredUser.hasMany(db.generalDonation)
 

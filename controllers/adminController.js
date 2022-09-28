@@ -10,6 +10,9 @@ const ChildNeed = db.ChildNeed
 const Children = db.Child
 const Sponsor = db.Sponsor
 const RegisterUser = db.RegisteredUser
+const Distribution = db.Distribution
+const gDon = db.generalDonation
+const Notification = db.Notification
 const { Op } = require("sequelize");
 
 //all the itemNeeds who are still needed and are highest priority 
@@ -204,6 +207,99 @@ const getAllOrphanageItemsMonths = async (req, res) => {
  
     }
  }
+
+ const getAmount = async (req,res) => {
+
+  var dist = await Distribution.sum('Amount').then(sum =>{
+
+  })
+  res.status(200).json(dist)
+ }
+
+  const orphanageHighestPriority = async (req,res) => {
+    try {
+      var arr = []
+    var orphs = await Orphanage.findAll({}) // get all the orphanages
+
+    for (const o of orphs) {
+      var obj = {Name : '', Number : ''}
+
+      const num = await ItemNeed.count({where : {
+        orphanageID : o.ID, //current orphanage
+        PriorityRating : '3'
+      }})
+
+      obj.Name = o.OrphanageName
+      obj.Number = num
+      arr.push(obj)
+    }
+
+    res.status(200).json(arr)
+    } catch (error) {
+      
+      console.log(error)
+      res.status(500).json({
+          errorMessage: error.message
+      })
+
+    }
+
+  }
+
+ const distributeFunds = async (req,res) => {
+
+  try {
+    
+  const amount = req.query.amt
+  const orph =req.query.id
+
+  let obj = {
+    Amount : amount,
+    orphanageID: orph
+  }
+
+  var don = await gDon.sum('Amount').then(sum =>{
+
+  })
+
+  
+  var dist = await Distribution.sum('Amount').then(sum =>{
+
+  })
+
+  const value = dist + obj.Amount
+  if(value <= don){
+    await Distribution.create(obj)
+
+    let notify = {
+      orphanageID : obj.orphanageID,
+      Title : "Donation made",
+      Body :  "Simamisa distributed an amount of R" + obj.Amount + " to the orphanage",
+      NotificationTime : new Date()
+  }
+
+   await Notification.create(notify)
+res.status(200).json('success')
+
+  } else {
+    res.status(200).json('insufficient funds to distribute')
+  }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+  }
+  
+  
+  // if the amount I want to distribute is not greater than the money I have, permit 
+  /**Project.sum('age').then(sum => {
+  // this will return 55
+}) */
+
+ }
+
 // all needs that are not not fulfilled and do not have sponsors 
 const childrenNeeds = async (req,res) =>{
    try {
@@ -236,5 +332,8 @@ module.exports={
     getNumberofRegisteredUsers,
     getNumberofSponsors,
     childrenNeeds,
-    getChildren
+    getChildren,
+    distributeFunds,
+    getAmount,
+    orphanageHighestPriority
 }

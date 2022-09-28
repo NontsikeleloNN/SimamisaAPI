@@ -8,10 +8,7 @@ module.exports = (sequelize,DataTypes)  => {
             autoIncrement:true
 
         },
-        DueDate:{
-            type: DataTypes.DATEONLY,
-
-        },
+    
         Title:{
             type: DataTypes.STRING,
             allowNull:false

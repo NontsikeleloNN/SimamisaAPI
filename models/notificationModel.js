@@ -19,6 +19,10 @@ module.exports = (sequelize,DataTypes)  => {
         NotificationTime:{ 
             type: DataTypes.DATE,
             allowNull: false 
+        },
+        Read:{ 
+            type: DataTypes.BOOLEAN,
+            defaultValue: false 
         }
     },
     { //s freezeTableName: true,

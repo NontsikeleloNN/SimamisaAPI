@@ -12,10 +12,7 @@ module.exports = (sequelize,DataTypes)  => {
             type: DataTypes.DATEONLY,
             allowNull: false
         },
-        MonthlySeed:{
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
+       
         isActive:{
             type: DataTypes.CHAR,
             default: '0',

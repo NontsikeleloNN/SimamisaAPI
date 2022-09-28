@@ -40,7 +40,17 @@ module.exports = (sequelize,DataTypes)  => {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
-       }
+       },
+       Coordinates:{
+        type: DataTypes.STRING,
+        allowNull: true,
+       
+       },
+        Distance:{
+        type: DataTypes.DOUBLE,
+        allowNull: true,
+       
+       },
     },
     { //s freezeTableName: true,
       timestamps:false

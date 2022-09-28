@@ -39,6 +39,10 @@ module.exports = (sequelize,DataTypes)  => {
         type: DataTypes.STRING,
         allowNull: false
     },
+    isSponsored: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
 },
   { //s freezeTableName: true,
     timestamps:false
