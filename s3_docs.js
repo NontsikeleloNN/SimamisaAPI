@@ -5,7 +5,7 @@ const util=	require('util');
 const randomBytes = util.promisify(crypto.randomBytes)
 
 
-const region = " us-east-1"
+const region = "us-east-1"
 const bucketName = "simamisa-documets"
 //process.env for key protection
 // const accessKeyId = process.env.AWS_ACCESS_KEY_ID
