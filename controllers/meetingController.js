@@ -110,16 +110,27 @@ const acceptRequest = async (req,res) =>{
 const getAllRequests = async (req,res) => {
     const id = req.query.id //orphanage ids
    var orphs = await Orphanage.findOne({where : {ID : id}})
-   var children = await Child.findAll({where : {orphanageID : orphs.ID}})
+  var children = await Child.findAll({where : {orphanageID : orphs.ID}})
   var array = []
   for (const c of children) {
     
-    var reqs = await Request.findAll({where : {childID: c.ID}})
+    var reqs = await Request.findAll({include: [
+        {
+            model: RegisteredUser, 
+            attributes: ['FirstName','Email']
+        },
+        {
+            model: Child, 
+            attributes: ['Nickname']
+        },
+        {
+            model:Document,
+            attributes: ['DocUrl']
+        }
+    ]  ,where : {childID: c.ID}})
     for (const r of reqs) {
-        var obj = {Request : "", Documents:""}
-        obj.Request = r
-        obj.Documents = await Document.findAll({where : {sponsorRequestID : r.ID}})
-        array.push(obj)
+       
+         array.push(r)
     }
 
   }
@@ -235,6 +246,15 @@ const createRequest = async (req,res) => {
             registeredUserID: req.body.registeredUserID,
             childID : req.body.childID,
         }
+
+        /**
+         * create a document folder, that points to a request id
+         * reqID, docUrl
+         * that's it. 
+         * Will probably need to make a get documents 
+         * Make an automatic "set up meeting button for the orphanage manager "
+         */
+
        
         const savedReq = await Request.create(request)
         const child = await Child.findOne({where : {ID : request.childID}})
@@ -243,7 +263,7 @@ const createRequest = async (req,res) => {
         
         let docs = {
             DocUrl: req.body.url,
-            sponsorRequestID: savedReq.ID
+            sponosorRequestID: savedReq.ID
         }
 
         await Document.create(docs)
