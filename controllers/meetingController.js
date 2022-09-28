@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const { Child, SponsorRequest, Orphanage } = require('../models/');
 const Request = db.SponsorRequest
 const Sponsor = db.Sponsor
+const Document = db.Document
 const Notification = db.Notification
 const RegisteredUser = db.RegisteredUser
 const Sponsorship = db.Sponsorship
@@ -192,7 +193,8 @@ const createRequest = async (req,res) => {
             sponosorRequestID: savedReq.ID
         }
 
-        await Request.create(docs)
+        await Document.create(docs)
+
         let notify = {
             orphanageID : child.orphanageID,
             Title : "Sponsorship requests made for " + child.Username ,
@@ -201,7 +203,7 @@ const createRequest = async (req,res) => {
         }
            
        
-        Notification.create(notify)
+      await  Notification.create(notify)
 
        
 
