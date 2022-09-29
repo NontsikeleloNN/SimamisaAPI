@@ -4,6 +4,7 @@ const router = require('express').Router()
 
 
 router.get('/',childController.getAllChildren)
+router.get('/unsponsored',childController.getAllUnsponsoredChildren)
 router.get('/mychildren',sponsorship.getMyChildren)
 router.get('/child', childController.getChildbyID)
 router.get('/orphanage/child', childController.getChildbyOrphanage) // ...?OrphID=#
