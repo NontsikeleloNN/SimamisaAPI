@@ -111,7 +111,9 @@ const acceptRequest = async (req,res) =>{
 }
 
 const getAllRequests = async (req,res) => {
-    const id = req.query.id //orphanage ids
+
+    try {
+        const id = req.query.id //orphanage ids
    var orphs = await Orphanage.findOne({where : {ID : id}})
   var children = await Child.findAll({where : {orphanageID : orphs.ID}})
   var array = []
@@ -139,7 +141,15 @@ const getAllRequests = async (req,res) => {
   }
     
     res.status(200).json(array)
-}
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
+    }
 
 const rejectRequest = async (req,res) => {
 
