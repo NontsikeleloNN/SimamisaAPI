@@ -26,6 +26,7 @@ const acceptRequest = async (req,res) =>{
         var request = await SponsorRequest.findOne({where : {ID : rid}})
 
         request.isAccepted = true  // accepted, now create sponsorship
+        request.isRejected = false
         await request.save()
         var user = await RegisteredUser.findOne({where : {ID:request.registeredUserID}}) //get the applicant
 
@@ -67,6 +68,8 @@ const acceptRequest = async (req,res) =>{
         var child = await Child.findOne({where : { ID : sponsorship.childID}})
         var orph = await Orphanage.findOne({where : {ID : child.orphanageID}})
             
+        child.isSponsored = true
+        await child.save()
         //send notification to sponsor via email that their sponsorship has been accepted 
         const sender = {
             email: 'ndumonnn@gmail.com',
@@ -263,7 +266,7 @@ const createRequest = async (req,res) => {
         
         let docs = {
             DocUrl: req.body.url,
-            sponosorRequestID: savedReq.ID
+            sponsorRequestID: savedReq.ID
         }
 
         await Document.create(docs)
