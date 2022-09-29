@@ -3,13 +3,14 @@
 */
 const db = require('../models/')
 const Partnership = db.Partnership
+const Notification = db.Notification
 const Offer = db.Offer
 const OfferItem = db.OfferItem
 const { Op } = require("sequelize");
 const {doASideEffect, getSingleItem} = require('./utilities.js');
 const { Orphanage } = require('../models/');
 
-//sending a request 
+//sending a request k
 const acceptOffer = async (req,res) => {
 
     try {
@@ -60,11 +61,20 @@ console.log(rec+'jjmm')
     let newRequest = {
         PartnershipDate: new Date(),
         isActive: false,
+        isRejected : false,
         SenderID: sendor,
         ReceiverID: rec
     }
+    var orph = await Orphanage.findOne({where : {ID : sendor}})
+  let notification = {
+    orphanageID : rec,
+    Title : "New partnering request " ,
+    Body : orph.OrphanageName + " sent you a partnering request, navigate to \" My Partners \ to accept or reject their request",
+    NotificationTime : new Date()
+}
 
-  
+var note = await Notification.create(notification)
+   
    
     const created = await Partnership.create(newRequest)
     res.status(200).json(created)
