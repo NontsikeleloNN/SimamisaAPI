@@ -16,7 +16,8 @@ router.get('/report/inventory', OrphanageManagerController.getInventory) // ?id=
 router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsReport) //?id=x (orphanageID)
 router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x
 router.get('/report/demographics',OrphanageManagerController.getDemographics) // ?id=x (orphanageID)
-router.get('/notifications',OrphanageManagerController.getAllNotifications) // ?id=x (orphanageID)
+router.get('/notifications',OrphanageManagerController.getNumNotifications) // ?id=x (orphanageID)
+router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)
 
 router.post('/post',SponsorshipController.makePost)
 

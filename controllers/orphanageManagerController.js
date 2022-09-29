@@ -154,15 +154,33 @@ try {
 }
     }
 
-const getAllNotifications = async (req,res) =>{
+    const AllNotifications = async (req,res) =>{
+        const id = req.query.id //orphanage ID 
+        var turnread = await Notification.findAll({where : {
+            orphanageID : id,
+            Read : false
+        }}) 
+    
+        for (const n of turnread) {
+            n.Read = true
+           await n.save()
+        }
+
+        var all = await Notification.findAll({where : {orphanageID : id}})
+        res.status(200).json(all)
+    }
+
+const getNumNotifications = async (req,res) =>{
     const id = req.query.id //orphanage ID 
-    var obj = {Notes: "", num : ""};
+ 
     try {
-        var notes = await Notification.findAll({where : {ID : id}}) //all this orphanages ntoes
-        var num = await Notification.count({where : {ID : id}}) //all this orphanages ntoes
-       obj.Notes = notes
-       obj.num = num
-        res.status(200).json(obj)
+        var num = await Notification.count({where : {
+            orphanageID : id,
+            Read : false
+        }}) 
+
+       
+        res.status(200).json(num)
 
     } catch (error) {
         
@@ -448,7 +466,8 @@ module.exports = {
 acceptProposal,
 confirmFulfill,
 fulfillChildNeed,
-getAllNotifications,
+getNumNotifications,
+AllNotifications,
 //createSponsorship,
 updateChildNeed,
 getMyItemsMonths,
