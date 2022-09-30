@@ -11,7 +11,14 @@ const getAllChildren = async(req,res) =>{
   //res.json({orphs})
   
 }
-
+const getAllUnsponsoredChildren = async(req,res) =>{
+  
+    let orphs = await Child.findAll({where : {isSponsored : false}})
+   res.status(200).send(orphs)
+   console.log(orphs)
+  //res.json({orphs})
+  
+}
 const getChildbyID = async(req,res) =>{
   
     const id = req.query.id
@@ -78,5 +85,6 @@ module.exports = {
     getAllChildren,
     getChildbyID,
     getChildbyOrphanage,
-    getSponsorshipID
+    getSponsorshipID,
+    getAllUnsponsoredChildren
 }
