@@ -5,7 +5,7 @@ const Child = db.Child
 
 const getAllChildren = async(req,res) =>{
   
-    let orphs = await Child.findAll({})
+    let orphs = await Child.findAll({where : {isSponsored : false}})
    res.status(200).send(orphs)
    console.log(orphs)
   //res.json({orphs})

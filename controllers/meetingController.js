@@ -92,7 +92,7 @@ const acceptRequest = async (req,res) =>{
              textContent: `Dear {{params.username}}, we are pleased to inform you that your request to sponsor {{params.childName}} has been approved. You will now see their updates to you and their needs on the mobile app`,
              params: {
                 orphName: orph.OrphanageName,
-                childName: child.Username,
+                childName: child.Nickname,
                 username: user.FirstName
             },
         })
@@ -186,7 +186,7 @@ const rejectRequest = async (req,res) => {
              textContent: `Dear {{params.username}}, we regret to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} has been rejected. You may reapply if you are still interested or consider sponsoring a different child `,
              params: {
                 orphName: orph.OrphanageName,
-                childName: child.Username,
+                childName: child.Nickname,
                 username: user.FirstName
             },
         })
@@ -203,7 +203,8 @@ const rejectRequest = async (req,res) => {
 }
 
 const setUpMeeting = async (req,res) => {
- const id = req.body.id
+ try {
+    const id = req.body.id
  const mlink = req.body.link
  var request = await Request.findOne({where : {ID : id}})
 
@@ -237,7 +238,7 @@ const setUpMeeting = async (req,res) => {
       textContent: `Dear {{params.username}}, we wish to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} is being reviewed. The orphanage manager is interested in meeting with you, details in the following link {{params.link}}`,
       params: {
          orphName: orph.OrphanageName,
-         childName: child.Username,
+         childName: child.Nickname,
          username: user.FirstName,
          link: mlink
      },
@@ -245,6 +246,15 @@ const setUpMeeting = async (req,res) => {
  .then(console.log)
  .catch(console.log)
 
+ } catch (error) {
+    
+ 
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+
+ }
 }
 
 const createRequest = async (req,res) => {
