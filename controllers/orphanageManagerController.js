@@ -422,9 +422,57 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
     await need.save()
     res.status(200).json(need)
 }
+/** PickUpTime:{
+            type: DataTypes.DATE
+        },
+        PickUpPlace:{
+            type: DataTypes.STRING
+        },
+        DropOffTime: */
+const unreliableUsers = async (req,res) => {
+
+    const id = req.query.id //for this orphanage
+    const day = Date()
+    var items = await ItemNeed.findAll({where : {orphanageID : id}})
+
+    var ans = []
+    var prop = []
+    for (const i of items) {
+        var p = await ItemProposal.findAll({where : {itemNeedID : i.ID}})
+        prop.push(...p)
+    }
+    var users = await RegisteredUser.findAll({})
+
+    for (const u of users) {
+        var counter = 0
+        var propC = await ItemProposal.count({where : {registeredUserID : u.ID, isFulfilled : true}})
+        for (const p of prop) {
+            
+            if(p.registeredUserID == u.ID && p.isAccepted == true && p.isFulfilled == false &&(p.DropOffTime < day || p.PickUpTime < day) ){
+                counter++
+            }
+        }
+        var obj = {
+            Name: u.Username,
+            Offences : counter,
+            Done : propC
+        }
+
+        if (obj.Offences >= 5 && obj.Offences >= obj.Total){
+            ans.push(obj)
+        }
 
 
+    }
+   
+    res.status(200).json(ans)
 
+}
+
+
+const accountability = async (req,res) => {
+
+}
 const updateChildNeed = async (req,res) => {
 
        
@@ -473,5 +521,6 @@ updateChildNeed,
 getMyItemsMonths,
 getInventory,
 getOrphanageProposalsReport,
-getDemographics
+getDemographics,
+unreliableUsers //add
 }

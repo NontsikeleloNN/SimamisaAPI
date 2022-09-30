@@ -279,7 +279,7 @@ async function zoomlink(body, child, user) {
 const setUpMeeting = async (req, res) => {
 
 
-
+try{
     const id = req.body.id
     var request = await Request.findOne({ where: { ID: id } })
 
@@ -330,8 +330,15 @@ const setUpMeeting = async (req, res) => {
         .catch(console.log)
    
         res.status(200).json(obj);
-    })
-    
+    });
+}catch (error) {
+
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+
+    }
     
 }
 
