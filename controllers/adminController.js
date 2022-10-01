@@ -210,9 +210,16 @@ const getAllOrphanageItemsMonths = async (req, res) => {
 
  const getAmount = async (req,res) => {
 //await sequelize.query("UPDATE users SET y = 42 WHERE x = 12");
-  var dist =  await Op.query("SELECT SUM(Amount) FROM distributions")
+  try {
+    var dist =  await Op.query("SELECT SUM(Amount) FROM distributions")
 
   res.status(200).json(dist)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+  }
  }
 
   const orphanageHighestPriority = async (req,res) => {
