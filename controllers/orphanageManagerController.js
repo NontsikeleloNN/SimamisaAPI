@@ -467,9 +467,10 @@ const accountability = async(req,res) =>{
 
 }
 const unreliableUsers = async (req,res) => {
-
+try {
+    
     const id = req.query.id //for this orphanage
-    const day = Date()
+    const day = new Date()
     var items = await ItemNeed.findAll({where : {orphanageID : id}})
 
     var ans = []
@@ -505,6 +506,12 @@ const unreliableUsers = async (req,res) => {
 
    
     res.status(200).json(ans)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
 
 }
 
