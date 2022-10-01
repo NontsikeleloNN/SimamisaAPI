@@ -495,10 +495,10 @@ console.log(users)
         var obj = {
             Name: u.Username,
             Offences : counter,
-            Done : propC
+            Total : propC
         }
 
-        if (obj.Offences >= 5 ){ //&& obj.Offences >= obj.Total
+        if (obj.Offences >= 5 && obj.Offences >= obj.Total){ //
             ans.push(obj)
         }
 
