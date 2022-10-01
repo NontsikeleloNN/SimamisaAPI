@@ -293,8 +293,8 @@ const createRequest = async (req,res) => {
 
         let notify = {
             orphanageID : child.orphanageID,
-            Title : "Sponsorship request for " + child.Username ,
-            Body : user.FirstName + " made a sponsorship request for " + child.Username + ", and needs reviewing",
+            Title : "Sponsorship request for " + child.Nickname ,
+            Body : user.FirstName + " made a sponsorship request for " + child.Nickname + ", and needs reviewing",
             NotificationTime : new Date()
         }
            

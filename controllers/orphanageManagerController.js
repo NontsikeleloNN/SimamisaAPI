@@ -154,20 +154,35 @@ try {
 }
     }
 
+    //flag user
     const AllNotifications = async (req,res) =>{
-        const id = req.query.id //orphanage ID 
-        var turnread = await Notification.findAll({where : {
+        //sort by date
+        try {
+            const id = req.query.id //orphanage ID 
+        var unread = await Notification.findAll({where : {
             orphanageID : id,
             Read : false
         }}) 
-    
-        for (const n of turnread) {
+//objects.sort((a, b) => a.createdAt - b.createdAt);
+        var allRead = await Notification.findAll({where : {orphanageID : id,
+        Read: true}})
+
+        for (const n of unread) {
             n.Read = true
            await n.save()
         }
 
-        var all = await Notification.findAll({where : {orphanageID : id}})
-        res.status(200).json(all)
+        var obj = {new: '',old: ''}
+        obj.new = unread.sort((a,b)=> b.NotificationTime - a.NotificationTime)
+        obj.old =allRead.sort((a,b)=> b.NotificationTime - a.NotificationTime)
+       
+        res.status(200).json(obj)
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                errorMessage: error.message
+            })
+        }
     }
 
 const getNumNotifications = async (req,res) =>{
@@ -183,7 +198,10 @@ const getNumNotifications = async (req,res) =>{
         res.status(200).json(num)
 
     } catch (error) {
-        
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
     }
 }
  const getMyItemsMonths = async (req, res) => {
@@ -300,6 +318,28 @@ console.log(id)
 
   res.status(200).json(created)
  }*/
+
+ const calcPetrol = async(req,res) =>{ 
+// count between today and the next seven days 
+//find all proposalsfor this orphanage that are between today and the next seven days 
+const today = new Date()
+const nextWeek = new Date()
+nextWeek.setDate(new Date().getDate() + 7)
+var prop = await ItemProposal.findAll({where : {
+    PickUpTime:{
+        [Op.between]: [today, nextWeek]
+    }
+}})
+
+var dist =0
+for (const p of props) {
+    dist+= Number(p.Distance)
+}
+// 0.12 per km (km*0.12*)
+var ans = (( 0.12*dist )* 23.055)* 2
+
+res.status(200).json(ans)
+ }
 
 const acceptProposal = async(req,res) =>{ //update to is accepted
 
@@ -422,13 +462,10 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
     await need.save()
     res.status(200).json(need)
 }
-/** PickUpTime:{
-            type: DataTypes.DATE
-        },
-        PickUpPlace:{
-            type: DataTypes.STRING
-        },
-        DropOffTime: */
+
+const accountability = async(req,res) =>{ 
+
+}
 const unreliableUsers = async (req,res) => {
 
     const id = req.query.id //for this orphanage
@@ -464,15 +501,23 @@ const unreliableUsers = async (req,res) => {
 
 
     }
+
+
    
     res.status(200).json(ans)
 
 }
 
 
-const accountability = async (req,res) => {
 
+const flagUser = async (req,res) => {
+    const id = req.body.id
+    var user = await RegisteredUser.findOne({where : {ID : id}})
+
+    user.isFlagged = true 
+    await user.save() 
 }
+
 const updateChildNeed = async (req,res) => {
 
        
@@ -522,5 +567,7 @@ getMyItemsMonths,
 getInventory,
 getOrphanageProposalsReport,
 getDemographics,
-unreliableUsers //add
+unreliableUsers, //add
+calcPetrol,
+flagUser
 }
