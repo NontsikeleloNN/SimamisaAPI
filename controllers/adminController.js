@@ -209,10 +209,9 @@ const getAllOrphanageItemsMonths = async (req, res) => {
  }
 
  const getAmount = async (req,res) => {
+//await sequelize.query("UPDATE users SET y = 42 WHERE x = 12");
+  var dist =  await Op.query("SELECT SUM(Amount) FROM distributions")
 
-  var dist = await Distribution.sum('Amount').then(sum =>{
-
-  })
   res.status(200).json(dist)
  }
 
