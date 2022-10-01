@@ -75,8 +75,8 @@ db.Distribution = require('./distributionModel') (sequelize,DataTypes)
 
 
 // distribution
-db.Orphanage.belongsTo(db.Distribution)
-db.Distribution.hasMany(db.Orphanage)
+db.Orphanage.hasMany(db.Distribution)
+db.Distribution.belongsTo(db.Orphanage)
 
 //sponsorship post
 db.Sponsorship.hasMany(db.SponsorshipPost,{ foreignKey: {allowNull:false}})
