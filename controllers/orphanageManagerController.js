@@ -473,20 +473,22 @@ try {
     const day = new Date()
     var items = await ItemNeed.findAll({where : {orphanageID : id}})
 
+console.log(items)
     var ans = []
     var prop = []
     for (const i of items) {
         var p = await ItemProposal.findAll({where : {itemNeedID : i.ID}})
         prop.push(...p)
     }
+    console.log(prop)
     var users = await RegisteredUser.findAll({})
-
+console.log(users)
     for (const u of users) {
         var counter = 0
-        var propC = await ItemProposal.count({where : {registeredUserID : u.ID, isFulfilled : true}})
+        var propC = await ItemProposal.count({where : {registeredUserID : u.ID, isFulfilled : false}})
         for (const p of prop) {
             
-            if(p.registeredUserID == u.ID && p.isAccepted == true && p.isFulfilled == false &&(p.DropOffTime < day || p.PickUpTime < day) ){
+            if(p.registeredUserID == u.ID && p.isAccepted == true && p.isFulfilled == false && (p.DropOffTime < day || p.PickUpTime < day) ){
                 counter++
             }
         }
