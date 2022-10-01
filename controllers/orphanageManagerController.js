@@ -511,11 +511,18 @@ const unreliableUsers = async (req,res) => {
 
 
 const flagUser = async (req,res) => {
+   try {
     const id = req.body.id
     var user = await RegisteredUser.findOne({where : {ID : id}})
 
     user.isFlagged = true 
     await user.save() 
+   } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+   }
 }
 
 const updateChildNeed = async (req,res) => {

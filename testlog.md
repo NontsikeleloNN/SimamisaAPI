@@ -12,5 +12,6 @@
 - router.get('/highestPriority',adminController.orphanageHighestPriority)
 - router.get('/notifications',OrphanageManagerController.getNumNotifications) // ?id=x (orphanageID)
 - router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)
-
+- router.get('/flags',OrphanageManagerController.unreliableUsers)  // ?id=x (orphanageID)
+- router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 - make notification for orphanage partnering 

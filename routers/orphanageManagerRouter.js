@@ -17,8 +17,10 @@ router.get('/report/proposal',OrphanageManagerController.getOrphanageProposalsRe
 router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?id=x
 router.get('/report/demographics',OrphanageManagerController.getDemographics) // ?id=x (orphanageID)
 router.get('/notifications',OrphanageManagerController.getNumNotifications) // ?id=x (orphanageID)
-router.get('flags',OrphanageManagerController.unreliableUsers)
+router.get('/flags',OrphanageManagerController.unreliableUsers)  // ?id=x (orphanageID)
+router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)
+
 
 router.post('/post',SponsorshipController.makePost)
 
