@@ -14,6 +14,7 @@ const Distribution = db.Distribution
 const gDon = db.generalDonation
 const Notification = db.Notification
 const { Op } = require("sequelize");
+const { generalDonation } = require('../models')
 
 //all the itemNeeds who are still needed and are highest priority 
 //I can send this with the numbers for each orphanage and send as x and y values 
@@ -211,7 +212,7 @@ const getAllOrphanageItemsMonths = async (req, res) => {
  const getAmount = async (req,res) => {
 //await sequelize.query("UPDATE users SET y = 42 WHERE x = 12");
   try {
-    var dist =  await Op.query("SELECT SUM(Amount) FROM distributions")
+    var dist =  await generalDonation.sum('Amount')
 
   res.status(200).json(dist)
   } catch (error) {
