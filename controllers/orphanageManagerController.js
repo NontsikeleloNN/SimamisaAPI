@@ -498,7 +498,7 @@ console.log(users)
             Done : propC
         }
 
-        if (obj.Offences >= 5 && obj.Offences >= obj.Total){
+        if (obj.Offences >= 5 ){ //&& obj.Offences >= obj.Total
             ans.push(obj)
         }
 
