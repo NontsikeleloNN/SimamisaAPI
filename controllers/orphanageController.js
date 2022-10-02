@@ -133,6 +133,25 @@ const regManager = async (req,res) => {
         errorMessage: error.message
     })
    }
+
+   const updateOrph = async(req,res) =>{
+    try {
+        
+        let id = req.body.id;
+        // I think I should just receive the changes that I want to and update them accordingly
+    
+        let orph = await Orphanage.update(req.body,{where: {ID : id}})
+            if(!orph) return res.status(400).json('could not update orphanage: '+ id);
+    
+        res.status(200).json('updated')
+
+    } catch (error) {
+        res.status(500).json({
+            errorMessage : error.message
+        })
+    }
+}
+
 }
 
 
@@ -141,5 +160,6 @@ module.exports = {
     getOrphanage,
     regOrphanage,
     regManager,
-    getAllNotifications // add to routes 
+    getAllNotifications ,// add to routes
+    updateOrph
 }

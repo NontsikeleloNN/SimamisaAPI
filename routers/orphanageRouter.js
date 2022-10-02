@@ -11,6 +11,6 @@ router.post('/',orphanageController.regOrphanage)
 router.get('/sponsorID',sponsor.getSponsorID) // ..?id=x
 
 router.post('/om',orphanageController.regManager)
-
+router.put('/',orphanageController.updateOrph)
 
 module.exports = router;
