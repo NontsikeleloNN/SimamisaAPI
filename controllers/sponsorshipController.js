@@ -56,7 +56,7 @@ const getByChildID = async (req,res) => {
 
     const sponsorShip = (await Sponsorship.findOne({where : {childID : id}}))
     if(sponsorShip ==null){
-        res.status(200).json({})
+        res.status(200).json("Not Sponsored")
     }else{
         spononsorID = sponsorShip.ID
         let posts = await SponsorshipPost.findAll({where : {sponsorshipID:spononsorID}})
