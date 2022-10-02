@@ -34,7 +34,7 @@ const getAllNeeds = async(req,res) => {
         const sortedDesc = items.sort(
             (objA, objB) => Number(objB.PriorityRating) - Number(objA.PriorityRating),
           );
-    res.status(200).json(sortedDesc)
+    res.status(200).json(...sortedDesc)
 
 }
 
