@@ -127,7 +127,12 @@ const getNeed = async (req,res) => {
     try {
         var op = {some :'', orphanageName:''}
         let id = req.query.id
-        let orph = await ItemNeed.findOne({where: {ID: id}})
+        let orph = await ItemNeed.findOne({include: [
+            {
+                model: Orphanage, 
+                attributes: ['OrphanageName','NavigationAddress']
+            }
+        ],where: {ID: id},})
         op.some = orph
         op.orphanageName = orph.orphanageName
         res.status(200).json(op)
