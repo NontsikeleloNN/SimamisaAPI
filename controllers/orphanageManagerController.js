@@ -4,7 +4,7 @@
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
 const { Op, where } = require('sequelize')
-const { OfferItem, Offer, RegisteredUser, Orphanage } = require('../models/');
+const { OfferItem, Offer, RegisteredUser, Orphanage, Child } = require('../models/');
 const { NUMERIC } = require('sequelize');
 
 
@@ -464,38 +464,61 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
 }
 
 const accountability = async(req,res) =>{ 
+try {
+    
+    const id = req.query.id //orphanage id
+    var kids = []
+    var children = await Child.findAll({where : {orphanageID : id }})
+    for (const c of children) {
+        var obj = {Childname : "", Number : ""}
+        var needs = await ChildNeed.count({where : {childID : c.ID , isFulfilled: false , DueDate :{[Op.lt]: new Date() }}})
+    obj.Childname = c.Nickname
+    obj.Number = needs
+    kids.push(obj)
+    }
+
+    res.status(200).json(kids)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
 
 }
 const unreliableUsers = async (req,res) => {
-
+try {
+    
     const id = req.query.id //for this orphanage
-    const day = Date()
+    const day = new Date()
     var items = await ItemNeed.findAll({where : {orphanageID : id}})
 
+console.log(items)
     var ans = []
     var prop = []
     for (const i of items) {
         var p = await ItemProposal.findAll({where : {itemNeedID : i.ID}})
         prop.push(...p)
     }
+    console.log(prop)
     var users = await RegisteredUser.findAll({})
-
+console.log(users)
     for (const u of users) {
         var counter = 0
-        var propC = await ItemProposal.count({where : {registeredUserID : u.ID, isFulfilled : true}})
+        var propC = await ItemProposal.count({where : {registeredUserID : u.ID, isFulfilled : false}})
         for (const p of prop) {
             
-            if(p.registeredUserID == u.ID && p.isAccepted == true && p.isFulfilled == false &&(p.DropOffTime < day || p.PickUpTime < day) ){
+            if(p.registeredUserID == u.ID && p.isAccepted == true && p.isFulfilled == false && (p.DropOffTime < day || p.PickUpTime < day) ){
                 counter++
             }
         }
         var obj = {
-            Name: u.Username,
+            Name: u.FirstName,
             Offences : counter,
-            Done : propC
+            Total : propC
         }
 
-        if (obj.Offences >= 5 && obj.Offences >= obj.Total){
+        if (obj.Offences >= 5 && obj.Offences >= obj.Total){ //
             ans.push(obj)
         }
 
@@ -505,17 +528,30 @@ const unreliableUsers = async (req,res) => {
 
    
     res.status(200).json(ans)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
 
 }
 
 
 
 const flagUser = async (req,res) => {
+   try {
     const id = req.body.id
     var user = await RegisteredUser.findOne({where : {ID : id}})
 
     user.isFlagged = true 
     await user.save() 
+   } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+   }
 }
 
 const updateChildNeed = async (req,res) => {
@@ -569,5 +605,6 @@ getOrphanageProposalsReport,
 getDemographics,
 unreliableUsers, //add
 calcPetrol,
-flagUser
+flagUser,
+accountability
 }

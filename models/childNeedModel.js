@@ -26,7 +26,11 @@ module.exports = (sequelize,DataTypes)  => {
         },
         AmountNeeded:{
             type: DataTypes.DOUBLE 
-        }
+        },
+           DueDate: {
+            type: DataTypes.DATEONLY,
+            allowNull: false
+        },
     },
     { //s freezeTableName: true,
       timestamps:false
