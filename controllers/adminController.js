@@ -44,7 +44,7 @@ const getAllUnmetOrphaganes  = async (req, res) => {
           
         })  // get all for this current orph
            console.log(i.orphanageID)
-           var obj = { Name: i.OrphanageName, Unmet: Number(num) , Total: Number(total)}
+           var obj = { ID : i.ID,Name: i.OrphanageName, Unmet: Number(num) , Total: Number(total)}
            itemsArr.push(obj)
        }
     
