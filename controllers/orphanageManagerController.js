@@ -4,7 +4,7 @@
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
 const { Op, where } = require('sequelize')
-const { OfferItem, Offer, RegisteredUser, Orphanage } = require('../models/');
+const { OfferItem, Offer, RegisteredUser, Orphanage, Child } = require('../models/');
 const { NUMERIC } = require('sequelize');
 
 
@@ -464,6 +464,26 @@ const fulfillChildNeed = async(req,res) =>{ //update to is accepted
 }
 
 const accountability = async(req,res) =>{ 
+try {
+    
+    const id = req.query.id //orphanage id
+    var kids = []
+    var children = await Child.findAll({where : {orphanageID : id }})
+    for (const c of children) {
+        var obj = {Childname : "", Number : ""}
+        var needs = await ChildNeed.count({where : {childID : c.ID , isFulfilled: false , DueDate :{[Op.lt]: new Date() }}})
+    obj.Childname = c.Nickname
+    obj.Number = needs
+    kids.push(obj)
+    }
+
+    res.status(200).json(kids)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+}
 
 }
 const unreliableUsers = async (req,res) => {
@@ -585,5 +605,6 @@ getOrphanageProposalsReport,
 getDemographics,
 unreliableUsers, //add
 calcPetrol,
-flagUser
+flagUser,
+accountability
 }

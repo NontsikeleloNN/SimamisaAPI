@@ -18,6 +18,8 @@ router.get('/report/needs', OrphanageManagerController.getMyItemsMonths) // ..?i
 router.get('/report/demographics',OrphanageManagerController.getDemographics) // ?id=x (orphanageID)
 router.get('/notifications',OrphanageManagerController.getNumNotifications) // ?id=x (orphanageID)
 router.get('/flags',OrphanageManagerController.unreliableUsers)  // ?id=x (orphanageID)
+router.get('/accountability', OrphanageManagerController.accountability)  // ?id=x (orphanageID)
+
 router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)
 
