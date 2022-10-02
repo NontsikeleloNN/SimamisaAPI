@@ -91,11 +91,18 @@ const getAllNotifications = async (req,res) => {
 
     const updateOrphanage = async (req,res) => {
 
-        let id = req.params.id;
+        try {
+            let id = req.params.id;
         const event = await Orphanage.update(req.body, {where: {ID: id}})
           if(!event) return res.status(400).send('could not update this event')
       
         res.status(200).send('event: ' + id + ' updated');
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({
+                errorMessage: error.message
+            })
+        }
     }
 
 const regManager = async (req,res) => {
