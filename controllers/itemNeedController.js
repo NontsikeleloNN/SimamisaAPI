@@ -125,7 +125,7 @@ const createItem = async(req,res) =>{
 
 const getNeed = async (req,res) => {
     try {
-        var op = {some :'', orphanageName:''}
+      
         let id = req.query.id
         let orph = await ItemNeed.findOne({include: [
             {
@@ -133,9 +133,8 @@ const getNeed = async (req,res) => {
                 attributes: ['OrphanageName','NavigationAddress']
             }
         ],where: {ID: id},})
-        op.some = orph
-        op.orphanageName = orph.orphanageName
-        res.status(200).json(op)
+       
+        res.status(200).json(orph)
 
     } catch (error) {
         res.status(500).json({
