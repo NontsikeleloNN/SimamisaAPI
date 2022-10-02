@@ -35,6 +35,8 @@ const acceptRequest = async (req, res) => {
 
         if (user.isSponsor) {
             // if they already are a sponsor, create a sponsorship between them and the child 
+        var usersp = await Sponsor.findOne({ where: { registeredUserID: request.registeredUserID } }) //get the applicant
+        let sid=usersp.ID;
             sponsorship = {
                 DateStarted: new Date(), // now ,
                 MonthlySeed: 0,
