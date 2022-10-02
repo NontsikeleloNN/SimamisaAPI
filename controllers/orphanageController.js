@@ -89,6 +89,15 @@ const getAllNotifications = async (req,res) => {
     }
     }
 
+    const updateOrphanage = async (req,res) => {
+
+        let id = req.params.id;
+        const event = await Orphanage.update(req.body, {where: {ID: id}})
+          if(!event) return res.status(400).send('could not update this event')
+      
+        res.status(200).send('event: ' + id + ' updated');
+    }
+
 const regManager = async (req,res) => {
 //update userole to M
    try {
@@ -134,23 +143,7 @@ const regManager = async (req,res) => {
     })
    }
 
-   const updateOrph = async(req,res) =>{
-    try {
-        
-        let id = req.body.id;
-        // I think I should just receive the changes that I want to and update them accordingly
-    
-        let orph = await Orphanage.update(req.body,{where: {ID : id}})
-            if(!orph) return res.status(400).json('could not update orphanage: '+ id);
-    
-        res.status(200).json('updated')
-
-    } catch (error) {
-        res.status(500).json({
-            errorMessage : error.message
-        })
-    }
-}
+   
 
 }
 
@@ -159,7 +152,9 @@ module.exports = {
     getAllOrphanages,
     getOrphanage,
     regOrphanage,
+  updateOrphanage,
     regManager,
     getAllNotifications ,// add to routes
-    updateOrph
+ 
+    
 }
