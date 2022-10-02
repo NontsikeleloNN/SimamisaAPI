@@ -1,4 +1,5 @@
 
+const { response } = require('express')
 const db = require('../models/')
 const Sponsor = db.Sponsor
 const Child = db.Child
@@ -53,11 +54,17 @@ const getByChildID = async (req,res) => {
 
     // need to find sponsorship this belongs to 
 
-    const spononsorID = (await Sponsorship.findOne({where : {childID : id}})).ID
+    const sponsorShip = (await Sponsorship.findOne({where : {childID : id}}))
+    if(sponsorShip ==null){
+        res.status(200).json({})
+    }else{
+        spononsorID = sponsorShip.ID
+        let posts = await SponsorshipPost.findAll({where : {sponsorshipID:spononsorID}})
 
-    let posts = await SponsorshipPost.findAll({where : {sponsorshipID:spononsorID}})
+        res.status(200).json(posts)
+    }
 
-    res.status(200).json(posts)
+   
     } catch (error) {
         
         console.log(error)
