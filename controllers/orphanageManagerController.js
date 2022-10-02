@@ -471,7 +471,8 @@ try {
     var children = await Child.findAll({where : {orphanageID : id }})
     for (const c of children) {
         var obj = {Childname : "", Number : ""}
-        var needs = await ChildNeed.count({where : {childID : c.ID , isFulfilled: false , DueDate :{[Op.lt]: new Date() }}})
+        var spons = await Sponsorship.findOne({where : {childID: c.ID}})
+        var needs = await ChildNeed.count({where : {sponsorshipID : spons.ID , isFulfilled: false , DueDate :{[Op.lt]: new Date() }}})
     obj.Childname = c.Nickname
     obj.Number = needs
     kids.push(obj)
