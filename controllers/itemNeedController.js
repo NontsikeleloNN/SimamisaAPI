@@ -15,7 +15,33 @@ const { Orphanage } = require('../models/')
 
 
 const getAllNeeds = async(req,res) => {
-    let items = await ItemNeed.findAll({});
+ const id = req.query.id
+    let items = await ItemNeed.findAll({include: [
+        {
+            model: Orphanage, 
+            attributes: ['OrphanageName','NavigationAddress']
+        }
+    ],where: {ID: id},});
+    console.log(items)
+    calcItemsReceived(items)
+        if(!items) return res.status(404).send('there are no events')
+
+        /**
+         * for (item : items){
+         * item.NumberReceived = }
+         */
+
+        const sortedDesc = items.sort(
+            (objA, objB) => Number(objB.PriorityRating) - Number(objA.PriorityRating),
+          );
+    res.status(200).json(sortedDesc)
+
+}
+
+const getItemNeed = async(req,res) => {
+    const id = req.query.id
+    let items = await ItemNeed.findAll({where : {ID : id}});
+    console.log(items)
     calcItemsReceived(items)
         if(!items) return res.status(404).send('there are no events')
 
@@ -127,12 +153,14 @@ const getNeed = async (req,res) => {
     try {
       
         let id = req.query.id
+        console.log(id + ' here')
         let orph = await ItemNeed.findOne({include: [
             {
                 model: Orphanage, 
                 attributes: ['OrphanageName','NavigationAddress']
             }
         ],where: {ID: id},})
+        console.log(orph)
        
         res.status(200).json(orph)
 
@@ -141,6 +169,13 @@ const getNeed = async (req,res) => {
             errorMessage : error.message
         })
     }
+}
+
+const getItem = async(req,res) =>{
+const id = req.query.id
+console.log(id + 'herererere')
+let item = await ItemNeed.findOne({where : {ID : id}})
+res.status(200).json(item)
 }
 
 const updateItem = async(req,res) =>{
@@ -175,5 +210,6 @@ getOrphanageNeeds,
 createItem,
 updateItem,
 deleteItem,
-getNeed
+getNeed,
+getItemNeed
 }
