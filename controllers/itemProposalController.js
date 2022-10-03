@@ -145,6 +145,7 @@ try {
         NumberToGive : req.body.NumberToGive,
         registeredUserID : req.body.registeredUserID,
         itemNeedID : req.body.itemNeedID,
+        Distance : req.body.Distance,
         AmountGiven : req.body.AmountGiven,
         ProposalType: "ITEM"
 
