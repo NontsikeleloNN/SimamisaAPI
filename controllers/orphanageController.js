@@ -92,7 +92,7 @@ const getAllNotifications = async (req,res) => {
     const updateOrphanage = async (req,res) => {
 
         try {
-            let id = req.params.id;
+            let id = req.query.id;
         const event = await Orphanage.update(req.body, {where: {ID: id}})
           if(!event) return res.status(400).send('could not update this event')
       
