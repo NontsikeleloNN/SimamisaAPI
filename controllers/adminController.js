@@ -214,7 +214,8 @@ const getAllOrphanageItemsMonths = async (req, res) => {
   try {
     var dist =  await generalDonation.sum('Amount')
 
-  res.status(200).json(dist)
+    let x = dist -(await Distribution.sum('Amount'))
+  res.status(200).json(x)
   } catch (error) {
     console.log(error)
     res.status(500).json({
