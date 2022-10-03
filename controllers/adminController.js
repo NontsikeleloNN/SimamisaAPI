@@ -258,7 +258,7 @@ const getAllOrphanageItemsMonths = async (req, res) => {
 
   try {
     
-  const amount = req.query.amt
+  const amount = Number(req.query.amt)
   const orph =req.query.id
 
   let obj = {
@@ -271,7 +271,7 @@ const getAllOrphanageItemsMonths = async (req, res) => {
   
   var dist = Number(await Distribution.sum('Amount'))
 
-  const value = Number(dist + obj.Amount)
+  const value = Number(dist + Number(obj.Amount))
   if(value <= don){
     await Distribution.create(obj)
 
