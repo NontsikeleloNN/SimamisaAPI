@@ -212,9 +212,9 @@ const getAllOrphanageItemsMonths = async (req, res) => {
  const getAmount = async (req,res) => {
 //await sequelize.query("UPDATE users SET y = 42 WHERE x = 12");
   try {
-    var dist =  await generalDonation.sum('Amount')
+    var dist = Number( await generalDonation.sum('Amount'))
 
-    let x = dist -(await Distribution.sum('Amount'))
+    let x = Number(dist -(await Distribution.sum('Amount')))
   res.status(200).json(x)
   } catch (error) {
     console.log(error)
@@ -266,16 +266,12 @@ const getAllOrphanageItemsMonths = async (req, res) => {
     orphanageID: orph
   }
 
-  var don = await gDon.sum('Amount').then(sum =>{
-
-  })
+  var don = Number(await gDon.sum('Amount'))
 
   
-  var dist = await Distribution.sum('Amount').then(sum =>{
+  var dist = Number(await Distribution.sum('Amount'))
 
-  })
-
-  const value = dist + obj.Amount
+  const value = Number(dist + obj.Amount)
   if(value <= don){
     await Distribution.create(obj)
 
