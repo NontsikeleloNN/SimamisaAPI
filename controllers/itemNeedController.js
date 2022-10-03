@@ -58,12 +58,13 @@ const getItemNeed = async(req,res) => {
 }
 
 const getAllActiveNeeds = async(req,res) => {
+    const d = new Date(2022, 09);
     let items = await ItemNeed.findAll({include: [
         {
             model: Orphanage, 
             attributes: ['OrphanageName']
         }
-    ],where : {isFulfilled : false}});
+    ],where : {isFulfilled : false, DateEstablished:{[Op.gte]:d}}});
         if(!items) return res.status(400).send('there are no events')
 
 
