@@ -137,13 +137,14 @@ const getNumberofChildren = async (req,res) => {
 
 
   
-const Testing = async (req, res) => {
+const Jan = async (req, res) => {
 
 
   var rate = req.query.rating
+  var startdate = (req.query.date)
   let priority1 = [
-      {key : 'Jan',needs: '',metNeeds: ''},
-      {key : 'Feb',needs: '',metNeeds: ''},
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
       {key : 'March',needs: '',metNeeds: ''},
       {key : 'April',needs: '',metNeeds: ''},
       {key : 'May',needs: '',metNeeds: ''},
@@ -156,7 +157,407 @@ const Testing = async (req, res) => {
       {key : 'Dec',needs: '',metNeeds: ''},
    ]
    var count = 0;
-  var date = new Date('2022-02-01') //first date 
+
+  var date = new Date("2022-01-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const Feb = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+ 
+  var date = new Date("2022-02-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const March = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+ 
+  var date = new Date("2022-03-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const April = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+  
+  var date = new Date("2022-04-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const May = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+   if (startdate == "Jan"){
+    var date = new Date("2022-01-01")
+   }
+  var date = new Date("2022-05-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const June = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+   if (startdate == "Jan"){
+    var date = new Date("2022-01-01")
+   }
+  var date = new Date("2022-06-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const July = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+ 
+  var date = new Date("2022-07-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const Aug = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+  
+  var date = new Date("2022-08-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const Sept = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+
+  var date = new Date("2022-09-01") //first date '2022-02-01'
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
+
+const Oct = async (req, res) => {
+
+
+  var rate = req.query.rating
+  var startdate = (req.query.date)
+  let priority1 = [
+      {key : 'Jan',needs: '2022-01-01',metNeeds: ''},
+      {key : 'Feb',needs: '2022-',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+ 
+  var date = new Date("2022-10-01") //first date '2022-02-01'
   date.setDate(1)
 
      
@@ -383,5 +784,14 @@ module.exports={
     distributeFunds,
     getAmount,
     orphanageHighestPriority,
-    Testing
+    Jan,
+    Feb,
+    March,
+    April,
+    May,
+    June,
+    July,
+    Aug,
+    Sept,
+    Oct
 }
