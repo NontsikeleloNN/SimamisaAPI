@@ -95,7 +95,7 @@ const acceptRequest = async (req, res) => {
                 textContent: `Dear {{params.username}}, we are pleased to inform you that your request to sponsor {{params.childName}} has been approved. You will now see their updates to you and their needs on the mobile app`,
                 params: {
                     orphName: orph.OrphanageName,
-                    childName: child.Username,
+                    childName: child.Nickname,
                     username: user.FirstName
                 },
             })
@@ -191,7 +191,7 @@ const rejectRequest = async (req, res) => {
                 textContent: `Dear {{params.username}}, we regret to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} has been rejected. You may reapply if you are still interested or consider sponsoring a different child `,
                 params: {
                     orphName: orph.OrphanageName,
-                    childName: child.Username,
+                    childName: child.Nickname,
                     username: user.FirstName
                 },
             })
@@ -323,7 +323,7 @@ try{
             textContent: `Dear {{params.username}}, we wish to inform you that your sponsorship for {{params.childName}} at {{params.orphName}} is being reviewed. The orphanage manager is interested in meeting with you, details in the following link {{params.link}}`,
             params: {
                 orphName: orph.OrphanageName,
-                childName: child.Username,
+                childName: child.Nickname,
                 username: user.FirstName,
                 link: mlink
             },
@@ -380,8 +380,8 @@ const createRequest = async (req, res) => {
 
         let notify = {
             orphanageID: child.orphanageID,
-            Title: "Sponsorship request for " + child.Username,
-            Body: user.FirstName + " made a sponsorship request for " + child.Username + ", and needs reviewing",
+            Title: "Sponsorship request for " + child.Nickname,
+            Body: user.FirstName + " made a sponsorship request for " + child.Nickname + ", and needs reviewing",
             NotificationTime: new Date()
         }
 
