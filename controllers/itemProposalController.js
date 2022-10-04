@@ -3,6 +3,7 @@ const ItemProposal = db.ItemProposal
 const ItemNeed = db.ItemNeed
 const Notification = db.Notification
 const User = db.RegisteredUser
+const RegisteredUser = db.RegisteredUser
 const Donation = db.Donation
 const {doASideEffect} = require('./utilities.js')
 const { Op } = require("sequelize");
