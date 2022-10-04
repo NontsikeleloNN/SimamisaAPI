@@ -135,6 +135,49 @@ const getNumberofChildren = async (req,res) => {
     }
   }
 
+
+  
+const Testing = async (req, res) => {
+
+
+  var rate = req.query.rating
+  let priority1 = [
+      {key : 'Jan',needs: '',metNeeds: ''},
+      {key : 'Feb',needs: '',metNeeds: ''},
+      {key : 'March',needs: '',metNeeds: ''},
+      {key : 'April',needs: '',metNeeds: ''},
+      {key : 'May',needs: '',metNeeds: ''},
+      {key : 'Jun',needs: '',metNeeds: ''},
+      {key : 'Jul',needs: '',metNeeds: ''},
+      {key : 'Aug',needs: '',metNeeds: ''},
+      {key : 'Sept',needs: '',metNeeds: ''},
+      {key : 'Oct',needs: '',metNeeds: ''},
+      {key : 'Nov',needs: '',metNeeds: ''},
+      {key : 'Dec',needs: '',metNeeds: ''},
+   ]
+   var count = 0;
+  var date = new Date('2022-02-01') //first date 
+  date.setDate(1)
+
+     
+      var firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+      var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+     firstDay.setHours(0, 0, 0, 0);
+     lastDay.setHours(23, 59, 59, 999);
+  
+      var met = await ItemNeed.findAll({
+          where :{
+              isFulfilled : 1, // is  fulfilled 
+              DateEstablished : {
+                  [Op.between]: [firstDay, lastDay],
+                 },
+                 PriorityRating: rate
+          }
+      })
+
+      res.status(200).json(met)
+
+}
 const getAllOrphanageItemsMonths = async (req, res) => {
 
     try {
@@ -339,5 +382,6 @@ module.exports={
     getChildren,
     distributeFunds,
     getAmount,
-    orphanageHighestPriority
+    orphanageHighestPriority,
+    Testing
 }

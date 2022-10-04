@@ -10,6 +10,7 @@ router.get('/orphanages',adminController.getNumberofOrphanages)
 router.get('/children', adminController.getChildren)
 router.get('/donations', adminController.getAmount)
 router.get('/highestPriority',adminController.orphanageHighestPriority)
+router.get('/t',adminController.Testing)
 
 router.post('/',adminController.distributeFunds)
 

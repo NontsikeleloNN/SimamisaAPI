@@ -220,7 +220,7 @@ const donate = async (req,res) => {
 
         //with the lastest amounts, update the costs and number received 
         item.NumberReceived = Number(numitems) 
-      //  item.NumberNeeded -= Number(item.NumberReceived)
+    
         await item.save()
         //amounts currently in the database 
        
@@ -244,7 +244,7 @@ const donate = async (req,res) => {
 
         await ItemProposal.create(newproposal);
 
-        res.status(200).json('donation successful')
+        res.status(200).json(item)
          // need to save modifications to the item
     
 
