@@ -516,6 +516,7 @@ console.log(users)
             }
         }
         var obj = {
+            Id:u.ID,
             Name: u.FirstName,
             Offences : counter,
             Total : propC
