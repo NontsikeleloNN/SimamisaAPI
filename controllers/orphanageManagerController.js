@@ -517,6 +517,7 @@ console.log(users)
         }
         var obj = {
             Id:u.ID,
+            isFlagged:u.isFlagged,
             Name: u.FirstName,
             Offences : counter,
             Total : propC
