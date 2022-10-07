@@ -550,7 +550,8 @@ const flagUser = async (req,res) => {
     var user = await RegisteredUser.findOne({where : {ID : id}})
 
     user.isFlagged = true 
-    await user.save() 
+    await user.save() ;
+    res.status(200).json(user);
    } catch (error) {
     console.log(error)
     res.status(500).json({
@@ -564,7 +565,8 @@ const unflagUser = async (req,res) => {
      var user = await RegisteredUser.findOne({where : {ID : id}})
     console.log(user);
      user.isFlagged = false 
-     await user.save() 
+     await user.save() ;
+     res.status(200).json(user);
     } catch (error) {
      console.log(error)
      res.status(500).json({
