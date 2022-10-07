@@ -562,7 +562,7 @@ const unflagUser = async (req,res) => {
     try {
      const id = req.body.id
      var user = await RegisteredUser.findOne({where : {ID : id}})
- 
+    console.log(user);
      user.isFlagged = false 
      await user.save() 
     } catch (error) {
