@@ -62,7 +62,7 @@ const getOrphanageProposals = async(req, res) =>{
             },
             {
                 model:RegisteredUser,
-                attributes: ['isFlagged','Phonenumber']
+                attributes: ['isFlagged','Phonenumber','FirstName']
             }
         ],where: {itemNeedID : i.ID}})
         props.push(...temp)
