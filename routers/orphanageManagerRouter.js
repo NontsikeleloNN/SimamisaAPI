@@ -21,6 +21,7 @@ router.get('/flags',OrphanageManagerController.unreliableUsers)  // ?id=x (orpha
 router.get('/accountability', OrphanageManagerController.accountability)  // ?id=x (orphanageID)
 
 router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
+router.put('/unflag',OrphanageManagerController.flagUser)//?id=x (userID)
 router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)
 
 
