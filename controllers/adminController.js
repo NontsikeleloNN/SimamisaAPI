@@ -40,6 +40,8 @@ const getAllUnmetOrphaganesAmount  = async (req, res) => {
     const obj = {Name : o.OrphanageName, Amount : sum}
     arr.push(obj)
   }
+
+  res.status(200).json(arr)
   } catch (error) {
     console.log(error)
     res.status(500).json({
