@@ -23,6 +23,8 @@ router.get('/Oct',adminController.Oct)
 
 router.post('/',adminController.distributeFunds)
 
+router.get('/totalAmounts', adminController.getAllUnmetOrphaganesAmount)
+
 /** console.log(error)
     res.status(500).json({
         errorMessage: error.message

@@ -25,6 +25,28 @@ const getChildren  = async (req, res) => {
 
     res.status(200).json(Number(num))
 }
+const getAllUnmetOrphaganesAmount  = async (req, res) => {
+
+  try {
+    var orphs = await Orphanage.findAll({})
+  let arr = []
+  for (const o of orphs) {
+    var needs = await ItemNeed.findAll({where : {orphanageID : o.ID, isFulfilled: false}}) // find all my needs
+    var sum = 0
+    for (const i of needs) {
+      sum += Number(i.AmountNeeded)
+    }
+
+    const obj = {Name : o.OrphanageName, Amount : sum}
+    arr.push(obj)
+  }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+  }
+}
 
 const getAllUnmetOrphaganes  = async (req, res) => {
 
@@ -43,6 +65,8 @@ const getAllUnmetOrphaganes  = async (req, res) => {
             isFulfilled: 0 }
           
         })  // get all for this current orph
+
+        var myNeededAmount = await ItemNeed.sum('AmountNeeded') //sum where 
            console.log(i.orphanageID)
            var obj = { ID : i.ID,Name: i.OrphanageName, Unmet: Number(num) , Total: Number(total)}
            itemsArr.push(obj)
@@ -793,5 +817,6 @@ module.exports={
     July,
     Aug,
     Sept,
-    Oct
+    Oct,
+    getAllUnmetOrphaganesAmount
 }

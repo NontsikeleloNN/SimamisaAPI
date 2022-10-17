@@ -17,3 +17,8 @@
 - router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 - router.get('/accountability', OrphanageManagerController.accountability)  // ?id=x (orphanageID)
 - make notification for orphanage partnering 
+2022/10/17
+
+- router.get('/drops', OrphanageManagerController.DropOffsPerWeek) // ?id=x (orphanageID)
+- router.get('/pickups', OrphanageManagerController.PickUpsPerWeek) // ?id=x (orphanageID)
+- router.get('/gas',OrphanageManagerController.calcPetrol) // ?id=x (orphanageID)

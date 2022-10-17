@@ -19,6 +19,10 @@ router.get('/report/demographics',OrphanageManagerController.getDemographics) //
 router.get('/notifications',OrphanageManagerController.getNumNotifications) // ?id=x (orphanageID)
 router.get('/flags',OrphanageManagerController.unreliableUsers)  // ?id=x (orphanageID)
 router.get('/accountability', OrphanageManagerController.accountability)  // ?id=x (orphanageID)
+router.get('/drops', OrphanageManagerController.DropOffsPerWeek) // ?id=x (orphanageID)
+router.get('/pickups', OrphanageManagerController.PickUpsPerWeek) // ?id=x (orphanageID)
+router.get('/gas',OrphanageManagerController.calcPetrol) // ?id=x (orphanageID)
+
 
 router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 router.put('/unflag',OrphanageManagerController.unflagUser)//?id=x (userID)

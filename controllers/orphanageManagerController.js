@@ -319,26 +319,115 @@ console.log(id)
   res.status(200).json(created)
  }*/
 
- const calcPetrol = async(req,res) =>{ 
-// count between today and the next seven days 
+ 
+ const PickUpsPerWeek = async(req,res) =>{ 
+try {
+        // count between today and the next seven days 
+    //find all proposalsfor this orphanage that are between today and the next seven days 
+    const today = new Date()
+    const nextWeek = new Date()
+    nextWeek.setDate(new Date().getDate() + 7)
+
+    const id = req.query.id
+
+var items = await ItemNeed.findAll({where : {orphanageID:id}}) // all my items 
+let props = 0
+for (const i of items) {
+    
+    var prop = await ItemProposal.count({where : {
+        PickUpTime:{
+            [Op.between]: [today, nextWeek]
+        },
+        itemNeedID : i.ID
+    }})
+
+    props += Number(prop)
+
+}
+res.status(200).json(props)
+} catch (error) {
+    console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+}
+ }
+
+
+ const DropOffsPerWeek = async(req,res) =>{ 
+   try {
+     // count between today and the next seven days 
+    //find all proposalsfor this orphanage that are between today and the next seven days 
+    const today = new Date()
+    const nextWeek = new Date()
+    nextWeek.setDate(new Date().getDate() + 7)
+
+    const id = req.query.id
+
+var items = await ItemNeed.findAll({where : {orphanageID:id}}) // all my items 
+let props = 0
+for (const i of items) {
+    
+    var prop = await ItemProposal.count({where : {
+        DropOffTime:{
+            [Op.between]: [today, nextWeek]
+        },
+        itemNeedID : i.ID
+    }})
+
+    props += Number(prop)
+
+}
+res.status(200).json(props)
+   } catch (error) {
+    console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+   }
+ }
+
+ const calcPetrol = async(req,res) =>{
+    
+    try {
+         // count between today and the next seven days 
 //find all proposalsfor this orphanage that are between today and the next seven days 
 const today = new Date()
 const nextWeek = new Date()
 nextWeek.setDate(new Date().getDate() + 7)
-var prop = await ItemProposal.findAll({where : {
-    PickUpTime:{
-        [Op.between]: [today, nextWeek]
-    }
-}})
+const id = req.query.id
 
-var dist =0
+var items = await ItemNeed.findAll({where : {orphanageID:id}}) // all my items 
+let props = []
+for (const i of items) {
+    
+    var prop = await ItemProposal.findAll({where : {
+        PickUpTime:{
+            [Op.between]: [today, nextWeek]
+        },
+        itemNeedID : i.ID
+    }})
+
+    props.push(...prop)
+
+}
+
+
+var dist = 0
 for (const p of props) {
     dist+= Number(p.Distance)
 }
 // 0.12 per km (km*0.12*)
-var ans = (( 0.12*dist )* 23.055)* 2
+var ans = (( 0.12*dist ))* 2
 
 res.status(200).json(ans)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+    }
  }
 
 const acceptProposal = async(req,res) =>{ //update to is accepted
@@ -559,12 +648,13 @@ const flagUser = async (req,res) => {
     })
    }
 }
+
 const unflagUser = async (req,res) => {
     try {
      const id = req.body.id
      var user = await RegisteredUser.findOne({where : {ID : id}})
     console.log(user);
-     user.isFlagged = false 
+     user.isFlagged = false
      await user.save() ;
      res.status(200).json(user);
     } catch (error) {
@@ -574,7 +664,6 @@ const unflagUser = async (req,res) => {
      })
     }
  }
- 
 const updateChildNeed = async (req,res) => {
 
        
@@ -627,6 +716,8 @@ getDemographics,
 unreliableUsers, //add
 calcPetrol,
 flagUser,
-unflagUser ,
-accountability
+DropOffsPerWeek,
+PickUpsPerWeek,
+accountability,
+unflagUser
 }
