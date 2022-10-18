@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
         },
 
         EventPoster: {
-            type: DataTypes.BLOB('long'),
+            type: DataTypes.STRING,
             allowNull: false
         },
 

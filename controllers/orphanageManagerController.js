@@ -396,6 +396,7 @@ const today = new Date()
 const nextWeek = new Date()
 nextWeek.setDate(new Date().getDate() + 7)
 const id = req.query.id
+const amount = req.query.amount
 
 var items = await ItemNeed.findAll({where : {orphanageID:id}}) // all my items 
 let props = []
@@ -418,7 +419,7 @@ for (const p of props) {
     dist+= Number(p.Distance)
 }
 // 0.12 per km (km*0.12*)
-var ans = (( 0.12*dist ))* 2
+var ans = (( 0.12*dist*amount ))* 2
 
 res.status(200).json(ans)
 

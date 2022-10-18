@@ -10,7 +10,61 @@ const { Op } = require("sequelize");
 const {doASideEffect, getSingleItem} = require('./utilities.js');
 const { Orphanage } = require('../models/');
 
+
 //sending a request k
+
+const  confirm = async (req,res) => {
+   
+
+try {
+    const offerq = req.body.offerItemID
+    const id = req.body.id // id of the orphanage accepting the offer
+  
+    //find the offer eq
+    let offer = await OfferItem.findOne( {where: {
+        [Op.and]: [
+          {ReceivingPartner : id},
+            {ID : offerq}]
+    }
+    })
+
+    let tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
+
+    let amount = offer.AmountTaken
+    tempOff.Quantity -= amount // decreasing quantity available
+    await tempOff.save() //save changes 
+
+    if(tempOff.Quantity <= 0){
+        tempOff.isAvailable = false
+        await tempOff.save() 
+    }
+
+} catch (error) {
+    res.status(500).json({                                                                                                                                                  
+        errorMessage : error.message
+    })
+}
+    
+    }
+
+const rejectOffer = async (req,res) => {
+try {
+    const orphID = req.query.id
+const offerID = req.query.offerID
+
+let item = await OfferItem.findOne({where : { ReceivingPartner: orphID, offerID : offerID}})
+item.isRejected = true
+await item.save()
+res.status(200).json('rejected')
+} catch (error) {
+    res.status(500).json({                                                                                                                                                  
+        errorMessage : error.message
+    })
+}
+
+}
+
+//confirmed pickup  
 const acceptOffer = async (req,res) => {
 
     try {
@@ -31,13 +85,7 @@ const acceptOffer = async (req,res) => {
 
    if(tempOff.isAvailable && amount <= tempOff.Quantity){
     offer.AmountTaken = Number(amount)
-    tempOff.Quantity -= amount // decreasing quantity available
-    await tempOff.save() //save changes 
-
-    if(tempOff.Quantity <= 0){
-        tempOff.isAvailable = false
-        await tempOff.save() 
-    }
+   
     await offer.save()
 
     res.status(200).json('accepted')
@@ -330,7 +378,8 @@ const getMyOffers = async (req, res) => {
         //these are all the items that were meant for you. 
         const offers = await Offer.findAll({
             where: {
-                isAvailable: true
+                isAvailable: true,
+                isRejected: true
             }
         })
 
@@ -387,6 +436,7 @@ const getMyOffers = async (req, res) => {
 module.exports = {
     acceptRequest,
     sendReq,
+    rejectOffer,
     sendOfferToOne, //not tested 
     sendOfferToAll,
     getMyOffers, // working
@@ -394,5 +444,6 @@ module.exports = {
     getRequests,
     acceptOffer,
     getAllOfferItems,
-    getAllOffers
+    getAllOffers,
+    confirm
 }

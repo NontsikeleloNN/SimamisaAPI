@@ -16,6 +16,16 @@ module.exports = (sequelize,DataTypes)  => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        isRejected: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue : false 
+        },
+        isAccepted: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: false
+        },
     },
     { //s freezeTableName: true,
       timestamps:false
