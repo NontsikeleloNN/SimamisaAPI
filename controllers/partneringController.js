@@ -377,12 +377,13 @@ let offers = await Offer.findAll({where : {orphanageID : id}}) //all my made off
 for (const o of offers) {
     let items = await OfferItem.findAll({where : {offerID : o.ID}}) // find all offer items for this offer
     for (const i of items) {
-        let obj = {Name: "", ReceivingPartner: "", ReceivingPartnerName : "", AmountTaken: "", isRejected : "", isAccepted: "" , Offer: ""}
+        let obj = {ID: "",Name: "", ReceivingPartner: "", ReceivingPartnerName : "", AmountTaken: "", isRejected : "", isAccepted: "" , Offer: ""}
         obj.Name = o.Title
         obj.ReceivingPartner = i.ReceivingPartner
         obj.AmountTaken = i.AmountTaken
         obj.isAccepted = i.isAccepted
         obj.isRejected = i.isRejected
+        obj.ID = i.ID
         obj.ReceivingPartnerName = (await Orphanage.findOne({where : {ID:i.ReceivingPartner}})).OrphanageName
         obj.Offer = o
 
