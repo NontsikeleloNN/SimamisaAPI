@@ -419,7 +419,7 @@ for (const p of props) {
     dist+= Number(p.Distance)
 }
 // 0.12 per km (km*0.12*)
-var ans = (( 0.12*dist*amount ))* 2
+var ans = (( 0.12*(dist/1000) ))* 2*amount
 
 res.status(200).json(ans)
 
