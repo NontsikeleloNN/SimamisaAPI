@@ -393,7 +393,7 @@ const getMyOffers = async (req, res) => {
         const offers = await Offer.findAll({
             where: {
                 isAvailable: true,
-                isRejected: true
+              
             }
         })
 
