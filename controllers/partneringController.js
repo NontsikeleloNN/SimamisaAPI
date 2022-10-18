@@ -384,7 +384,7 @@ for (const o of offers) {
         obj.isAccepted = i.isAccepted
         obj.isRejected = i.isRejected
 
-        arr.push(...obj)
+        arr.push(obj)
     }
 
     
