@@ -31,9 +31,11 @@ try {
     let tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
 
     let amount = offer.AmountTaken
+    offer.isAccepted = true
+    offer.isRejected = false
     tempOff.Quantity -= amount // decreasing quantity available
     await tempOff.save() //save changes 
-
+    await offer.save()
     if(tempOff.Quantity <= 0){
         tempOff.isAvailable = false
         await tempOff.save() 
