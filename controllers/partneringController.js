@@ -369,12 +369,33 @@ const getAllOfferItems = async (req,res) => {
 }
 
 const getSentOffers = async (req, res) => {
-const id = req.query.id //my id
-
+try {
+    const id = req.query.id //my id
+let arr = []
 let offers = await Offer.findAll({where : {orphanageID : id}}) //all my made offers
 
 for (const o of offers) {
-    let obj = {Name: "", ReceivingPartner: "", AmountTaken: "", }
+    let items = await OfferItem.findAll({where : {offerID : o.ID}}) // find all offer items for this offer
+    for (const i of items) {
+        let obj = {Name: "", ReceivingPartner: "", AmountTaken: "", isRejected : "", isAccepted: ""}
+        obj.Name = o.Title
+        obj.ReceivingPartner = i.ReceivingPartner
+        obj.AmountTaken = i.AmountTaken
+        obj.isAccepted = i.isAccepted
+        obj.isRejected = i.isRejected
+
+        arr.push(...obj)
+    }
+
+    
+}
+
+res.status(200).json(arr)
+} catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
 }
 }
 
@@ -459,5 +480,6 @@ module.exports = {
     acceptOffer,
     getAllOfferItems,
     getAllOffers,
-    confirm
+    confirm,
+    getSentOffers
 }

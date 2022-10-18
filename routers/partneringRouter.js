@@ -11,6 +11,7 @@ router.post('/offers/',partneringController.sendOfferToOne)
 router.put('/',partneringController.acceptRequest) // (/?from=x&to=y)
 router.get('/offers/',partneringController.getMyOffers) //pffers made to me .. /offers/?id=x
 router.get('/requests/', partneringController.getRequests) // .. /requests/?id=x
+router.get('/sent', partneringController.getSentOffers) // orphanageID
 router.put('/offers/',partneringController.acceptOffer)// "offerItemID","id" : orphanageID that is accepting, "amount"
 router.put('/reject', partneringController.rejectOffer) //"offerItemID","id" : orphanageID that is accepting
 router.put('/confirm', partneringController.confirm)//"offerItemID","id" : orphanageID that is accepting
