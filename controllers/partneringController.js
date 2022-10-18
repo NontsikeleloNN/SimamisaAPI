@@ -270,7 +270,10 @@ const sendOfferToOne = async (req, res) => {
         DateMade: new Date(),
         isAvailable: true,
         Quantity: Number(req.body.Quantity),
-        orphanageID: from
+        orphanageID: from,
+        isRejected : false,
+        isAccepted : false
+
     }
 
     // will need to be accepted
@@ -363,7 +366,18 @@ res.status(200).json(temp)
 const getAllOfferItems = async (req,res) => {
     const temp = await OfferItem.findAll({})
     res.status(200).json(temp)
-    }
+}
+
+const getSentOffers = async (req, res) => {
+const id = req.query.id //my id
+
+let offers = await Offer.findAll({where : {orphanageID : id}}) //all my made offers
+
+for (const o of offers) {
+    let obj = {Name: "", ReceivingPartner: "", AmountTaken: "", }
+}
+}
+
 const getMyOffers = async (req, res) => {
     let offerItemArray = [];
     let offer = [];
