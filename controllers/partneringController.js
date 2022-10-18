@@ -85,7 +85,8 @@ const acceptOffer = async (req,res) => {
 
    if(tempOff.isAvailable && amount <= tempOff.Quantity){
     offer.AmountTaken = Number(amount)
-   
+   offer.isAccepted = true
+   offer.isRejected = true
     await offer.save()
 
     res.status(200).json('accepted')
