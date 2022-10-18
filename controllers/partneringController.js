@@ -427,7 +427,8 @@ const getMyOffers = async (req, res) => {
             let temp =  await OfferItem.findAll({
                 where: {
                     ReceivingPartner: id,
-                    offerID: element.ID
+                    offerID: element.ID, 
+                    isRejected : false
                 }
             })
             if(temp != null){
