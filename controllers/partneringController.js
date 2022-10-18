@@ -17,8 +17,8 @@ const  confirm = async (req,res) => {
    
 
 try {
-    const offerq = req.body.offerItemID
-    const id = req.body.id // id of the orphanage accepting the offer
+    const offerq = req.query.offerItemID
+    const id = req.query.id // id of the orphanage accepting the offer
   
     //find the offer eq
     let offer = await OfferItem.findOne( {where: {
