@@ -742,8 +742,29 @@ const getAllOrphanageItemsMonths = async (req, res) => {
   var dist = Number(await Distribution.sum('Amount'))
 
   const value = Number(dist + Number(obj.Amount))
-  if(value <= don){
+  if(value <= don){ //if we have the money to donate 
     await Distribution.create(obj)
+
+    let items = await ItemNeed.findAll({where : {orphanageID: orph, isFulfilled : false}})
+    let mon = obj.Amount
+
+    for (const i of items) {
+      if (mon >= i.AmountNeeded){
+        i.AmountNeeded = 0
+        i.isFulfilled = true
+        await i.save()
+        mon = mon -i.AmountNeeded
+      }else {
+        i.AmountNeeded = i.AmountNeeded - mon
+        i.save()
+        if(i.AmountNeeded <= 0){
+          i.isFulfilled = true
+          i.save()
+        }
+        mon = 0 
+      }
+
+    }
 
     let notify = {
       orphanageID : obj.orphanageID,

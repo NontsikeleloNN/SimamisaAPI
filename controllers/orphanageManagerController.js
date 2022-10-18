@@ -560,11 +560,12 @@ try {
     var children = await Child.findAll({where : {orphanageID : id }})
     for (const c of children) {
        if(c.isSponsored == true){
-        var obj = {Childname : "", Number : ""}
+        var obj = {Childname : "", Number : "", ChildID: ""}
         var spons = await Sponsorship.findOne({where : {childID: c.ID}})
         var needs = await ChildNeed.count({where : {sponsorshipID : spons.ID , isFulfilled: false , DueDate :{[Op.lt]: new Date() }}})
     obj.Childname = c.Nickname
     obj.Number = needs
+    obj.ChildID = c.ID
     kids.push(obj)
        }
     }
@@ -631,6 +632,25 @@ console.log(users)
 
 }
 
+
+const deleteSpons= async (req,res) => {
+   
+     try {
+        const id = req.body.id // child id
+    var s = await Sponsorship.findOne({where:{childID : id}})
+    await s.destroy()
+    let c = await Child.findOne({where : {ID:id}})
+    c.isSponsored = true
+    await c.save()
+     } catch (error) {
+        console.log(error)
+        res.status(500).json({
+            errorMessage: error.message
+        })
+     }
+
+    
+    }
 
 
 const flagUser = async (req,res) => {
@@ -719,5 +739,6 @@ flagUser,
 DropOffsPerWeek,
 PickUpsPerWeek,
 accountability,
-unflagUser
+unflagUser,
+deleteSpons
 }

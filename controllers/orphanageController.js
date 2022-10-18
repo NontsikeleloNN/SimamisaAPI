@@ -1,6 +1,7 @@
 //const { OrphanageManager } = require('../models/');
 const db = require('../models/')
 const bcrypt = require('bcryptjs');
+const { ItemProposal, Sponsorship, Sponsor, generalDonation } = require('../models/');
 const Orphanage = db.Orphanage
 const regUser = db.RegisteredUser;
 const OrphanageManager = db.OrphanageManager
@@ -104,7 +105,31 @@ const getAllNotifications = async (req,res) => {
             })
         }
     }
+    const badges = async (req,res) => {
+ try {
+    const id = req.query.id
+    // proposals
 
+    var props = await ItemProposal.count({where : {isAccepted: true, isFulfilled:true, registeredUserID}})
+    const sponsID = (await Sponsor.findOne({where : {registeredUserID : id}})).ID
+    var kids = await Sponsorship.count({where : {sponsorID : sponsID} })
+    var dons = await generalDonation.findAll({where :{registeredUserID : id}})
+    var amount =0
+    for (const d of dons) {
+        amount += Number(d.Amount)
+    }
+
+    var obj = {Needs : props, Kids : kids, Money: amount}
+
+    res.status(200).json(obj)
+ } catch (error) {
+    console.log(error)
+    res.status(500).json({
+        errorMessage: error.message
+    })
+   }
+ }
+    
 const regManager = async (req,res) => {
 //update userole to M
    try {
@@ -162,6 +187,6 @@ module.exports = {
   updateOrphanage,
     regManager,
     getAllNotifications ,// add to routes
- 
+ badges
     
 }

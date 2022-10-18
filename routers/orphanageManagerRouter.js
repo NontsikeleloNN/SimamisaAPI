@@ -23,7 +23,7 @@ router.get('/drops', OrphanageManagerController.DropOffsPerWeek) // ?id=x (orpha
 router.get('/pickups', OrphanageManagerController.PickUpsPerWeek) // ?id=x (orphanageID)
 router.get('/gas',OrphanageManagerController.calcPetrol) // ?id=x (orphanageID)
 
-
+router.delete('/remove/sponsor', OrphanageManagerController.deleteSpons)
 router.put('/flag',OrphanageManagerController.flagUser)//?id=x (userID)
 router.put('/unflag',OrphanageManagerController.unflagUser)//?id=x (userID)
 router.put('/notifications',OrphanageManagerController.AllNotifications) // ?id=x (orphanageID)

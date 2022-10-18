@@ -22,3 +22,8 @@
 - router.get('/drops', OrphanageManagerController.DropOffsPerWeek) // ?id=x (orphanageID)
 - router.get('/pickups', OrphanageManagerController.PickUpsPerWeek) // ?id=x (orphanageID)
 - router.get('/gas',OrphanageManagerController.calcPetrol) // ?id=x (orphanageID)
+
+2022/10/18
+- router.get('/badges', orphanageController.badges)
+- router.delete('/remove/sponsor', OrphanageManagerController.deleteSpons)
+- distributions

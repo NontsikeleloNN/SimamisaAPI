@@ -7,6 +7,7 @@ const router = require('express').Router()
 router.get('/',orphanageController.getAllOrphanages)
 router.get('/id',orphanageController.getOrphanage)
 router.post('/',orphanageController.regOrphanage)
+router.get('/badges', orphanageController.badges)
 
 router.put('/', orphanageController.updateOrphanage)
 
