@@ -445,7 +445,7 @@ const getMyOffers = async (req, res) => {
             }
    
         }
-     offerItemArray = offerItemArray.filter((item)=>{return !(item.isAccepted&&!item.isRejected) || !(item.isRejected&& !item.isAccepted)})
+     offerItemArray = offerItemArray.filter((item)=>{return (item.isAccepted&&item.isRejected) || (!item.isRejected&& !item.isAccepted)})
       for (let a of offerItemArray ) {
             if(a != null ) {
              var temp = {ID: '', ReceivingPartner: '', AmountTaken: '', Title: '', Description: '', Quantity: '' , Sender: ''}
