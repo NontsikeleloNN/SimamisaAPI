@@ -434,7 +434,8 @@ const getMyOffers = async (req, res) => {
                 where: {
                     ReceivingPartner: id,
                     offerID: element.ID, 
-                    isRejected : false
+                    isRejected : true, 
+                    isAccepted : true
                 }
             })
             if(temp != null){
