@@ -17,8 +17,8 @@ const  confirm = async (req,res) => {
    
 
 try {
-    const offerq = req.body.offerItemID
-    const id = req.body.id // id of the orphanage accepting the offer
+    const offerq = req.query.offerItemID
+    const id = req.query.id // id of the orphanage accepting the offer
   
     //find the offer eq
     let offer = await OfferItem.findOne( {where: {
@@ -31,9 +31,11 @@ try {
     let tempOff = await Offer.findOne({where : {ID : offer.offerID}}) //fetching offer to check availability
 
     let amount = offer.AmountTaken
+    offer.isAccepted = true
+    offer.isRejected = false
     tempOff.Quantity -= amount // decreasing quantity available
     await tempOff.save() //save changes 
-
+    await offer.save()
     if(tempOff.Quantity <= 0){
         tempOff.isAvailable = false
         await tempOff.save() 
@@ -85,7 +87,8 @@ const acceptOffer = async (req,res) => {
 
    if(tempOff.isAvailable && amount <= tempOff.Quantity){
     offer.AmountTaken = Number(amount)
-   
+   offer.isAccepted = true
+   offer.isRejected = true
     await offer.save()
 
     res.status(200).json('accepted')
@@ -377,14 +380,17 @@ let offers = await Offer.findAll({where : {orphanageID : id}}) //all my made off
 for (const o of offers) {
     let items = await OfferItem.findAll({where : {offerID : o.ID}}) // find all offer items for this offer
     for (const i of items) {
-        let obj = {Name: "", ReceivingPartner: "", AmountTaken: "", isRejected : "", isAccepted: ""}
+        let obj = {ID: "",Name: "", ReceivingPartner: "", ReceivingPartnerName : "", AmountTaken: "", isRejected : "", isAccepted: "" , Offer: ""}
         obj.Name = o.Title
         obj.ReceivingPartner = i.ReceivingPartner
         obj.AmountTaken = i.AmountTaken
         obj.isAccepted = i.isAccepted
         obj.isRejected = i.isRejected
+        obj.ID = i.ID
+        obj.ReceivingPartnerName = (await Orphanage.findOne({where : {ID:i.ReceivingPartner}})).OrphanageName
+        obj.Offer = o
 
-        arr.push(...obj)
+        arr.push(obj)
     }
 
     
@@ -427,7 +433,9 @@ const getMyOffers = async (req, res) => {
             let temp =  await OfferItem.findAll({
                 where: {
                     ReceivingPartner: id,
-                    offerID: element.ID
+                    offerID: element.ID, 
+                    isRejected : true, 
+                    isAccepted : true
                 }
             })
             if(temp != null){
