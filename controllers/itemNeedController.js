@@ -79,7 +79,7 @@ const getOrphanageNeeds = async(req,res) => {
     const id = req.params.id; 
 
     let items = await ItemNeed.findAll({where : {orphanageID : id,
-        isFulfilled : false}});
+       }});
         if(!items) return res.status(404).send('there are no events')
 
         const sortedDesc = items.sort(
