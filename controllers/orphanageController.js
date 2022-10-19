@@ -110,7 +110,7 @@ const getAllNotifications = async (req,res) => {
     const id = req.query.id
     // proposals
 
-    var props = await ItemProposal.count({where : {isAccepted: true, isFulfilled:true, registeredUserID}})
+    var props = await ItemProposal.count({where : {isAccepted: true, isFulfilled:true, registeredUserID:id}})
     const sponsID = (await Sponsor.findOne({where : {registeredUserID : id}})).ID
     var kids = await Sponsorship.count({where : {sponsorID : sponsID} })
     var dons = await generalDonation.findAll({where :{registeredUserID : id}})
