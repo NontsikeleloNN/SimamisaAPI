@@ -210,9 +210,7 @@ async function zoomlink(body, child, user) {
 
 
     let url = "https://api.zoom.us/v2/users/omphile05monchwe@gmail.com/meetings"
-    let auth_token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOm51bGwsImlzcyI6Ik8wcHl5czhsU3FhUTBHSXlGOHptYVEiLCJleHAiOjE2NjcwODA4MDAsImlhdCI6MTY2NDUwMzA1Mn0.P58jlmxP6N-iIT0Jzy_8EZ0TtoZ65btutTZ1P7S3g3g";
-
-
+    let auth_token = "ZoomAPIKEY"
     let zoomBody = {
         "agenda": "Sponsorship for " + child.Nickname,
         "default_password": false,

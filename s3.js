@@ -10,8 +10,8 @@ const bucketName = "simamisa-images"
 //process.env for key protection
 // const accessKeyId = process.env.AWS_ACCESS_KEY_ID
 // const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
-const accessKeyId = "AKIA2ZDX33D5DBSVFDIQ"
-const secretAccessKey = "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"
+const accessKeyId = "bucketkey"
+const secretAccessKey = "bucketKey"
 const s3 = new aws.S3({
   region,
   accessKeyId,
